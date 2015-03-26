@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Habitualizer</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="q1">Have you eaten breakfast yet?</string>
+    <string name="q2">Did you attend all your classes today?</string>
+    <string name="action_settings">Settings</string>
 </resources>
