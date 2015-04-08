@@ -12,17 +12,20 @@ android {
         versionName "1.0"
     }
     buildTypes {
-        debug {
-            debuggable true
-        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            debuggable true
+        }
     }
 }
+
+repositories { mavenCentral() }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.0.0'
+    compile 'com.facebook.android:facebook-android-sdk:4.0.0'
 }
