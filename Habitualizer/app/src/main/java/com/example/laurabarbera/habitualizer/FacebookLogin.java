@@ -1,6 +1,8 @@
 package com.example.laurabarbera.habitualizer;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,6 +29,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,7 +45,6 @@ public class FacebookLogin extends ActionBarActivity {
         setContentView(R.layout.activity_facebook_login);
         FacebookSdk.sdkInitialize(this.getApplicationContext());
 
-        // Gets rid of shadow
         setTitle("Get Started");
         getSupportActionBar().setElevation(0);
         getSupportActionBar().setIcon(R.drawable.icon);
@@ -83,7 +85,6 @@ public class FacebookLogin extends ActionBarActivity {
                 te.getText().toString().substring(1);
         return name;
     }
-
     public void setName(final EditText nameEntry, final TextView nameResult) {
 
         final Button proceed = (Button)findViewById(R.id.login);
@@ -150,51 +151,18 @@ public class FacebookLogin extends ActionBarActivity {
 
     private class SaveData extends AsyncTask<String, Void, Boolean> {
 
-        private String savedData;
+        private String savedData = "boop";
 
         @Override
         protected Boolean doInBackground(String... params) {
             // background code, no UI stuff!
 
-            String filename = "userdata";
-            String outputString = "Hello world!";
-            File myDir = getFilesDir();
 
-            // make the new file to save the name in
-
-            try {
-                File names = new File(myDir + "/text/", filename);
-                if (names.getParentFile().mkdirs()) {
-                    names.createNewFile();
-                    FileOutputStream fos = new FileOutputStream(names);
-
-                    fos.write(("%name% " + username).getBytes());
-                    fos.flush();
-                    fos.close();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            try {
-                File secondInputFile = new File(myDir + "/text/", filename);
-                InputStream secondInputStream = new BufferedInputStream(new FileInputStream(secondInputFile));
-                BufferedReader r = new BufferedReader(new InputStreamReader(secondInputStream));
-                StringBuilder total = new StringBuilder();
-                String line;
-                while ((line = r.readLine()) != null) {
-                    total.append(line);
-                }
-                r.close();
-                secondInputStream.close();
-                Log.d("File", "File contents: " + total);
-                savedData = total.toString();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-
-
+            SharedPreferences userProfile = getSharedPreferences("name", Activity.MODE_PRIVATE);
+            SharedPreferences.Editor editor = userProfile.edit();
+            editor.putString("Name", username);
+            editor.commit();
+            savedData = userProfile.getString("Name","");
 
             if(true) {
                 return true;
