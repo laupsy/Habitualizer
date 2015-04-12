@@ -12,6 +12,9 @@
         <item name="colorPrimaryDark">@color/custom_pink_dark</item>
         <item name="android:textColorPrimary">@color/custom_text_title</item>
         <item name="android:actionBarStyle">@style/HabitualizerTheme.ActionBarStyle</item>
+        <item name="colorControlNormal">@color/custom_pink</item>
+        <item name="colorControlActivated">@color/custom_pink</item>
+        <item name="colorControlHighlight">@color/custom_pink</item>
     </style>
 
     <style name="HabitualizerTheme.ActionBarStyle" parent="@style/Widget.AppCompat.Light.ActionBar">

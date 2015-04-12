@@ -38,7 +38,7 @@
 
         <EditText
             android:id="@+id/name_input"
-            android:layout_width="@dimen/inline_input_width"
+            android:layout_width="fill_parent"
             android:layout_marginTop="50dp"
             android:textColor="@color/custom_text"
             android:layout_height="@dimen/button_height" />

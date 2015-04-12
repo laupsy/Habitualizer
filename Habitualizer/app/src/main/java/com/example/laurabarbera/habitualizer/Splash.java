@@ -2,13 +2,9 @@ package com.example.laurabarbera.habitualizer;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Menu;
-import android.view.Window;
-import android.view.WindowManager;
-
-import com.facebook.FacebookSdk;
 
 
 public class Splash extends Activity {
@@ -24,7 +20,17 @@ public class Splash extends Activity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent mainIntent = new Intent(Splash.this, FacebookLogin.class);
+                // check if this is a first time user
+                SharedPreferences shared = getSharedPreferences("userProfile",Activity.MODE_PRIVATE);
+                String name = shared.getString("name","");
+                Intent goTo;
+                if ( shared.getString("name","").length() < 1 ){
+                    goTo = new Intent(Splash.this, FacebookLogin.class);
+                }
+                else {
+                    goTo = new Intent(Splash.this, Dashboard.class);
+                }
+                Intent mainIntent = goTo;
                 Splash.this.startActivity(mainIntent);
                 Splash.this.finish();
             }

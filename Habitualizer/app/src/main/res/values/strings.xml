@@ -10,4 +10,8 @@
     <string name="title_activity_facebook_login">FacebookLogin</string>
 
     <string name="button_configure">Configure your profile</string>
+    <string name="title_activity_dashboard">Dashboard</string>
+
+    <string name="hello_world">Hello world!</string>
+
 </resources>

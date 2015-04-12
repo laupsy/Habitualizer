@@ -43,16 +43,14 @@ public class FacebookLogin extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_facebook_login);
-        FacebookSdk.sdkInitialize(this.getApplicationContext());
 
         setTitle("Get Started");
         getSupportActionBar().setElevation(0);
-        getSupportActionBar().setIcon(R.drawable.icon);
 
         final EditText nameEntry = (EditText)findViewById(R.id.name_input);
         nameView = (TextView)findViewById(R.id.hello);
 
-        setName(nameEntry, nameView);
+        setName(nameEntry);
     }
 
     @Override
@@ -85,7 +83,7 @@ public class FacebookLogin extends ActionBarActivity {
                 te.getText().toString().substring(1);
         return name;
     }
-    public void setName(final EditText nameEntry, final TextView nameResult) {
+    public void setName(final EditText nameEntry) {
 
         final Button proceed = (Button)findViewById(R.id.login);
         final TextView welcome = (TextView)findViewById(R.id.welcome);
@@ -151,18 +149,18 @@ public class FacebookLogin extends ActionBarActivity {
 
     private class SaveData extends AsyncTask<String, Void, Boolean> {
 
-        private String savedData = "boop";
+        private String name = "boop";
 
         @Override
         protected Boolean doInBackground(String... params) {
             // background code, no UI stuff!
 
-
-            SharedPreferences userProfile = getSharedPreferences("name", Activity.MODE_PRIVATE);
+            SharedPreferences userProfile = getSharedPreferences("userProfile", Activity.MODE_PRIVATE);
             SharedPreferences.Editor editor = userProfile.edit();
-            editor.putString("Name", username);
+            editor.putString("name",username);
             editor.commit();
-            savedData = userProfile.getString("Name","");
+            SharedPreferences shared = getSharedPreferences("userProfile",Activity.MODE_PRIVATE);
+            name = shared.getString("name","");
 
             if(true) {
                 return true;
@@ -173,7 +171,7 @@ public class FacebookLogin extends ActionBarActivity {
         }
         protected void onPostExecute(Boolean result) {
             nameView.setText(getResources().getString(R.string.greeting)
-                    + ", " + savedData + ".");
+                    + ", " + name + ".");
         }
     }
 }
