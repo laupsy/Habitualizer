@@ -9,9 +9,13 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_facebook_login">FacebookLogin</string>
 
+    <string name="reset_text">Reset All Data</string>
+
     <string name="button_configure">Configure your profile</string>
     <string name="title_activity_dashboard">Dashboard</string>
-
+    <string name="error_reset">This will reset ALL of your data. Are you sure you want to do this?</string>
+    <string name="error_yes">I\'m sure.</string>
+    <string name="error_no">No!</string>
     <string name="hello_world">Hello world!</string>
 
 </resources>

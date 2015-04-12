@@ -2,14 +2,13 @@ package com.example.laurabarbera.habitualizer;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.text.InputFilter;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,16 +19,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.facebook.FacebookSdk;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -139,35 +128,32 @@ public class FacebookLogin extends ActionBarActivity {
                     SaveData save = new SaveData();
                     save.execute();
 
-                    // thread over
-
                 }
                 return false;
+            }
+        });
+
+        proceed.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent returnBack = new Intent(FacebookLogin.this, Dashboard.class);
+                FacebookLogin.this.startActivity(returnBack);
+                FacebookLogin.this.finish();
             }
         });
     }
 
     private class SaveData extends AsyncTask<String, Void, Boolean> {
 
-        private String name = "boop";
+        private String name;
 
         @Override
         protected Boolean doInBackground(String... params) {
-            // background code, no UI stuff!
 
-            SharedPreferences userProfile = getSharedPreferences("userProfile", Activity.MODE_PRIVATE);
-            SharedPreferences.Editor editor = userProfile.edit();
-            editor.putString("name",username);
-            editor.commit();
-            SharedPreferences shared = getSharedPreferences("userProfile",Activity.MODE_PRIVATE);
-            name = shared.getString("name","");
+            UserProfile u = new UserProfile(getSharedPreferences("userProfile", Activity.MODE_PRIVATE));
+            u.setName(username);
+            name = u.getName();
 
-            if(true) {
-                return true;
-            }
-            else {
-                return false;
-            }
+            return true;
         }
         protected void onPostExecute(Boolean result) {
             nameView.setText(getResources().getString(R.string.greeting)

@@ -13,7 +13,7 @@
     <Button android:id="@+id/reset"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/button_height"
-        android:text="That's not my name!!!"
+        android:text="@string/reset_text"
         android:layout_marginTop="50dp"
         android:textColor="@color/button_dark_text"
         android:background="@drawable/button_alt" />
