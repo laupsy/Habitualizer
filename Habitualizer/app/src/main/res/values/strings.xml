@@ -8,6 +8,7 @@
     <string name="greeting2">Let\'s get started.</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_facebook_login">FacebookLogin</string>
+    <string name="getstarted">Get Started</string>
 
     <string name="reset_text">Reset All Data</string>
 
@@ -17,5 +18,7 @@
     <string name="error_yes">I\'m sure.</string>
     <string name="error_no">No!</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_setup">Setup</string>
+    <string name="title_activity_setup_container">setup_container</string>
 
 </resources>

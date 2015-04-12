@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +19,8 @@ import android.view.View.OnKeyListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import java.util.regex.Matcher;
@@ -33,8 +37,7 @@ public class FacebookLogin extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_facebook_login);
 
-        setTitle("Get Started");
-        getSupportActionBar().setElevation(0);
+        init();
 
         final EditText nameEntry = (EditText)findViewById(R.id.name_input);
         nameView = (TextView)findViewById(R.id.hello);
@@ -99,7 +102,7 @@ public class FacebookLogin extends ActionBarActivity {
         nameEntry.setOnKeyListener(new OnKeyListener() {
             @Override
             public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
-                if ( (keyEvent.getAction() == KeyEvent.ACTION_DOWN) &&
+                if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) &&
                         keyCode == KeyEvent.KEYCODE_ENTER) {
                     hideKeyboard(nameEntry);
                     username = convertToProperNoun(nameEntry);
@@ -159,5 +162,16 @@ public class FacebookLogin extends ActionBarActivity {
             nameView.setText(getResources().getString(R.string.greeting)
                     + ", " + name + ".");
         }
+    }
+
+    public void init() {
+        ActionBar a = getSupportActionBar();
+        setTitle(R.string.getstarted);
+        a.setElevation(0);
+        a.setDisplayHomeAsUpEnabled(false);
+        a.setDisplayShowHomeEnabled(false);
+        a.setDisplayShowCustomEnabled(true);
+        a.setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setCustomView(R.layout.actionbar_layout);
     }
 }

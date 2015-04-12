@@ -34,11 +34,9 @@
             android:name=".FacebookLogin"
             android:label="@string/title_activity_facebook_login" >
         </activity>
-
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-
         <activity
             android:name=".Dashboard"
             android:label="@string/title_activity_dashboard" >

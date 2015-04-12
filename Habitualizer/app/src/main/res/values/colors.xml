@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="custom_pink">#e7bc57</color>
+    <color name="custom_pink">#c15d80</color>
     <color name="custom_pink_dark">#cba241</color>
+    <color name="ui">#bf515f</color>
+    <color name="ui_dark">#a33644</color>
     <color name="custom_text">#383838</color>
     <color name="custom_text_light">#bab9ba</color>
     <color name="custom_text_title">#ffffff</color>

@@ -1,4 +1,4 @@
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="HabitualizerTheme" parent="@style/Theme.AppCompat.Light">
@@ -6,19 +6,22 @@
         <item name="android:elevation">0dp</item>
         <item name="android:textSize">14dp</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="colorPrimary">@color/custom_pink</item>
+        <item name="colorPrimary">@color/ui</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:fontFamily">sans-serif-condensed</item>
-        <item name="colorPrimaryDark">@color/custom_pink_dark</item>
+        <item name="colorPrimaryDark">@color/ui_dark</item>
         <item name="android:textColorPrimary">@color/custom_text_title</item>
-        <item name="android:actionBarStyle">@style/HabitualizerTheme.ActionBarStyle</item>
+        <!--<item name="actionBarStyle">@style/ActionBarLogo</item>-->
         <item name="colorControlNormal">@color/custom_pink</item>
         <item name="colorControlActivated">@color/custom_pink</item>
         <item name="colorControlHighlight">@color/custom_pink</item>
     </style>
 
-    <style name="HabitualizerTheme.ActionBarStyle" parent="@style/Widget.AppCompat.Light.ActionBar">
-        <item name="android:icon">@drawable/icon</item>
+    <style name="ActionBarLogo" parent="@style/Widget.AppCompat.Light.ActionBar">
+        <item name="logo">@drawable/icon</item>
+        <item name="displayOptions">useLogo|showHome</item>
+        <item name="android:background"  tools:ignore="NewApi">@color/ui</item>
+        <item name="background">@color/ui</item>
     </style>
 
 </resources>
