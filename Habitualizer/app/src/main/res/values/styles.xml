@@ -11,17 +11,9 @@
         <item name="android:fontFamily">sans-serif-condensed</item>
         <item name="colorPrimaryDark">@color/ui_dark</item>
         <item name="android:textColorPrimary">@color/custom_text_title</item>
-        <!--<item name="actionBarStyle">@style/ActionBarLogo</item>-->
         <item name="colorControlNormal">@color/custom_pink</item>
         <item name="colorControlActivated">@color/custom_pink</item>
         <item name="colorControlHighlight">@color/custom_pink</item>
-    </style>
-
-    <style name="ActionBarLogo" parent="@style/Widget.AppCompat.Light.ActionBar">
-        <item name="logo">@drawable/icon</item>
-        <item name="displayOptions">useLogo|showHome</item>
-        <item name="android:background"  tools:ignore="NewApi">@color/ui</item>
-        <item name="background">@color/ui</item>
     </style>
 
 </resources>

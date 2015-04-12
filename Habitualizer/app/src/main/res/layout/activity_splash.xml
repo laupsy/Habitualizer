@@ -8,8 +8,8 @@
     tools:context=".MainActivity">
 
     <ImageView android:id="@+id/splash"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
         android:src="@drawable/splash"
         android:layout_gravity="center" />
 
