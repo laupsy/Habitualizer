@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.facebook.FacebookSdk;
 
@@ -27,5 +29,6 @@ public class Splash extends Activity {
                 Splash.this.finish();
             }
         }, SPLASH_DISPLAY_LENGTH);
+
     }
 }

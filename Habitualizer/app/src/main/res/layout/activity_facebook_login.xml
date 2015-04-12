@@ -1,20 +1,70 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingTop="@dimen/activity_vertical_margin_splash"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.example.laurabarbera.habitualizer.FacebookLogin">
 
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <!--<com.facebook.login.widget.LoginButton-->
-        <!--android:id="@+id/login_button"-->
+    <!--<ImageView android:id="@+id/splash"-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center_horizontal"-->
-        <!--android:layout_marginTop="30dp"-->
-        <!--android:layout_marginBottom="30dp" />-->
+        <!--android:src="@drawable/homescreen"-->
+        <!--android:layout_alignParentTop="true" />-->
 
-</RelativeLayout>
+    <TextView android:id="@+id/hello"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24dp"
+        android:layout_marginTop="150dp"
+        android:layout_weight="0"
+        android:text="Hello." />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_gravity="center|bottom"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:layout_height="0dp">
+
+        <TextView android:id="@+id/welcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="What is your name?" />
+
+        <EditText
+            android:id="@+id/name_input"
+            android:layout_width="@dimen/inline_input_width"
+            android:layout_marginTop="50dp"
+            android:textColor="@color/custom_text"
+            android:layout_height="@dimen/button_height" />
+
+        <Button android:id="@+id/login"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/button_height"
+            android:text="Please provide your name to continue."
+            android:layout_marginTop="50dp"
+            android:textColor="@color/button_dark_text"
+            android:background="@drawable/button_alt" />
+
+        <!--<Button android:id="@+id/login_alt"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="@dimen/button_height"-->
+            <!--android:text="Already a member?"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:textColor="@color/button_dark_text"-->
+            <!--android:background="@drawable/button_alt"-->
+            <!--android:layout_centerHorizontal="true"/>-->
+
+        <!--<com.facebook.widget.LoginButton-->
+            <!--android:id="@+id/authButton"-->
+            <!--android:layout_width="250dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:layout_marginTop="30dp" />-->
+    </LinearLayout>
+</LinearLayout>
