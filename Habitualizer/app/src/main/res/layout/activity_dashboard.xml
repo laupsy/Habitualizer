@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:background="@color/background"
         android:orientation="vertical"
+        android:id="@+id/settings_layout"
         tools:context="com.example.laurabarbera.habitualizer.Dashboard">
 
         <TextView android:id="@+id/settingsHeader"
@@ -27,7 +28,8 @@
 
         <!-- Name -->
 
-        <TextView android:id="@+id/nameLabel"
+        <TextView android:tag="@string/NAME_SETTING"
+            android:id="@+id/nameLabel"
             android:layout_below="@id/settingsHeader"
             android:text="Name"
             android:layout_alignParentLeft="true"
@@ -38,8 +40,8 @@
             android:textColor="@color/label_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
-        <TextView android:id="@+id/confirmName"
+        <TextView android:tag="@string/NAME_SETTING"
+            android:id="@+id/confirmName"
             android:layout_below="@id/settingsHeader"
             android:text=""
             android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -49,8 +51,8 @@
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
-        <TextView android:id="@+id/nameHelp"
+        <TextView android:tag="@string/NAME_SETTING"
+            android:id="@+id/nameHelp"
             android:layout_below="@id/confirmName"
             android:text="@string/nameSetting_help"
             android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -61,7 +63,6 @@
             android:textColor="@color/custom_text_light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
         <View android:id="@+id/separator"
             android:layout_below="@id/nameHelp"
             android:background="@color/gray_light"
@@ -70,7 +71,8 @@
 
         <!-- Frequency of Notifications -->
 
-        <TextView android:id="@+id/notificationLabel"
+        <TextView android:tag="@string/QUESTIONS_SETTING"
+            android:id="@+id/notificationLabel"
             android:layout_below="@id/separator"
             android:text="@string/notificationLabel"
             android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -81,8 +83,8 @@
             android:textColor="@color/label_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
-        <TextView android:id="@+id/notificationSetting"
+        <TextView android:tag="@string/QUESTIONS_SETTING"
+            android:id="@+id/notificationSetting"
             android:layout_below="@id/separator"
             android:text="@string/notificationSetting_medium"
             android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -92,8 +94,8 @@
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
-        <TextView android:id="@+id/notificationHelp"
+        <TextView android:tag="@string/QUESTIONS_SETTING"
+            android:id="@+id/notificationHelp"
             android:layout_below="@id/notificationSetting"
             android:text="@string/notificationSetting_help"
             android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -104,7 +106,6 @@
             android:textColor="@color/custom_text_light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
         <View android:id="@+id/separator2"
             android:layout_below="@id/notificationHelp"
             android:background="@color/gray_light"
@@ -113,7 +114,8 @@
 
         <!-- Location Settings -->
 
-        <TextView android:id="@+id/locationLabel"
+        <TextView android:tag="@string/LOCATION_SETTING"
+            android:id="@+id/locationLabel"
             android:layout_below="@id/separator2"
             android:text="@string/locationLabel"
             android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -124,8 +126,8 @@
             android:textColor="@color/label_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
-        <TextView android:id="@+id/locationSetting"
+        <TextView android:tag="@string/LOCATION_SETTING"
+            android:id="@+id/locationSetting"
             android:layout_below="@id/separator2"
             android:text="@string/locationSetting_on"
             android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -135,8 +137,8 @@
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
-        <TextView android:id="@+id/locationHelp"
+        <TextView android:tag="@string/LOCATION_SETTING"
+            android:id="@+id/locationHelp"
             android:layout_below="@id/locationSetting"
             android:text="@string/locationSetting_help"
             android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -147,7 +149,6 @@
             android:textColor="@color/custom_text_light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
         <View android:id="@+id/separator3"
             android:layout_below="@id/locationHelp"
             android:background="@color/gray_light"
@@ -156,7 +157,8 @@
 
         <!-- Motion Settings -->
 
-        <TextView android:id="@+id/motionLabel"
+        <TextView android:tag="@string/MOTION_SETTING"
+            android:id="@+id/motionLabel"
             android:layout_below="@id/separator3"
             android:text="@string/motionLabel"
             android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -167,8 +169,8 @@
             android:textColor="@color/label_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
-        <TextView android:id="@+id/motionSetting"
+        <TextView android:tag="@string/MOTION_SETTING"
+            android:id="@+id/motionSetting"
             android:layout_below="@id/separator3"
             android:text="@string/motionSetting_on"
             android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -178,8 +180,8 @@
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
-        <TextView android:id="@+id/motionHelp"
+        <TextView android:tag="@string/MOTION_SETTING"
+            android:id="@+id/motionHelp"
             android:layout_below="@id/motionSetting"
             android:text="@string/motionSetting_help"
             android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -190,7 +192,6 @@
             android:textColor="@color/custom_text_light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
         <View android:id="@+id/separator4"
             android:layout_below="@id/motionHelp"
             android:background="@color/gray_light"
@@ -199,7 +200,8 @@
 
         <!-- Battery Settings -->
 
-        <TextView android:id="@+id/batteryLabel"
+        <TextView android:tag="@string/PERFORMANCE_SETTING"
+            android:id="@+id/batteryLabel"
             android:layout_below="@id/separator4"
             android:text="@string/batteryLabel"
             android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -210,8 +212,8 @@
             android:textColor="@color/label_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
-        <TextView android:id="@+id/batterySetting"
+        <TextView android:tag="@string/PERFORMANCE_SETTING"
+            android:id="@+id/batterySetting"
             android:layout_below="@id/separator4"
             android:text="@string/batterySetting_high"
             android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -221,8 +223,8 @@
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
-        <TextView android:id="@+id/batteryHelp"
+        <TextView android:tag="@string/PERFORMANCE_SETTING"
+            android:id="@+id/batteryHelp"
             android:layout_below="@id/batterySetting"
             android:text="@string/batterySetting_help"
             android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -233,7 +235,6 @@
             android:textColor="@color/custom_text_light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
         <View android:id="@+id/separator5"
             android:layout_below="@id/batteryHelp"
             android:background="@color/gray_light"

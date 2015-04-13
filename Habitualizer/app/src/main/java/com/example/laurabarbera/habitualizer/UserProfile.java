@@ -13,36 +13,36 @@ public class UserProfile {
     }
     public void setName(final String n) {
         SharedPreferences.Editor editor = shared.edit();
-        editor.putString("name", n);
+        editor.putString(Globals.NAME_SETTING, n);
         editor.commit();
     }
     public void setQuestionLevel(final int questionLevel) {
         SharedPreferences.Editor editor = shared.edit();
-        editor.putInt("question level", questionLevel);
+        editor.putInt(Globals.QUESTIONS_SETTING, questionLevel);
     }
     public void setLocation(final int location) {
         SharedPreferences.Editor editor = shared.edit();
-        editor.putInt("location", location);
+        editor.putInt(Globals.LOCATION_SETTING, location);
     }
     public void setMotion(final int motion) {
         SharedPreferences.Editor editor = shared.edit();
-        editor.putInt("motion", motion);
+        editor.putInt(Globals.MOTION_SETTING, motion);
     }
     public void setPerformancelevel(final int performanceLevel) {
         SharedPreferences.Editor editor = shared.edit();
-        editor.putInt("performance level", performanceLevel);
+        editor.putInt(Globals.PERFORMANCE_SETTING, performanceLevel);
     }
     public String getName() {
-        String n = shared.getString("name", "");
+        String n = shared.getString(Globals.NAME_SETTING, "");
         return n;
     }
     public String getQuestionLevel(Context c) {
         String s;
-        int n = shared.getInt("question level",0);
-        if ( n == 1 ) {
+        int n = shared.getInt(Globals.QUESTIONS_SETTING,0);
+        if ( n == 0 ) {
             s = c.getString(R.string.notificationSetting_low);
         }
-        else if ( n == 2 ) {
+        else if ( n == 1 ) {
             s = c.getString(R.string.notificationSetting_medium);
         }
         else {
@@ -52,22 +52,22 @@ public class UserProfile {
     }
     public String getLocation(Context c) {
         String s;
-        int n = shared.getInt("location",0);
-        if ( n == 1 ) {
-            s = c.getString(R.string.locationSetting_on);
+        int n = shared.getInt(Globals.LOCATION_SETTING,0);
+        if ( n == 0 ) {
+            s = c.getString(R.string.locationSetting_off);
         }
         else {
-            s = c.getString(R.string.locationSetting_off);
+            s = c.getString(R.string.locationSetting_on);
         }
         return s;
     }
     public String getBatterySetting(Context c) {
         String s;
-        int n = shared.getInt("performance level",0);
-        if ( n == 1 ) {
+        int n = shared.getInt(Globals.PERFORMANCE_SETTING,0);
+        if ( n == 0 ) {
             s = c.getString(R.string.batterySetting_low);
         }
-        else if ( n == 2 ) {
+        else if ( n == 1 ) {
             s = c.getString(R.string.batterySetting_medium);
         }
         else {
@@ -77,7 +77,7 @@ public class UserProfile {
     }
     public String getMotionSetting(Context c) {
         String s;
-        int n = shared.getInt("motion",0);
+        int n = shared.getInt(Globals.MOTION_SETTING,0);
         if ( n == 0 ) {
             s = c.getString(R.string.motionSetting_off);
         }

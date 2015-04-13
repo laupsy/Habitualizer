@@ -11,7 +11,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,19 +18,14 @@ import android.view.View.OnKeyListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 public class FacebookLogin extends ActionBarActivity {
-
     private String username;
     private TextView nameView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +38,6 @@ public class FacebookLogin extends ActionBarActivity {
 
         setName(nameEntry);
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -64,16 +57,6 @@ public class FacebookLogin extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-    public void hideKeyboard(EditText te) {
-        InputMethodManager imm =
-                (InputMethodManager)getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(te.getWindowToken(), 0);
-    }
-    public String convertToProperNoun(EditText te) {
-        String name = te.getText().toString().substring(0,1).toUpperCase() +
-                te.getText().toString().substring(1);
-        return name;
     }
     public void setName(final EditText nameEntry) {
 
@@ -147,7 +130,6 @@ public class FacebookLogin extends ActionBarActivity {
                 }
             });
     }
-
     private class SaveData extends AsyncTask<String, Void, Boolean> {
 
         private String name;
@@ -155,7 +137,7 @@ public class FacebookLogin extends ActionBarActivity {
         @Override
         protected Boolean doInBackground(String... params) {
 
-            UserProfile u = new UserProfile(getSharedPreferences("userProfile", Activity.MODE_PRIVATE));
+            UserProfile u = new UserProfile(getSharedPreferences(Globals.SHARED_PREFERENCES, Activity.MODE_PRIVATE));
             u.setName(username);
             name = u.getName();
 
@@ -166,7 +148,6 @@ public class FacebookLogin extends ActionBarActivity {
                     + ", " + name + ".");
         }
     }
-
     public void init() {
         ActionBar a = getSupportActionBar();
         setTitle(R.string.getstarted);
@@ -177,5 +158,15 @@ public class FacebookLogin extends ActionBarActivity {
         a.setDisplayShowTitleEnabled(false);
         getSupportActionBar().setCustomView(R.layout.actionbar_layout);
 
+    }
+    public void hideKeyboard(EditText te) {
+        InputMethodManager imm =
+                (InputMethodManager)getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(te.getWindowToken(), 0);
+    }
+    public String convertToProperNoun(EditText te) {
+        String name = te.getText().toString().substring(0,1).toUpperCase() +
+                te.getText().toString().substring(1);
+        return name;
     }
 }

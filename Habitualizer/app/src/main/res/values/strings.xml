@@ -45,4 +45,12 @@
     <string name="title_activity_setup">Setup</string>
     <string name="title_activity_setup_container">setup_container</string>
 
+    <!-- SETTING LABELS -->
+
+    <string name="NAME_SETTING">name</string>
+    <string name="LOCATION_SETTING">location</string>
+    <string name="QUESTIONS_SETTING">question level</string>
+    <string name="MOTION_SETTING">motion</string>
+    <string name="PERFORMANCE_SETTING">performance level</string>
+
 </resources>
