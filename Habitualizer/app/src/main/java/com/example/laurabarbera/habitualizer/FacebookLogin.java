@@ -136,13 +136,16 @@ public class FacebookLogin extends ActionBarActivity {
             }
         });
 
-        proceed.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent returnBack = new Intent(FacebookLogin.this, Dashboard.class);
-                FacebookLogin.this.startActivity(returnBack);
-                FacebookLogin.this.finish();
-            }
-        });
+        final UserProfile u = new UserProfile(getSharedPreferences("userProfile", Activity.MODE_PRIVATE));
+            proceed.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    if ( u.getName().length() > 1 ){
+                        Intent returnBack = new Intent(FacebookLogin.this, Dashboard.class);
+                        FacebookLogin.this.startActivity(returnBack);
+                        FacebookLogin.this.finish();
+                    }
+                }
+            });
     }
 
     private class SaveData extends AsyncTask<String, Void, Boolean> {
@@ -173,5 +176,6 @@ public class FacebookLogin extends ActionBarActivity {
         a.setDisplayShowCustomEnabled(true);
         a.setDisplayShowTitleEnabled(false);
         getSupportActionBar().setCustomView(R.layout.actionbar_layout);
+
     }
 }

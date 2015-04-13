@@ -1,22 +1,254 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.laurabarbera.habitualizer.Dashboard">
 
-    <TextView android:id="@+id/confirmName"
-        android:text="" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background"
+        android:orientation="vertical"
+        tools:context="com.example.laurabarbera.habitualizer.Dashboard">
 
-    <Button android:id="@+id/reset"
-        android:layout_width="fill_parent"
-        android:layout_height="@dimen/button_height"
-        android:text="@string/reset_text"
-        android:layout_marginTop="50dp"
-        android:textColor="@color/button_dark_text"
-        android:background="@drawable/button_alt" />
+        <TextView android:id="@+id/settingsHeader"
+            android:text="@string/settings_header"
+            android:paddingTop="@dimen/header_margin"
+            android:paddingBottom="@dimen/header_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:background="@color/header_background"
+            android:textColor="@color/header_text"
+            android:layout_width="match_parent"
+            android:textSize="16dp"
+            android:layout_height="wrap_content" />
 
+        <!-- Name -->
 
-</RelativeLayout>
+        <TextView android:id="@+id/nameLabel"
+            android:layout_below="@id/settingsHeader"
+            android:text="Name"
+            android:layout_alignParentLeft="true"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/header_margin"
+            android:layout_marginBottom="@dimen/header_margin"
+            android:textColor="@color/label_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView android:id="@+id/confirmName"
+            android:layout_below="@id/settingsHeader"
+            android:text=""
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/header_margin"
+            android:layout_marginBottom="@dimen/header_margin"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView android:id="@+id/nameHelp"
+            android:layout_below="@id/confirmName"
+            android:text="@string/nameSetting_help"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin_align_left"
+            android:layout_marginBottom="@dimen/header_margin"
+            android:layout_alignParentLeft="true"
+            android:textSize="11dp"
+            android:textColor="@color/custom_text_light"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <View android:id="@+id/separator"
+            android:layout_below="@id/nameHelp"
+            android:background="@color/gray_light"
+            android:layout_height="1dp"
+            android:layout_width="match_parent" />
+
+        <!-- Frequency of Notifications -->
+
+        <TextView android:id="@+id/notificationLabel"
+            android:layout_below="@id/separator"
+            android:text="@string/notificationLabel"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/header_margin"
+            android:layout_marginBottom="@dimen/header_margin"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/label_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView android:id="@+id/notificationSetting"
+            android:layout_below="@id/separator"
+            android:text="@string/notificationSetting_medium"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/header_margin"
+            android:layout_marginBottom="@dimen/header_margin"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView android:id="@+id/notificationHelp"
+            android:layout_below="@id/notificationSetting"
+            android:text="@string/notificationSetting_help"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin_align_left"
+            android:layout_marginBottom="@dimen/header_margin"
+            android:layout_alignParentLeft="true"
+            android:textSize="11dp"
+            android:textColor="@color/custom_text_light"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <View android:id="@+id/separator2"
+            android:layout_below="@id/notificationHelp"
+            android:background="@color/gray_light"
+            android:layout_height="1dp"
+            android:layout_width="match_parent" />
+
+        <!-- Location Settings -->
+
+        <TextView android:id="@+id/locationLabel"
+            android:layout_below="@id/separator2"
+            android:text="@string/locationLabel"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/header_margin"
+            android:layout_marginBottom="@dimen/header_margin"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/label_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView android:id="@+id/locationSetting"
+            android:layout_below="@id/separator2"
+            android:text="@string/locationSetting_on"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/header_margin"
+            android:layout_marginBottom="@dimen/header_margin"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView android:id="@+id/locationHelp"
+            android:layout_below="@id/locationSetting"
+            android:text="@string/locationSetting_help"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin_align_left"
+            android:layout_marginBottom="@dimen/header_margin"
+            android:layout_alignParentLeft="true"
+            android:textSize="11dp"
+            android:textColor="@color/custom_text_light"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <View android:id="@+id/separator3"
+            android:layout_below="@id/locationHelp"
+            android:background="@color/gray_light"
+            android:layout_height="1dp"
+            android:layout_width="match_parent" />
+
+        <!-- Motion Settings -->
+
+        <TextView android:id="@+id/motionLabel"
+            android:layout_below="@id/separator3"
+            android:text="@string/motionLabel"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/header_margin"
+            android:layout_marginBottom="@dimen/header_margin"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/label_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView android:id="@+id/motionSetting"
+            android:layout_below="@id/separator3"
+            android:text="@string/motionSetting_on"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/header_margin"
+            android:layout_marginBottom="@dimen/header_margin"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView android:id="@+id/motionHelp"
+            android:layout_below="@id/motionSetting"
+            android:text="@string/motionSetting_help"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin_align_left"
+            android:layout_marginBottom="@dimen/header_margin"
+            android:layout_alignParentLeft="true"
+            android:textSize="11dp"
+            android:textColor="@color/custom_text_light"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <View android:id="@+id/separator4"
+            android:layout_below="@id/motionHelp"
+            android:background="@color/gray_light"
+            android:layout_height="1dp"
+            android:layout_width="match_parent" />
+
+        <!-- Battery Settings -->
+
+        <TextView android:id="@+id/batteryLabel"
+            android:layout_below="@id/separator4"
+            android:text="@string/batteryLabel"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/header_margin"
+            android:layout_marginBottom="@dimen/header_margin"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/label_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView android:id="@+id/batterySetting"
+            android:layout_below="@id/separator4"
+            android:text="@string/batterySetting_high"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/header_margin"
+            android:layout_marginBottom="@dimen/header_margin"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView android:id="@+id/batteryHelp"
+            android:layout_below="@id/batterySetting"
+            android:text="@string/batterySetting_help"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin_align_left"
+            android:layout_marginBottom="@dimen/header_margin"
+            android:layout_alignParentLeft="true"
+            android:textSize="11dp"
+            android:textColor="@color/custom_text_light"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <View android:id="@+id/separator5"
+            android:layout_below="@id/batteryHelp"
+            android:background="@color/gray_light"
+            android:layout_height="1dp"
+            android:layout_width="match_parent" />
+
+        <Button android:id="@+id/reset"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/button_height"
+            android:text="@string/reset_text"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:layout_below="@id/separator5"
+            android:textColor="@color/button_dark_text"
+            android:background="@drawable/button_alt" />
+
+    </RelativeLayout>
+
+</ScrollView>

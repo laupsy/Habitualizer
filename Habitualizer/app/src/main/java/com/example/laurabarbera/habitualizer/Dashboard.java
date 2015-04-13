@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Button;
@@ -22,7 +23,9 @@ public class Dashboard extends ActionBarActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-        getSupportActionBar().setElevation(0);
+
+        init();
+
         final Context context = this;
 
         Button reset = (Button)findViewById(R.id.reset);
@@ -79,5 +82,16 @@ public class Dashboard extends ActionBarActivity {
         }
         protected void onPostExecute(Boolean result) {
         }
+    }
+    public void init() {
+        ActionBar a = getSupportActionBar();
+        setTitle(R.string.getstarted);
+        a.setElevation(0);
+        a.setDisplayHomeAsUpEnabled(false);
+        a.setDisplayShowHomeEnabled(false);
+        a.setDisplayShowCustomEnabled(true);
+        a.setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setCustomView(R.layout.actionbar_layout);
+
     }
 }

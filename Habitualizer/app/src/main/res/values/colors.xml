@@ -8,6 +8,13 @@
     <color name="custom_text">#383838</color>
     <color name="custom_text_light">#bab9ba</color>
     <color name="custom_text_title">#ffffff</color>
+    <color name="header_background">#4d4645</color>
+    <color name="header_text">#b9b8b8</color>
+
+    <color name="label_text">#999999</color>
+
+    <color name="gray">#363639</color>
+    <color name="gray_light">#eeeeee</color>
 
     <color name="button_dark_text">#999999</color>
     <color name="button_light_text">#fafafa</color>

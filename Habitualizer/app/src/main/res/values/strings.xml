@@ -9,8 +9,32 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_facebook_login">FacebookLogin</string>
     <string name="getstarted">Get Started</string>
+    <string name="settings_header">Settings</string>
 
+    <string name="nameSetting_help">What shall we call you?</string>
+
+    <string name="notificationLabel">Questions</string>
+    <string name="notificationSetting_low">Weekly</string>
+    <string name="notificationSetting_medium">Daily</string>
+    <string name="notificationSetting_high">Frequently</string>
+    <string name="notificationSetting_help">We\'ll be asking you questions to gauge your habits. How often do you want to be asked?</string>
     <string name="reset_text">Reset All Data</string>
+
+    <string name="locationLabel">Location Statistics</string>
+    <string name="locationSetting_off">Off</string>
+    <string name="locationSetting_on">On</string>
+    <string name="locationSetting_help">We can use your location to determine how your location affects your habits.</string>
+
+    <string name="batteryLabel">Performance</string>
+    <string name="batterySetting_low">Power Saver</string>
+    <string name="batterySetting_medium">Normal</string>
+    <string name="batterySetting_high">High</string>
+    <string name="batterySetting_help">How much battery life should we use? Higher battery usage means more accurate statistics.</string>
+
+    <string name="motionLabel">Motion Statistics</string>
+    <string name="motionSetting_off">Off</string>
+    <string name="motionSetting_on">On</string>
+    <string name="motionSetting_help">We can use your motion to determine how your physical activity affects your habits.</string>
 
     <string name="button_configure">Configure your profile</string>
     <string name="title_activity_dashboard">Dashboard</string>
