@@ -38,9 +38,9 @@
 
     <string name="button_configure">Configure your profile</string>
     <string name="title_activity_dashboard">Dashboard</string>
-    <string name="error_reset">This will reset ALL of your data. Are you sure you want to do this?</string>
-    <string name="error_yes">I\'m sure.</string>
-    <string name="error_no">No!</string>
+    <string name="error_reset">This will erase all of your data. Are you sure you want to do this?</string>
+    <string name="error_yes">Erase</string>
+    <string name="error_no">Cancel</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_setup">Setup</string>
     <string name="title_activity_setup_container">setup_container</string>
