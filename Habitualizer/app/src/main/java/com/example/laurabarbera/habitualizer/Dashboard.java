@@ -19,25 +19,27 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+// Menu that handles all user settings
 
 public class Dashboard extends ActionBarActivity {
 
     private final int RESET_DISPLAY_LENGTH = 500;
     final Context c = this;
     String curName,
-           curQuestionSetting,
-           curLocationSetting,
-           curMotionSetting,
-           curBatterySetting;
+            curQuestionSetting,
+            curLocationSetting,
+            curMotionSetting,
+            curBatterySetting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+        // Load the preferences, load the interface
         init();
+        // Set up the listeners
         setListeners();
-
-        // click reset data button
+        // Reset all data if you click the reset button - brings back to setup
         Button reset = (Button)findViewById(R.id.reset);
         reset.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -45,6 +47,9 @@ public class Dashboard extends ActionBarActivity {
             }
         });
     }
+
+    // Background Thread
+    // Get the data from shared preferences and update the UI
     private class LoadPrefs extends AsyncTask<String, Void, Boolean> {
         @Override
         protected Boolean doInBackground(String... params) {
@@ -69,6 +74,7 @@ public class Dashboard extends ActionBarActivity {
             batterySetting.setText(curBatterySetting);
         }
     }
+    // Reset all of the shared preferences to default settings
     private class ResetData extends AsyncTask<String, Void, Boolean> {
         @Override
         protected Boolean doInBackground(String... params) {
@@ -84,6 +90,7 @@ public class Dashboard extends ActionBarActivity {
         }
         protected void onPostExecute(Boolean result) {}
     }
+    // Update a shared preference from user
     private class UpdateSetting extends AsyncTask<String, Void, Boolean> {
         public UpdateSetting(Object t) {
             this.t = t;
@@ -95,18 +102,6 @@ public class Dashboard extends ActionBarActivity {
             if ( s.equals(Globals.NAME_SETTING) ) {
                 u.setName("test");
             }
-//            else if ( s.equals(Globals.QUESTIONS_SETTING) ) {
-//                u.setQuestionLevel(2);
-//            }
-//            else if ( s.equals(Globals.PERFORMANCE_SETTING) ) {
-//                u.setPerformancelevel(2);
-//            }
-//            else if ( s.equals(Globals.MOTION_SETTING) ) {
-//                u.setMotion(1);
-//            }
-//            else if ( s.equals(Globals.LOCATION_SETTING) ) {
-//                u.setLocation(1);
-//            }
             return true;
         }
         protected void onPostExecute(Boolean result) {
@@ -115,6 +110,8 @@ public class Dashboard extends ActionBarActivity {
         }
         private Object t;
     }
+    // UI Thread
+    // Load the UI and set some default UI settings
     public void init() {
         final Handler handler = new Handler();
         Runnable r = new Runnable() {
@@ -139,6 +136,7 @@ public class Dashboard extends ActionBarActivity {
         LoadPrefs loadPrefs = new LoadPrefs();
         loadPrefs.execute();
     }
+    // Go back to setup page
     public void resetData() {
 
         final Handler handler = new Handler();
@@ -176,6 +174,7 @@ public class Dashboard extends ActionBarActivity {
         ResetData resetData = new ResetData();
         resetData.execute();
     }
+    // Reflect updates on settings page
     public void updateSetting(final Object tag) {
         final Handler handler = new Handler();
         Runnable r = new Runnable() {
@@ -192,6 +191,7 @@ public class Dashboard extends ActionBarActivity {
         UpdateSetting updateSetting = new UpdateSetting(tag);
         updateSetting.execute();
     }
+    // Set buttons to listen for taps
     public void setListeners() {
         RelativeLayout settingsView = (RelativeLayout) findViewById(R.id.settings_layout);
         ArrayList<TextView> allSettings = new ArrayList<>();
