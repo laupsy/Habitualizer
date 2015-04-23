@@ -23,7 +23,7 @@ import android.widget.TextView;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class FacebookLogin extends ActionBarActivity {
+public class Config extends ActionBarActivity {
     private String username;
     private TextView nameView;
     @Override
@@ -123,9 +123,9 @@ public class FacebookLogin extends ActionBarActivity {
             proceed.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     if ( u.getName().length() > 1 ){
-                        Intent returnBack = new Intent(FacebookLogin.this, Dashboard.class);
-                        FacebookLogin.this.startActivity(returnBack);
-                        FacebookLogin.this.finish();
+                        Intent returnBack = new Intent(Config.this, Dashboard.class);
+                        Config.this.startActivity(returnBack);
+                        Config.this.finish();
                     }
                 }
             });

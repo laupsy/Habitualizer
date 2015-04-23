@@ -25,7 +25,7 @@ public class Splash extends Activity {
                 String name = shared.getString("name","");
                 Intent goTo;
                 if ( shared.getString("name","").length() < 1 ){
-                    goTo = new Intent(Splash.this, FacebookLogin.class);
+                    goTo = new Intent(Splash.this, Config.class);
                 }
                 else {
                     goTo = new Intent(Splash.this, Dashboard.class);

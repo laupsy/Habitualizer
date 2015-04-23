@@ -7,7 +7,7 @@
     <string name="greeting">Hello</string>
     <string name="greeting2">Let\'s get started.</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_facebook_login">FacebookLogin</string>
+    <string name="title_activity_config">Config</string>
     <string name="getstarted">Get Started</string>
     <string name="settings_header">Settings</string>
 
@@ -52,5 +52,6 @@
     <string name="QUESTIONS_SETTING">question level</string>
     <string name="MOTION_SETTING">motion</string>
     <string name="PERFORMANCE_SETTING">performance level</string>
+    <string name="SHARED_PREFERENCES">userProfile</string>
 
 </resources>

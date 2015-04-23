@@ -24,7 +24,8 @@ import java.util.ArrayList;
 public class Dashboard extends ActionBarActivity {
 
     private final int RESET_DISPLAY_LENGTH = 500;
-    final Context c = this;
+    private final Context c = this;
+
     String curName,
             curQuestionSetting,
             curLocationSetting,
@@ -53,7 +54,7 @@ public class Dashboard extends ActionBarActivity {
     private class LoadPrefs extends AsyncTask<String, Void, Boolean> {
         @Override
         protected Boolean doInBackground(String... params) {
-            UserProfile u = new UserProfile(getSharedPreferences(Globals.SHARED_PREFERENCES, MODE_PRIVATE));
+            UserProfile u = new UserProfile(getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
             curName = u.getName();
             curBatterySetting = u.getBatterySetting(c);
             curLocationSetting = u.getLocation(c);
@@ -79,7 +80,7 @@ public class Dashboard extends ActionBarActivity {
         @Override
         protected Boolean doInBackground(String... params) {
 
-            UserProfile u = new UserProfile(getSharedPreferences(Globals.SHARED_PREFERENCES, MODE_PRIVATE));
+            UserProfile u = new UserProfile(getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
             u.setName(null);
             u.setLocation(0);
             u.setMotion(0);
@@ -98,8 +99,8 @@ public class Dashboard extends ActionBarActivity {
         @Override
         protected Boolean doInBackground(String... params) {
             String s = (String) this.t;
-            UserProfile u = new UserProfile(getSharedPreferences(Globals.SHARED_PREFERENCES, MODE_PRIVATE));
-            if ( s.equals(Globals.NAME_SETTING) ) {
+            UserProfile u = new UserProfile(getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
+            if ( s.equals(c.getString(R.string.NAME_SETTING)) ) {
                 u.setName("test");
             }
             return true;
@@ -154,7 +155,7 @@ public class Dashboard extends ActionBarActivity {
                                             // make it seem like it's deleting a lot of stuff by delaying for a moment
                                             @Override
                                             public void run() {
-                                                Intent returnBack = new Intent(Dashboard.this, FacebookLogin.class);
+                                                Intent returnBack = new Intent(Dashboard.this, Config.class);
                                                 Dashboard.this.startActivity(returnBack);
                                                 Dashboard.this.finish();
                                             }
