@@ -53,5 +53,6 @@
     <string name="MOTION_SETTING">motion</string>
     <string name="PERFORMANCE_SETTING">performance level</string>
     <string name="SHARED_PREFERENCES">userProfile</string>
+    <string name="title_activity_user_profile">UserProfil</string>
 
 </resources>

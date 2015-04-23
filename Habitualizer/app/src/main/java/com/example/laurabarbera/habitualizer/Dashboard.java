@@ -54,7 +54,7 @@ public class Dashboard extends ActionBarActivity {
     private class LoadPrefs extends AsyncTask<String, Void, Boolean> {
         @Override
         protected Boolean doInBackground(String... params) {
-            UserProfile u = new UserProfile(getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
+            UserProfile u = new UserProfile(c, getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
             curName = u.getName();
             curBatterySetting = u.getBatterySetting(c);
             curLocationSetting = u.getLocation(c);
@@ -80,7 +80,7 @@ public class Dashboard extends ActionBarActivity {
         @Override
         protected Boolean doInBackground(String... params) {
 
-            UserProfile u = new UserProfile(getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
+            UserProfile u = new UserProfile(c, getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
             u.setName(null);
             u.setLocation(0);
             u.setMotion(0);
@@ -99,7 +99,7 @@ public class Dashboard extends ActionBarActivity {
         @Override
         protected Boolean doInBackground(String... params) {
             String s = (String) this.t;
-            UserProfile u = new UserProfile(getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
+            UserProfile u = new UserProfile(c, getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
             if ( s.equals(c.getString(R.string.NAME_SETTING)) ) {
                 u.setName("test");
             }

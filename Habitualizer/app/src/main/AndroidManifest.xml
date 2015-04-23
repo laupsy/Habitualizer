@@ -34,12 +34,18 @@
             android:name=".Config"
             android:label="@string/title_activity_config" >
         </activity>
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+
         <activity
             android:name=".Dashboard"
             android:label="@string/title_activity_dashboard" >
+        </activity>
+        <activity
+            android:name=".UserProfile"
+            android:label="@string/title_activity_user_profile" >
         </activity>
     </application>
 

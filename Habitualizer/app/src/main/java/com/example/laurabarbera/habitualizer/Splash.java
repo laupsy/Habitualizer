@@ -1,6 +1,7 @@
 package com.example.laurabarbera.habitualizer;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ public class Splash extends Activity {
 
     // wait time
     private final int SPLASH_DISPLAY_LENGTH = 1000;
+    private final Context c = this;
 
     @Override
     protected void onCreate(Bundle icicle) {
@@ -21,7 +23,7 @@ public class Splash extends Activity {
             @Override
             public void run() {
                 // check if this is a first time user
-                SharedPreferences shared = getSharedPreferences("userProfile",Activity.MODE_PRIVATE);
+                SharedPreferences shared = getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES),Activity.MODE_PRIVATE);
                 String name = shared.getString("name","");
                 Intent goTo;
                 if ( shared.getString("name","").length() < 1 ){

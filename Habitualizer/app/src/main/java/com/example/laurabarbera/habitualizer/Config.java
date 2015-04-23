@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 public class Config extends ActionBarActivity {
     private String username;
     private TextView nameView;
+    private final Context c = this;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,7 +120,7 @@ public class Config extends ActionBarActivity {
             }
         });
 
-        final UserProfile u = new UserProfile(getSharedPreferences("userProfile", Activity.MODE_PRIVATE));
+        final UserProfile u = new UserProfile(c, getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), Activity.MODE_PRIVATE));
             proceed.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     if ( u.getName().length() > 1 ){
@@ -137,7 +138,7 @@ public class Config extends ActionBarActivity {
         @Override
         protected Boolean doInBackground(String... params) {
 
-            UserProfile u = new UserProfile(getSharedPreferences(Globals.SHARED_PREFERENCES, Activity.MODE_PRIVATE));
+            UserProfile u = new UserProfile(c, getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), Activity.MODE_PRIVATE));
             u.setName(username);
             name = u.getName();
 
