@@ -1,0 +1,115 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.laurabarbera.habitualizer.Questions">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background"
+        android:orientation="vertical"
+        android:id="@+id/settings_layout"
+        tools:context="com.example.laurabarbera.habitualizer.Questions">
+
+        <TextView android:id="@+id/question_setting_header"
+            android:text="@string/question_setting_title"
+            android:paddingTop="@dimen/header_margin"
+            android:paddingBottom="@dimen/header_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:background="@color/header_background"
+            android:textColor="@color/header_text"
+            android:layout_width="match_parent"
+            android:textSize="16dp"
+            android:layout_height="wrap_content" />
+
+        <TextView android:tag="@string/QUESTIONS_SETTING"
+            android:id="@+id/notificationHelp"
+            android:layout_below="@id/notificationSetting"
+            android:text="@string/notificationSetting_help"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/header_margin"
+            android:paddingBottom="@dimen/header_margin"
+            android:layout_alignParentLeft="true"
+            android:textSize="11dp"
+            android:textColor="@color/custom_text_light"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <View android:id="@+id/separator"
+            android:layout_below="@id/notificationHelp"
+            android:background="@color/gray_light"
+            android:layout_height="1dp"
+            android:layout_width="match_parent" />
+
+        <TextView android:id="@+id/notifLow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/header_margin"
+            android:paddingBottom="@dimen/header_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:text="@string/notificationSetting_low" />
+
+        <View android:id="@+id/separator2"
+            android:layout_below="@id/notificationHelp"
+            android:background="@color/gray_light"
+            android:layout_height="1dp"
+            android:layout_width="match_parent" />
+
+        <TextView android:id="@+id/notifMed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/header_margin"
+            android:paddingBottom="@dimen/header_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:text="@string/notificationSetting_medium" />
+
+        <View android:id="@+id/separator3"
+            android:layout_below="@id/notificationHelp"
+            android:background="@color/gray_light"
+            android:layout_height="1dp"
+            android:layout_width="match_parent" />
+
+        <TextView android:id="@+id/notifHigh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/header_margin"
+            android:paddingBottom="@dimen/header_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:text="@string/notificationSetting_high" />
+
+        <View android:id="@+id/separator4"
+            android:layout_below="@id/notificationHelp"
+            android:background="@color/gray_light"
+            android:layout_height="1dp"
+            android:layout_width="match_parent" />
+
+        <Button android:id="@+id/save_setting"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/header_margin"
+            android:text="Save"
+            android:textColor="@color/button_light_text"
+            android:background="@drawable/button" />
+
+        <Button android:id="@+id/cancel_setting"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginTop="@dimen/divider"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:text="Cancel"
+            android:textColor="@color/button_dark_text"
+            android:background="@drawable/button_alt" />
+
+    </LinearLayout>
+
+</RelativeLayout>

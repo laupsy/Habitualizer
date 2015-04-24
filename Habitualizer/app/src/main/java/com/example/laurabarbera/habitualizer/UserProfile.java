@@ -3,6 +3,7 @@ package com.example.laurabarbera.habitualizer;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 
 /**
  * Created by laurabarbera on 4/12/15.
@@ -18,75 +19,40 @@ public class UserProfile {
         editor.putString(c.getResources().getString(R.string.NAME_SETTING), n);
         editor.commit();
     }
-    public void setQuestionLevel(final int questionLevel) {
+    public void setQuestionLevel(final String questionLevel) {
         SharedPreferences.Editor editor = shared.edit();
-        editor.putInt(c.getResources().getString(R.string.QUESTIONS_SETTING), questionLevel);
+        editor.putString(c.getResources().getString(R.string.QUESTIONS_SETTING), questionLevel);
+        editor.commit();
     }
-    public void setLocation(final int location) {
+    public void setLocation(final String location) {
         SharedPreferences.Editor editor = shared.edit();
-        editor.putInt(c.getResources().getString(R.string.LOCATION_SETTING), location);
+        editor.putString(c.getResources().getString(R.string.LOCATION_SETTING), location);
+        editor.commit();
     }
-    public void setMotion(final int motion) {
+    public void setMotion(final String motion) {
         SharedPreferences.Editor editor = shared.edit();
-        editor.putInt(c.getResources().getString(R.string.MOTION_SETTING), motion);
+        editor.putString(c.getResources().getString(R.string.MOTION_SETTING), motion);
+        editor.commit();
     }
-    public void setPerformancelevel(final int performanceLevel) {
+    public void setPerformancelevel(final String performanceLevel) {
         SharedPreferences.Editor editor = shared.edit();
-        editor.putInt(c.getResources().getString(R.string.PERFORMANCE_SETTING), performanceLevel);
+        editor.putString(c.getResources().getString(R.string.PERFORMANCE_SETTING), performanceLevel);
+        editor.commit();
     }
     public String getName() {
-        String n = shared.getString(c.getResources().getString(R.string.NAME_SETTING), "");
-        return n;
+        return shared.getString(c.getResources().getString(R.string.NAME_SETTING), "");
     }
     public String getQuestionLevel(Context c) {
-        String s;
-        int n = shared.getInt(c.getResources().getString(R.string.QUESTIONS_SETTING),0);
-        if ( n == 0 ) {
-            s = c.getString(R.string.notificationSetting_low);
-        }
-        else if ( n == 1 ) {
-            s = c.getString(R.string.notificationSetting_medium);
-        }
-        else {
-            s = c.getString(R.string.notificationSetting_high);
-        }
-        return s;
+        return shared.getString(c.getResources().getString(R.string.QUESTIONS_SETTING), "");
     }
     public String getLocation(Context c) {
-        String s;
-        int n = shared.getInt(c.getResources().getString(R.string.LOCATION_SETTING),0);
-        if ( n == 0 ) {
-            s = c.getString(R.string.locationSetting_off);
-        }
-        else {
-            s = c.getString(R.string.locationSetting_on);
-        }
-        return s;
+        return shared.getString(c.getResources().getString(R.string.LOCATION_SETTING), "");
     }
     public String getBatterySetting(Context c) {
-        String s;
-        int n = shared.getInt(c.getResources().getString(R.string.PERFORMANCE_SETTING),0);
-        if ( n == 0 ) {
-            s = c.getString(R.string.batterySetting_low);
-        }
-        else if ( n == 1 ) {
-            s = c.getString(R.string.batterySetting_medium);
-        }
-        else {
-            s = c.getString(R.string.batterySetting_high);
-        }
-        return s;
+        return shared.getString(c.getResources().getString(R.string.PERFORMANCE_SETTING), "");
     }
     public String getMotionSetting(Context c) {
-        String s;
-        int n = shared.getInt(c.getResources().getString(R.string.MOTION_SETTING),0);
-        if ( n == 0 ) {
-            s = c.getString(R.string.motionSetting_off);
-        }
-        else {
-            s = c.getString(R.string.motionSetting_on);
-        }
-        return s;
+        return shared.getString(c.getResources().getString(R.string.MOTION_SETTING), "");
     }
     private SharedPreferences shared;
     private Context c;

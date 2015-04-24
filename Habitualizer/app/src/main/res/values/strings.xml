@@ -49,12 +49,20 @@
 
     <string name="NAME_SETTING">Name</string>
     <string name="LOCATION_SETTING">Location</string>
-    <string name="QUESTIONS_SETTING">Question level</string>
+    <string name="QUESTIONS_SETTING">Questions</string>
     <string name="MOTION_SETTING">Motion</string>
-    <string name="PERFORMANCE_SETTING">Performance level</string>
+    <string name="PERFORMANCE_SETTING">Performance</string>
     <string name="SHARED_PREFERENCES">userProfile</string>
     <string name="title_activity_user_profile">UserProfile</string>
+    <string name="title_activity_questions">Questions</string>
 
     <string name="name_setting_title">Your name</string>
+    <string name="question_setting_title">Questions</string>
+    <string name="title_activity_location">Location</string>
+    <string name="location_setting_title">Location</string>
+    <string name="motion_setting_title">Motion</string>
+    <string name="title_activity_motion">Motion</string>
+    <string name="title_activity_performance">Performance</string>
+    <string name="battery_setting_title">Battery Usage/Performance</string>
 
 </resources>

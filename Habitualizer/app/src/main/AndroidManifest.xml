@@ -51,6 +51,22 @@
             android:name=".Name"
             android:label="Name" >
         </activity>
+        <activity
+            android:name=".Questions"
+            android:label="@string/title_activity_questions" >
+        </activity>
+        <activity
+            android:name=".Location"
+            android:label="@string/title_activity_location" >
+        </activity>
+        <activity
+            android:name=".Motion"
+            android:label="@string/title_activity_motion" >
+        </activity>
+        <activity
+            android:name=".Performance"
+            android:label="@string/title_activity_performance" >
+        </activity>
     </application>
 
 </manifest>

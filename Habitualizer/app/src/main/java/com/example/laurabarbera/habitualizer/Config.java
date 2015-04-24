@@ -3,6 +3,7 @@ package com.example.laurabarbera.habitualizer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,7 +31,7 @@ public class Config extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_facebook_login);
+        setContentView(R.layout.activity_config);
 
         init();
 
@@ -141,6 +142,12 @@ public class Config extends ActionBarActivity {
             UserProfile u = new UserProfile(c, getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), Activity.MODE_PRIVATE));
             u.setName(username);
             name = u.getName();
+
+            // set default values
+//            u.setLocation(c.getResources().getString(R.string.locationSetting_off));
+//            u.setQuestionLevel(c.getResources().getString(R.string.notificationSetting_low));
+//            u.setPerformancelevel(c.getResources().getString(R.string.batterySetting_low));
+//            u.setMotion(c.getResources().getString(R.string.motionSetting_off));
 
             return true;
         }

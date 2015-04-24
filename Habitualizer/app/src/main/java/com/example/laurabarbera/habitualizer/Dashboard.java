@@ -81,11 +81,10 @@ public class Dashboard extends ActionBarActivity {
         protected Boolean doInBackground(String... params) {
 
             UserProfile u = new UserProfile(c, getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
-            u.setName(null);
-            u.setLocation(0);
-            u.setMotion(0);
-            u.setPerformancelevel(0);
-            u.setQuestionLevel(0);
+            u.setLocation(c.getResources().getString(R.string.locationSetting_off));
+            u.setQuestionLevel(c.getResources().getString(R.string.notificationSetting_low));
+            u.setPerformancelevel(c.getResources().getString(R.string.batterySetting_low));
+            u.setMotion(c.getResources().getString(R.string.motionSetting_off));
 
             return true;
         }
@@ -104,6 +103,7 @@ public class Dashboard extends ActionBarActivity {
             String s = (String) this.t;
             Intent goTo;
             String className = "com.example.laurabarbera.habitualizer." + s.substring(0,1).toUpperCase() + s.substring(1);
+            Log.d(className,"D");
             // Go to the setting page and modify the setting
             try { goTo = new Intent(Dashboard.this, Class.forName(className)); }
             catch(Exception e) { goTo = new Intent(Dashboard.this, Dashboard.class); }
