@@ -1,0 +1,60 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.laurabarbera.habitualizer.SetName">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background"
+        android:orientation="vertical"
+        android:id="@+id/settings_layout"
+        tools:context="com.example.laurabarbera.habitualizer.Name">
+
+        <TextView android:id="@+id/name_setting_header"
+            android:text="@string/name_setting_title"
+            android:paddingTop="@dimen/header_margin"
+            android:paddingBottom="@dimen/header_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:background="@color/header_background"
+            android:textColor="@color/header_text"
+            android:layout_width="match_parent"
+            android:textSize="16dp"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/name_input"
+            android:inputType="textCapSentences"
+            android:layout_width="fill_parent"
+            android:layout_marginTop="@dimen/setting_margin_top"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:textColor="@color/custom_text"
+            android:layout_height="@dimen/button_height" />
+
+        <Button android:id="@+id/save_setting"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:text="Save"
+            android:layout_marginTop="@dimen/setting_button_save_margin_top"
+            android:textColor="@color/button_light_text"
+            android:background="@drawable/button" />
+
+        <Button android:id="@+id/cancel_setting"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:text="Cancel"
+            android:layout_marginTop="@dimen/setting_button_cancel_margin_top"
+            android:textColor="@color/button_dark_text"
+            android:background="@drawable/button_alt" />
+
+        </RelativeLayout>
+
+</RelativeLayout>

@@ -20,7 +20,7 @@
     <string name="notificationSetting_help">We\'ll be asking you questions to gauge your habits. How often do you want to be asked?</string>
     <string name="reset_text">Reset All Data</string>
 
-    <string name="locationLabel">Location Statistics</string>
+    <string name="locationLabel">Location</string>
     <string name="locationSetting_off">Off</string>
     <string name="locationSetting_on">On</string>
     <string name="locationSetting_help">We can use your location to determine how your location affects your habits.</string>
@@ -31,7 +31,7 @@
     <string name="batterySetting_high">High</string>
     <string name="batterySetting_help">How much battery life should we use? Higher battery usage means more accurate statistics.</string>
 
-    <string name="motionLabel">Motion Statistics</string>
+    <string name="motionLabel">Motion</string>
     <string name="motionSetting_off">Off</string>
     <string name="motionSetting_on">On</string>
     <string name="motionSetting_help">We can use your motion to determine how your physical activity affects your habits.</string>
@@ -47,12 +47,14 @@
 
     <!-- SETTING LABELS -->
 
-    <string name="NAME_SETTING">name</string>
-    <string name="LOCATION_SETTING">location</string>
-    <string name="QUESTIONS_SETTING">question level</string>
-    <string name="MOTION_SETTING">motion</string>
-    <string name="PERFORMANCE_SETTING">performance level</string>
+    <string name="NAME_SETTING">Name</string>
+    <string name="LOCATION_SETTING">Location</string>
+    <string name="QUESTIONS_SETTING">Question level</string>
+    <string name="MOTION_SETTING">Motion</string>
+    <string name="PERFORMANCE_SETTING">Performance level</string>
     <string name="SHARED_PREFERENCES">userProfile</string>
-    <string name="title_activity_user_profile">UserProfil</string>
+    <string name="title_activity_user_profile">UserProfile</string>
+
+    <string name="name_setting_title">Your name</string>
 
 </resources>

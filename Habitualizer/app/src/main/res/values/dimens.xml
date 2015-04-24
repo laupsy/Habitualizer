@@ -12,4 +12,8 @@
 
     <dimen name="inline_input_width">210dp</dimen>
     <dimen name="header_margin">20dp</dimen>
+
+    <dimen name="setting_margin_top">100dp</dimen>
+    <dimen name="setting_button_save_margin_top">160dp</dimen>
+    <dimen name="setting_button_cancel_margin_top">210dp</dimen>
 </resources>

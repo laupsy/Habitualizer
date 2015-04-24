@@ -98,14 +98,17 @@ public class Dashboard extends ActionBarActivity {
         }
         @Override
         protected Boolean doInBackground(String... params) {
-            String s = (String) this.t;
-            UserProfile u = new UserProfile(c, getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
-            if ( s.equals(c.getString(R.string.NAME_SETTING)) ) {
-                u.setName("test");
-            }
             return true;
         }
         protected void onPostExecute(Boolean result) {
+            String s = (String) this.t;
+            Intent goTo;
+            String className = "com.example.laurabarbera.habitualizer." + s.substring(0,1).toUpperCase() + s.substring(1);
+            // Go to the setting page and modify the setting
+            try { goTo = new Intent(Dashboard.this, Class.forName(className)); }
+            catch(Exception e) { goTo = new Intent(Dashboard.this, Dashboard.class); }
+            Dashboard.this.startActivity(goTo);
+            Dashboard.this.finish();
             LoadPrefs loadPrefs = new LoadPrefs();
             loadPrefs.execute();
         }
