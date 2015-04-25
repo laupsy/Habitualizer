@@ -126,6 +126,7 @@ public class Performance extends ActionBarActivity {
             if ( !is_setup ) {
                 TextView head = (TextView) findViewById(R.id.battery_setting_header);
                 head.setText(head.getText() + ": " + curSetting);
+                select(curSetting);
             }
         }
     }
@@ -167,33 +168,34 @@ public class Performance extends ActionBarActivity {
             med.setBackgroundColor(c.getResources().getColor(R.color.unselected));
             high.setBackgroundColor(c.getResources().getColor(R.color.selected));
         }
-        if ( is_setup ) {
-            update.setBackgroundResource(R.drawable.button_start);
-            update.setText(R.string.button_next);
-        }
-        else {
-            update.setBackgroundResource(R.drawable.button);
-            update.setText(R.string.save);
-        }
-        update.setTextColor(getResources().getColor(R.color.button_light_text));
-        update.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v) {
-                final Handler handler = new Handler();
-                Runnable r = new Runnable() {
-                    @Override
-                    public void run() {
-                        handler.post(new Runnable(){
-                            public void run(){
-                                if ( newSetting == null ) newSetting = curSetting;
-                            }
-                        });
-                    }
-                };
-                Thread t = new Thread(r);
-                t.start();
-                SetSetting setSetting = new SetSetting(newSetting);
-                setSetting.execute();
+        if ( !match.equals(curSetting) ) {
+            if (is_setup) {
+                update.setBackgroundResource(R.drawable.button_start);
+                update.setText(R.string.button_next);
+            } else {
+                update.setBackgroundResource(R.drawable.button);
+                update.setText(R.string.save);
             }
-        });
+            update.setTextColor(getResources().getColor(R.color.button_light_text));
+            update.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    final Handler handler = new Handler();
+                    Runnable r = new Runnable() {
+                        @Override
+                        public void run() {
+                            handler.post(new Runnable() {
+                                public void run() {
+                                    if (newSetting == null) newSetting = curSetting;
+                                }
+                            });
+                        }
+                    };
+                    Thread t = new Thread(r);
+                    t.start();
+                    SetSetting setSetting = new SetSetting(newSetting);
+                    setSetting.execute();
+                }
+            });
+        }
     }
 }

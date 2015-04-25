@@ -98,10 +98,11 @@ public class Dashboard extends ActionBarActivity {
         protected Boolean doInBackground(String... params) {
 
             UserProfile u = new UserProfile(c, getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
-            u.setLocation(c.getResources().getString(R.string.locationSetting_off));
-            u.setQuestionLevel(c.getResources().getString(R.string.notificationSetting_low));
-            u.setPerformancelevel(c.getResources().getString(R.string.batterySetting_low));
-            u.setMotion(c.getResources().getString(R.string.motionSetting_off));
+            u.setName("");
+            u.setLocation("");
+            u.setQuestionLevel("");
+            u.setPerformancelevel("");
+            u.setMotion("");
 
             return true;
         }
