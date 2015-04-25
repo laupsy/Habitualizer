@@ -11,9 +11,9 @@
         <item name="android:fontFamily">sans-serif-condensed</item>
         <item name="colorPrimaryDark">@color/ui_dark</item>
         <item name="android:textColorPrimary">@color/custom_text_title</item>
-        <item name="colorControlNormal">@color/custom_pink</item>
-        <item name="colorControlActivated">@color/custom_pink</item>
-        <item name="colorControlHighlight">@color/custom_pink</item>
+        <item name="colorControlNormal">@color/ui</item>
+        <item name="colorControlActivated">@color/ui</item>
+        <item name="colorControlHighlight">@color/ui</item>
     </style>
 
 </resources>

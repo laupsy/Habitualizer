@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="custom_pink">#c15d80</color>
-    <color name="custom_pink_dark">#cba241</color>
     <color name="white">#ffffff</color>
-    <color name="ui">#bf515f</color>
-    <color name="ui_dark">#a33644</color>
+    <color name="ui">#29b783</color>
+    <color name="ui_dark">#0b8973</color>
     <color name="custom_text">#383838</color>
     <color name="custom_text_light">#bab9ba</color>
     <color name="custom_text_title">#ffffff</color>
     <color name="header_background">#4d4645</color>
-    <color name="header_text">#b9b8b8</color>
+    <color name="header_text">#ffffff</color>
 
-    <color name="label_text">#999999</color>
+    <color name="label_text">#777777</color>
 
     <color name="gray">#363639</color>
     <color name="gray_light">#eeeeee</color>

@@ -39,7 +39,6 @@
 
         <TextView android:tag="@string/QUESTIONS_SETTING"
             android:id="@+id/notificationHelp"
-            android:layout_below="@id/notificationSetting"
             android:text="@string/notificationSetting_help"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
@@ -52,7 +51,6 @@
             android:layout_height="wrap_content" />
 
         <View android:id="@+id/separator"
-            android:layout_below="@id/notificationHelp"
             android:background="@color/gray_light"
             android:layout_height="1dp"
             android:layout_width="match_parent" />
@@ -67,7 +65,6 @@
             android:text="@string/notificationSetting_low" />
 
         <View android:id="@+id/separator2"
-            android:layout_below="@id/notificationHelp"
             android:background="@color/gray_light"
             android:layout_height="1dp"
             android:layout_width="match_parent" />
@@ -82,7 +79,6 @@
             android:text="@string/notificationSetting_medium" />
 
         <View android:id="@+id/separator3"
-            android:layout_below="@id/notificationHelp"
             android:background="@color/gray_light"
             android:layout_height="1dp"
             android:layout_width="match_parent" />
@@ -97,7 +93,6 @@
             android:text="@string/notificationSetting_high" />
 
         <View android:id="@+id/separator4"
-            android:layout_below="@id/notificationHelp"
             android:background="@color/gray_light"
             android:layout_height="1dp"
             android:layout_width="match_parent" />
@@ -108,9 +103,9 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/header_margin"
-            android:text="Save"
-            android:textColor="@color/button_light_text"
-            android:background="@drawable/button" />
+            android:text="@string/save"
+            android:textColor="@color/button_dark_text"
+            android:background="@drawable/button_alt" />
 
         <Button android:id="@+id/cancel_setting"
             android:layout_width="fill_parent"
@@ -118,7 +113,7 @@
             android:layout_marginTop="@dimen/divider"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:text="Cancel"
+            android:text="@string/error_no"
             android:textColor="@color/button_dark_text"
             android:background="@drawable/button_alt" />
 

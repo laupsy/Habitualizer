@@ -27,6 +27,7 @@ public class Motion extends ActionBarActivity {
 
     private boolean is_setup = false;
     private Class nextStep = Dashboard.class;
+    private Button update, cancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +38,8 @@ public class Motion extends ActionBarActivity {
         init();
         TextView setupHeader = (TextView) findViewById(R.id.setup_header);
         is_setup = getIntent().getExtras().getBoolean("IS_SETUP");
-        Button update = (Button) findViewById(R.id.save_setting);
-        Button cancel = (Button) findViewById(R.id.cancel_setting);
+        update = (Button) findViewById(R.id.save_setting);
+        cancel = (Button) findViewById(R.id.cancel_setting);
         if ( is_setup ) {
             cancel.setVisibility(View.INVISIBLE);
             update.setText(R.string.button_next);
@@ -79,25 +80,6 @@ public class Motion extends ActionBarActivity {
                 setSetting.execute();
             }
         });
-        update.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v) {
-                final Handler handler = new Handler();
-                Runnable r = new Runnable() {
-                    @Override
-                    public void run() {
-                        handler.post(new Runnable(){
-                            public void run(){
-                                if ( newSetting == null ) newSetting = curSetting;
-                            }
-                        });
-                    }
-                };
-                Thread t = new Thread(r);
-                t.start();
-                SetSetting setSetting = new SetSetting(newSetting);
-                setSetting.execute();
-            }
-        });
     }
 
     // Load the UI and set some default UI settings
@@ -134,7 +116,10 @@ public class Motion extends ActionBarActivity {
             return true;
         }
         protected void onPostExecute(Boolean result) {
-            select(curSetting);
+            if ( !is_setup ) {
+                TextView head = (TextView) findViewById(R.id.motion_setting_header);
+                head.setText(head.getText() + ": " + curSetting);
+            }
         }
     }
 
@@ -168,5 +153,34 @@ public class Motion extends ActionBarActivity {
             on.setBackgroundColor(c.getResources().getColor(R.color.unselected));
             off.setBackgroundColor(c.getResources().getColor(R.color.selected));
         }
+
+        if ( is_setup ) {
+            update.setBackgroundResource(R.drawable.button_start);
+            update.setText(R.string.button_next);
+        }
+        else {
+            update.setBackgroundResource(R.drawable.button);
+            update.setText(R.string.save);
+        }
+        update.setTextColor(getResources().getColor(R.color.button_light_text));
+        update.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                final Handler handler = new Handler();
+                Runnable r = new Runnable() {
+                    @Override
+                    public void run() {
+                        handler.post(new Runnable(){
+                            public void run(){
+                                if ( newSetting == null ) newSetting = curSetting;
+                            }
+                        });
+                    }
+                };
+                Thread t = new Thread(r);
+                t.start();
+                SetSetting setSetting = new SetSetting(newSetting);
+                setSetting.execute();
+            }
+        });
     }
 }

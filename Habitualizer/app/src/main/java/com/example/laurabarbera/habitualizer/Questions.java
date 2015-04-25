@@ -28,6 +28,7 @@ public class Questions extends ActionBarActivity {
 
     private boolean is_setup = false;
     private Class nextStep = Dashboard.class;
+    Button update, cancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +40,8 @@ public class Questions extends ActionBarActivity {
         high = (TextView) findViewById(R.id.notifHigh);
         init();
         is_setup = getIntent().getExtras().getBoolean("IS_SETUP");
-        Button update = (Button) findViewById(R.id.save_setting);
-        Button cancel = (Button) findViewById(R.id.cancel_setting);
+        update = (Button) findViewById(R.id.save_setting);
+        cancel = (Button) findViewById(R.id.cancel_setting);
         if ( is_setup ) {
             cancel.setVisibility(View.INVISIBLE);
             update.setText(R.string.button_next);
@@ -86,24 +87,6 @@ public class Questions extends ActionBarActivity {
                 setSetting.execute();
             }
         });
-        update.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v) {
-                final Handler handler = new Handler();
-                Runnable r = new Runnable() {
-                    @Override
-                    public void run() {
-                        handler.post(new Runnable(){
-                            public void run(){
-                            }
-                        });
-                    }
-                };
-                Thread t = new Thread(r);
-                t.start();
-                SetSetting setSetting = new SetSetting(newSetting);
-                setSetting.execute();
-            }
-        });
     }
 
     // Load the UI and set some default UI settings
@@ -140,7 +123,10 @@ public class Questions extends ActionBarActivity {
             return true;
         }
         protected void onPostExecute(Boolean result) {
-            select(curSetting);
+            if ( !is_setup ) {
+                TextView head = (TextView) findViewById(R.id.question_setting_header);
+                head.setText(head.getText() + ": " + curSetting);
+            }
         }
     }
 
@@ -181,5 +167,33 @@ public class Questions extends ActionBarActivity {
             med.setBackgroundColor(c.getResources().getColor(R.color.unselected));
             high.setBackgroundColor(c.getResources().getColor(R.color.selected));
         }
+
+        if ( is_setup ) {
+            update.setBackgroundResource(R.drawable.button_start);
+            update.setText(R.string.button_next);
+        }
+        else {
+            update.setBackgroundResource(R.drawable.button);
+            update.setText(R.string.save);
+        }
+        update.setTextColor(getResources().getColor(R.color.button_light_text));
+        update.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                final Handler handler = new Handler();
+                Runnable r = new Runnable() {
+                    @Override
+                    public void run() {
+                        handler.post(new Runnable(){
+                            public void run(){
+                            }
+                        });
+                    }
+                };
+                Thread t = new Thread(r);
+                t.start();
+                SetSetting setSetting = new SetSetting(newSetting);
+                setSetting.execute();
+            }
+        });
     }
 }

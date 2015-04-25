@@ -105,6 +105,14 @@ public class Config extends ActionBarActivity {
                                     proceed.setBackgroundResource(R.drawable.button_start);
                                     proceed.setText(R.string.button_next);
                                     proceed.setTextColor(getResources().getColor(R.color.button_light_text));
+                                    proceed.setOnClickListener(new View.OnClickListener() {
+                                        public void onClick(View v) {
+                                            Intent nextStep = new Intent(Config.this, Questions.class);
+                                            nextStep.putExtra("IS_SETUP",true);
+                                            Config.this.startActivity(nextStep);
+                                            Config.this.finish();
+                                        }
+                                    });
                                 }
                             });
                         }
@@ -120,18 +128,6 @@ public class Config extends ActionBarActivity {
                 return false;
             }
         });
-
-        final UserProfile u = new UserProfile(c, getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), Activity.MODE_PRIVATE));
-            proceed.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    if ( u.getName().length() > 1 ){
-                        Intent nextStep = new Intent(Config.this, Questions.class);
-                        nextStep.putExtra("IS_SETUP",true);
-                        Config.this.startActivity(nextStep);
-                        Config.this.finish();
-                    }
-                }
-            });
     }
     private class SaveData extends AsyncTask<String, Void, Boolean> {
 
