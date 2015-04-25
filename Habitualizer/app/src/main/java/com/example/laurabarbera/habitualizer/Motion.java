@@ -25,6 +25,9 @@ public class Motion extends ActionBarActivity {
     private TextView on;
     private TextView off;
 
+    private boolean is_setup = false;
+    private Class nextStep = Dashboard.class;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,18 +35,28 @@ public class Motion extends ActionBarActivity {
         on = (TextView) findViewById(R.id.motionOn);
         off = (TextView) findViewById(R.id.motionOff);
         init();
+        TextView setupHeader = (TextView) findViewById(R.id.setup_header);
+        is_setup = getIntent().getExtras().getBoolean("IS_SETUP");
         Button update = (Button) findViewById(R.id.save_setting);
         Button cancel = (Button) findViewById(R.id.cancel_setting);
+        if ( is_setup ) {
+            cancel.setVisibility(View.INVISIBLE);
+            update.setText(R.string.button_next);
+            nextStep = Location.class;
+        }
+        else {
+            setupHeader.setVisibility(View.GONE);
+        }
         on.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 newSetting = (String) on.getText();
-                select();
+                select(newSetting);
             }
         });
         off.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 newSetting = (String) off.getText();
-                select();
+                select(newSetting);
             }
         });
         cancel.setOnClickListener(new View.OnClickListener(){
@@ -74,7 +87,7 @@ public class Motion extends ActionBarActivity {
                     public void run() {
                         handler.post(new Runnable(){
                             public void run(){
-
+                                if ( newSetting == null ) newSetting = curSetting;
                             }
                         });
                     }
@@ -117,18 +130,11 @@ public class Motion extends ActionBarActivity {
         @Override
         protected Boolean doInBackground(String... params) {
             UserProfile u = new UserProfile(c, getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
-            curSetting = u.getMotionSetting(c);
+            curSetting = u.getMotionSetting();
             return true;
         }
         protected void onPostExecute(Boolean result) {
-            if ( curSetting == c.getResources().getString(R.string.motionSetting_on)) {
-                on.setBackgroundColor(c.getResources().getColor(R.color.selected));
-                off.setBackgroundColor(c.getResources().getColor(R.color.unselected));
-            }
-            else if ( curSetting == c.getResources().getString(R.string.motionSetting_off)) {
-                on.setBackgroundColor(c.getResources().getColor(R.color.unselected));
-                off.setBackgroundColor(c.getResources().getColor(R.color.selected));
-            }
+            select(curSetting);
         }
     }
 
@@ -145,15 +151,16 @@ public class Motion extends ActionBarActivity {
         }
         protected void onPostExecute(Boolean result) {
             // Go back
-            Intent goToSettings = new Intent(Motion.this, Dashboard.class);
-            Motion.this.startActivity(goToSettings);
+            Intent goTo = new Intent(Motion.this, nextStep);
+            if ( is_setup ) goTo.putExtra("IS_SETUP",true);
+            Motion.this.startActivity(goTo);
             Motion.this.finish();
         }
     }
 
-    private void select(){
+    private void select(String match){
 
-        if ( newSetting == c.getResources().getString(R.string.motionSetting_on)) {
+        if ( match.equals(c.getResources().getString(R.string.motionSetting_on))) {
             on.setBackgroundColor(c.getResources().getColor(R.color.selected));
             off.setBackgroundColor(c.getResources().getColor(R.color.unselected));
         }

@@ -65,4 +65,9 @@
     <string name="title_activity_performance">Performance</string>
     <string name="battery_setting_title">Battery Usage/Performance</string>
 
+    <string name="button_next">Next</string>
+    <string name="setup_title">Setup</string>
+    <string name="title_activity_debug">Debug</string>
+
+    <string name="debug_text">Debug</string>
 </resources>

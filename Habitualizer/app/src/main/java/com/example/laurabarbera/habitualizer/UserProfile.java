@@ -42,16 +42,16 @@ public class UserProfile {
     public String getName() {
         return shared.getString(c.getResources().getString(R.string.NAME_SETTING), "");
     }
-    public String getQuestionLevel(Context c) {
+    public String getQuestionLevel() {
         return shared.getString(c.getResources().getString(R.string.QUESTIONS_SETTING), "");
     }
-    public String getLocation(Context c) {
+    public String getLocation() {
         return shared.getString(c.getResources().getString(R.string.LOCATION_SETTING), "");
     }
-    public String getBatterySetting(Context c) {
+    public String getBatterySetting() {
         return shared.getString(c.getResources().getString(R.string.PERFORMANCE_SETTING), "");
     }
-    public String getMotionSetting(Context c) {
+    public String getMotionSetting() {
         return shared.getString(c.getResources().getString(R.string.MOTION_SETTING), "");
     }
     private SharedPreferences shared;

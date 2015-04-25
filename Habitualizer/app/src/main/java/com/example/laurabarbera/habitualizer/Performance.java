@@ -26,6 +26,9 @@ public class Performance extends ActionBarActivity {
     private TextView med;
     private TextView high;
 
+    private boolean is_setup = false;
+    private Class nextStep = Dashboard.class;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,24 +37,33 @@ public class Performance extends ActionBarActivity {
         med = (TextView) findViewById(R.id.batteryMed);
         high = (TextView) findViewById(R.id.batteryHigh);
         init();
+        TextView setupHeader = (TextView) findViewById(R.id.setup_header);
+        is_setup = getIntent().getExtras().getBoolean("IS_SETUP");
         Button update = (Button) findViewById(R.id.save_setting);
         Button cancel = (Button) findViewById(R.id.cancel_setting);
+        if ( is_setup ) {
+            cancel.setVisibility(View.INVISIBLE);
+            update.setText(R.string.button_next);
+        }
+        else {
+            setupHeader.setVisibility(View.GONE);
+        }
         low.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 newSetting = (String) low.getText();
-                select();
+                select(newSetting);
             }
         });
         med.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 newSetting = (String) med.getText();
-                select();
+                select(newSetting);
             }
         });
         high.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 newSetting = (String) high.getText();
-                select();
+                select(newSetting);
             }
         });
         cancel.setOnClickListener(new View.OnClickListener(){
@@ -82,7 +94,7 @@ public class Performance extends ActionBarActivity {
                     public void run() {
                         handler.post(new Runnable(){
                             public void run(){
-
+                                if ( newSetting == null ) newSetting = curSetting;
                             }
                         });
                     }
@@ -125,25 +137,11 @@ public class Performance extends ActionBarActivity {
         @Override
         protected Boolean doInBackground(String... params) {
             UserProfile u = new UserProfile(c, getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
-            curSetting = u.getBatterySetting(c);
+            curSetting = u.getBatterySetting();
             return true;
         }
         protected void onPostExecute(Boolean result) {
-            if ( curSetting == c.getResources().getString(R.string.batterySetting_low)) {
-                low.setBackgroundColor(c.getResources().getColor(R.color.selected));
-                med.setBackgroundColor(c.getResources().getColor(R.color.unselected));
-                high.setBackgroundColor(c.getResources().getColor(R.color.unselected));
-            }
-            else if ( curSetting == c.getResources().getString(R.string.batterySetting_medium)) {
-                low.setBackgroundColor(c.getResources().getColor(R.color.unselected));
-                med.setBackgroundColor(c.getResources().getColor(R.color.selected));
-                high.setBackgroundColor(c.getResources().getColor(R.color.unselected));
-            }
-            else {
-                low.setBackgroundColor(c.getResources().getColor(R.color.unselected));
-                med.setBackgroundColor(c.getResources().getColor(R.color.unselected));
-                high.setBackgroundColor(c.getResources().getColor(R.color.selected));
-            }
+            select(curSetting);
         }
     }
 
@@ -160,20 +158,21 @@ public class Performance extends ActionBarActivity {
         }
         protected void onPostExecute(Boolean result) {
             // Go back
-            Intent goToSettings = new Intent(Performance.this, Dashboard.class);
-            Performance.this.startActivity(goToSettings);
+            Intent goTo = new Intent(Performance.this, nextStep);
+            if ( is_setup ) goTo.putExtra("IS_SETUP",true);
+            Performance.this.startActivity(goTo);
             Performance.this.finish();
         }
     }
 
-    private void select(){
+    private void select(String match){
 
-        if ( newSetting == c.getResources().getString(R.string.batterySetting_low)) {
+        if ( match.equals(c.getResources().getString(R.string.batterySetting_low))) {
             low.setBackgroundColor(c.getResources().getColor(R.color.selected));
             med.setBackgroundColor(c.getResources().getColor(R.color.unselected));
             high.setBackgroundColor(c.getResources().getColor(R.color.unselected));
         }
-        else if ( newSetting == c.getResources().getString(R.string.batterySetting_medium)) {
+        else if ( match.equals(c.getResources().getString(R.string.batterySetting_medium))) {
             low.setBackgroundColor(c.getResources().getColor(R.color.unselected));
             med.setBackgroundColor(c.getResources().getColor(R.color.selected));
             high.setBackgroundColor(c.getResources().getColor(R.color.unselected));

@@ -67,6 +67,10 @@
             android:name=".Performance"
             android:label="@string/title_activity_performance" >
         </activity>
+        <activity
+            android:name=".Debug"
+            android:label="@string/title_activity_debug" >
+        </activity>
     </application>
 
 </manifest>

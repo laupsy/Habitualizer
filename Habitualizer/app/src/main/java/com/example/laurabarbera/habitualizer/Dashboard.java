@@ -56,10 +56,10 @@ public class Dashboard extends ActionBarActivity {
         protected Boolean doInBackground(String... params) {
             UserProfile u = new UserProfile(c, getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
             curName = u.getName();
-            curBatterySetting = u.getBatterySetting(c);
-            curLocationSetting = u.getLocation(c);
-            curMotionSetting = u.getMotionSetting(c);
-            curQuestionSetting = u.getQuestionLevel(c);
+            curBatterySetting = u.getBatterySetting();
+            curLocationSetting = u.getLocation();
+            curMotionSetting = u.getMotionSetting();
+            curQuestionSetting = u.getQuestionLevel();
             return true;
         }
         protected void onPostExecute(Boolean result) {
@@ -68,11 +68,28 @@ public class Dashboard extends ActionBarActivity {
             TextView locationSetting = (TextView)findViewById(R.id.locationSetting);
             TextView motionSetting = (TextView)findViewById(R.id.motionSetting);
             TextView batterySetting = (TextView)findViewById(R.id.batterySetting);
+
             name.setText(curName);
             questionSetting.setText(curQuestionSetting);
             locationSetting.setText(curLocationSetting);
             motionSetting.setText(curMotionSetting);
             batterySetting.setText(curBatterySetting);
+
+            // Debug mode
+            Button debug = (Button) findViewById(R.id.debug_button);
+            if ( curName.equals("Developer") ) {
+                debug.setVisibility(View.VISIBLE);
+            }
+            else {
+                debug.setVisibility(View.INVISIBLE);
+            }
+            debug.setOnClickListener(new View.OnClickListener(){
+                public void onClick(View v) {
+                    Intent dbug = new Intent(Dashboard.this, Debug.class);
+                    Dashboard.this.startActivity(dbug);
+                    Dashboard.this.finish();
+                }
+            });
         }
     }
     // Reset all of the shared preferences to default settings
@@ -105,7 +122,10 @@ public class Dashboard extends ActionBarActivity {
             String className = "com.example.laurabarbera.habitualizer." + s.substring(0,1).toUpperCase() + s.substring(1);
             Log.d(className,"D");
             // Go to the setting page and modify the setting
-            try { goTo = new Intent(Dashboard.this, Class.forName(className)); }
+            try {
+                goTo = new Intent(Dashboard.this, Class.forName(className));
+                goTo.putExtra("IS_SETUP",false);
+            }
             catch(Exception e) { goTo = new Intent(Dashboard.this, Dashboard.class); }
             Dashboard.this.startActivity(goTo);
             Dashboard.this.finish();

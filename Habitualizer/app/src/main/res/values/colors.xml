@@ -24,4 +24,7 @@
     <color name="selected">#eeeeee</color>
     <color name="unselected">#ffffff</color>
 
+    <color name="header_background2">#526071</color>
+    <color name="header_text2">#ffffff</color>
+
 </resources>

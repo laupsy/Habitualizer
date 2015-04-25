@@ -103,7 +103,7 @@ public class Config extends ActionBarActivity {
                                     nameEntry.setVisibility(View.GONE);
                                     welcome.setVisibility(View.GONE);
                                     proceed.setBackgroundResource(R.drawable.button_start);
-                                    proceed.setText(R.string.button_configure);
+                                    proceed.setText(R.string.button_next);
                                     proceed.setTextColor(getResources().getColor(R.color.button_light_text));
                                 }
                             });
@@ -125,8 +125,9 @@ public class Config extends ActionBarActivity {
             proceed.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     if ( u.getName().length() > 1 ){
-                        Intent returnBack = new Intent(Config.this, Dashboard.class);
-                        Config.this.startActivity(returnBack);
+                        Intent nextStep = new Intent(Config.this, Questions.class);
+                        nextStep.putExtra("IS_SETUP",true);
+                        Config.this.startActivity(nextStep);
                         Config.this.finish();
                     }
                 }

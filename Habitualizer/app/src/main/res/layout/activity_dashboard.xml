@@ -250,6 +250,16 @@
             android:textColor="@color/button_dark_text"
             android:background="@drawable/button_alt" />
 
+        <Button android:id="@+id/debug_button"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/button_height"
+            android:text="@string/debug_text"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_below="@id/reset"
+            android:textColor="@color/button_dark_text"
+            android:background="@drawable/button_alt" />
+
     </RelativeLayout>
 
 </ScrollView>

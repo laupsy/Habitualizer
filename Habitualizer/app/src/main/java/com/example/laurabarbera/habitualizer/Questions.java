@@ -26,32 +26,45 @@ public class Questions extends ActionBarActivity {
     private TextView med;
     private TextView high;
 
+    private boolean is_setup = false;
+    private Class nextStep = Dashboard.class;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questions);
+        TextView setupHeader = (TextView) findViewById(R.id.setup_header);
         low = (TextView) findViewById(R.id.notifLow);
         med = (TextView) findViewById(R.id.notifMed);
         high = (TextView) findViewById(R.id.notifHigh);
         init();
+        is_setup = getIntent().getExtras().getBoolean("IS_SETUP");
         Button update = (Button) findViewById(R.id.save_setting);
         Button cancel = (Button) findViewById(R.id.cancel_setting);
+        if ( is_setup ) {
+            cancel.setVisibility(View.INVISIBLE);
+            update.setText(R.string.button_next);
+            nextStep = Motion.class;
+        }
+        else {
+            setupHeader.setVisibility(View.GONE);
+        }
         low.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 newSetting = (String) low.getText();
-                select();
+                select(newSetting);
             }
         });
         med.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 newSetting = (String) med.getText();
-                select();
+                select(newSetting);
             }
         });
         high.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 newSetting = (String) high.getText();
-                select();
+                select(newSetting);
             }
         });
         cancel.setOnClickListener(new View.OnClickListener(){
@@ -63,7 +76,6 @@ public class Questions extends ActionBarActivity {
                     public void run() {
                         handler.post(new Runnable(){
                             public void run() {
-
                             }
                         });
                     }
@@ -82,7 +94,6 @@ public class Questions extends ActionBarActivity {
                     public void run() {
                         handler.post(new Runnable(){
                             public void run(){
-
                             }
                         });
                     }
@@ -125,25 +136,11 @@ public class Questions extends ActionBarActivity {
         @Override
         protected Boolean doInBackground(String... params) {
             UserProfile u = new UserProfile(c, getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
-            curSetting = u.getQuestionLevel(c);
+            curSetting = u.getQuestionLevel();
             return true;
         }
         protected void onPostExecute(Boolean result) {
-            if ( curSetting == c.getResources().getString(R.string.notificationSetting_low)) {
-                low.setBackgroundColor(c.getResources().getColor(R.color.selected));
-                med.setBackgroundColor(c.getResources().getColor(R.color.unselected));
-                high.setBackgroundColor(c.getResources().getColor(R.color.unselected));
-            }
-            else if ( curSetting == c.getResources().getString(R.string.notificationSetting_medium)) {
-                low.setBackgroundColor(c.getResources().getColor(R.color.unselected));
-                med.setBackgroundColor(c.getResources().getColor(R.color.selected));
-                high.setBackgroundColor(c.getResources().getColor(R.color.unselected));
-            }
-            else {
-                low.setBackgroundColor(c.getResources().getColor(R.color.unselected));
-                med.setBackgroundColor(c.getResources().getColor(R.color.unselected));
-                high.setBackgroundColor(c.getResources().getColor(R.color.selected));
-            }
+            select(curSetting);
         }
     }
 
@@ -160,25 +157,26 @@ public class Questions extends ActionBarActivity {
         }
         protected void onPostExecute(Boolean result) {
             // Go back
-            Intent goToSettings = new Intent(Questions.this, Dashboard.class);
-            Questions.this.startActivity(goToSettings);
+            Intent goTo = new Intent(Questions.this, nextStep);
+            if ( is_setup ) goTo.putExtra("IS_SETUP",true);
+            Questions.this.startActivity(goTo);
             Questions.this.finish();
         }
     }
 
-    private void select(){
+    private void select(String match){
 
-        if ( newSetting == c.getResources().getString(R.string.notificationSetting_low)) {
+        if ( match.equals(c.getResources().getString(R.string.notificationSetting_low))) {
             low.setBackgroundColor(c.getResources().getColor(R.color.selected));
             med.setBackgroundColor(c.getResources().getColor(R.color.unselected));
             high.setBackgroundColor(c.getResources().getColor(R.color.unselected));
         }
-        else if ( newSetting == c.getResources().getString(R.string.notificationSetting_medium)) {
+        else if ( match.equals(c.getResources().getString(R.string.notificationSetting_medium))) {
             low.setBackgroundColor(c.getResources().getColor(R.color.unselected));
             med.setBackgroundColor(c.getResources().getColor(R.color.selected));
             high.setBackgroundColor(c.getResources().getColor(R.color.unselected));
         }
-        else {
+        else if ( match.equals(c.getResources().getString(R.string.notificationSetting_high)))  {
             low.setBackgroundColor(c.getResources().getColor(R.color.unselected));
             med.setBackgroundColor(c.getResources().getColor(R.color.unselected));
             high.setBackgroundColor(c.getResources().getColor(R.color.selected));

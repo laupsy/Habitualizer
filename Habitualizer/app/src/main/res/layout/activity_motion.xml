@@ -13,6 +13,18 @@
         android:id="@+id/settings_layout"
         tools:context="com.example.laurabarbera.habitualizer.Motion">
 
+        <TextView android:id="@+id/setup_header"
+            android:text="@string/setup_title"
+            android:paddingTop="@dimen/header_margin"
+            android:paddingBottom="@dimen/header_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:background="@color/header_background2"
+            android:textColor="@color/header_text2"
+            android:layout_width="match_parent"
+            android:textSize="16dp"
+            android:layout_height="wrap_content" />
+
         <TextView android:id="@+id/motion_setting_header"
             android:text="@string/motion_setting_title"
             android:paddingTop="@dimen/header_margin"
