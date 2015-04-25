@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -152,6 +153,14 @@ public class Dashboard extends ActionBarActivity {
                         a.setDisplayShowCustomEnabled(true);
                         a.setDisplayShowTitleEnabled(false);
                         getSupportActionBar().setCustomView(R.layout.actionbar_layout);
+                        ImageView v = (ImageView) findViewById(R.id.visualizer);
+                        v.setOnClickListener(new View.OnClickListener() {
+                            public void onClick(View v) {
+                                Intent visualizer = new Intent(Dashboard.this, Visualizer.class);
+                                Dashboard.this.startActivity(visualizer);
+                                Dashboard.this.finish();
+                            }
+                        });
                     }
                 });
             }

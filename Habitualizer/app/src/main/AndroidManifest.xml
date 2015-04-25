@@ -71,6 +71,10 @@
             android:name=".Debug"
             android:label="@string/title_activity_debug" >
         </activity>
+        <activity
+            android:name=".Visualizer"
+            android:label="@string/title_activity_visualizer" >
+        </activity>
     </application>
 
 </manifest>
