@@ -9,35 +9,34 @@ import android.util.Log;
  * Created by laurabarbera on 4/12/15.
  */
 public class UserProfile {
+    private SharedPreferences.Editor editor;
     public UserProfile(Context c, SharedPreferences s) {
         super();
         this.shared = s;
         this.c = c;
+        editor = shared.edit();
     }
     public void setName(final String n) {
-        SharedPreferences.Editor editor = shared.edit();
         editor.putString(c.getResources().getString(R.string.NAME_SETTING), n);
-        editor.commit();
+        editor.apply();
     }
     public void setQuestionLevel(final String questionLevel) {
-        SharedPreferences.Editor editor = shared.edit();
         editor.putString(c.getResources().getString(R.string.QUESTIONS_SETTING), questionLevel);
-        editor.commit();
+        editor.apply();
     }
     public void setLocation(final String location) {
-        SharedPreferences.Editor editor = shared.edit();
         editor.putString(c.getResources().getString(R.string.LOCATION_SETTING), location);
-        editor.commit();
+        editor.apply();
     }
     public void setMotion(final String motion) {
-        SharedPreferences.Editor editor = shared.edit();
         editor.putString(c.getResources().getString(R.string.MOTION_SETTING), motion);
-        editor.commit();
+        editor.apply();
     }
     public void setPerformancelevel(final String performanceLevel) {
-        SharedPreferences.Editor editor = shared.edit();
         editor.putString(c.getResources().getString(R.string.PERFORMANCE_SETTING), performanceLevel);
-        editor.commit();
+        editor.apply();
+    }
+    public void updateMovement() {
     }
     public String getName() {
         return shared.getString(c.getResources().getString(R.string.NAME_SETTING), "");

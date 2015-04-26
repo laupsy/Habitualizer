@@ -20,28 +20,72 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-// Menu that handles all user settings
+/* This activity displays all of the user's settings
+specified in shared preferences. This activity can enter
+a debug mode by changing the name to "Developer", which
+displays a Debug button that can be clicked on to test
+multiple interactions (motion, location, etc). This activity
+allows the user to update values stored in shared preferences.
+ */
 
 public class Dashboard extends ActionBarActivity {
 
-    private final int RESET_DISPLAY_LENGTH = 500;
-    private final Context c = this;
 
-    String curName,
+    private String curName,
             curQuestionSetting,
             curLocationSetting,
             curMotionSetting,
             curBatterySetting;
 
+    private final int RESET_DISPLAY_LENGTH = 500;
+
+    private Context c;
+    private ImageView visualizerIcon;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-        // Load the preferences, load the interface
-        init();
-        // Set up the listeners
+        final Handler handler = new Handler();
+        c = this;
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                handler.post(new Runnable(){
+                    public void run() {
+                        ActionBar a = getSupportActionBar();
+                        setTitle(R.string.getstarted);
+                        a.setElevation(0);
+                        a.setDisplayHomeAsUpEnabled(false);
+                        a.setDisplayShowHomeEnabled(false);
+                        a.setDisplayShowCustomEnabled(true);
+                        a.setDisplayShowTitleEnabled(false);
+                        getSupportActionBar().setCustomView(R.layout.actionbar_layout);
+                        visualizerIcon = (ImageView) findViewById(R.id.visualizer);
+                        visualizerIcon.setOnClickListener(new View.OnClickListener() {
+                            public void onClick(View v) {
+                                Intent visualizer = new Intent(Dashboard.this, Visualizer.class);
+                                Dashboard.this.startActivity(visualizer);
+                                Dashboard.this.finish();
+                            }
+                        });
+                    }
+                });
+            }
+        };
+        Thread t = new Thread(r);
+        t.start();
+
+        /* Loads the currently saved preferences
+         */
+        LoadPrefs loadPrefs = new LoadPrefs();
+        loadPrefs.execute();
         setListeners();
-        // Reset all data if you click the reset button - brings back to setup
+
+        /* Resets the currently saved preferences and returns
+        back to user setup mode
+         */
+
         Button reset = (Button)findViewById(R.id.reset);
         reset.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -50,8 +94,6 @@ public class Dashboard extends ActionBarActivity {
         });
     }
 
-    // Background Thread
-    // Get the data from shared preferences and update the UI
     private class LoadPrefs extends AsyncTask<String, Void, Boolean> {
         @Override
         protected Boolean doInBackground(String... params) {
@@ -93,7 +135,7 @@ public class Dashboard extends ActionBarActivity {
             });
         }
     }
-    // Reset all of the shared preferences to default settings
+
     private class ResetData extends AsyncTask<String, Void, Boolean> {
         @Override
         protected Boolean doInBackground(String... params) {

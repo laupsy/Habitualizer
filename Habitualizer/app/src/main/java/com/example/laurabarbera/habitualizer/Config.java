@@ -24,46 +24,56 @@ import android.widget.TextView;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/* This screen appears on user setup - if the user hasn't created a local profile yet,
+the splash screen directs to this activity, which takes them through establishing name,
+battery preferences, notification preferences, location preferences, and motion preferences.
+These preferences all get saved in Shared Preferences.
+ */
+
 public class Config extends ActionBarActivity {
+
     private String username;
-    private TextView nameView;
-    private final Context c = this;
+    private TextView nameView, welcome;
+    private EditText nameEntry;
+    private Context c;
+    private Button proceed;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        /* Sets up UI - removes action bar shadow, sets custom action bar view.
+         */
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_config);
+        ActionBar a = getSupportActionBar();
+        setTitle(R.string.getstarted);
+        a.setElevation(0);
+        a.setDisplayHomeAsUpEnabled(false);
+        a.setDisplayShowHomeEnabled(false);
+        a.setDisplayShowCustomEnabled(true);
+        a.setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setCustomView(R.layout.actionbar_layout);
+        c = this;
 
-        init();
+        /* Identify the views that must be worked with in this activity.
+         */
 
-        final EditText nameEntry = (EditText)findViewById(R.id.name_input);
+        nameEntry = (EditText)findViewById(R.id.name_input);
         nameView = (TextView)findViewById(R.id.hello);
+        proceed = (Button)findViewById(R.id.login);
+        welcome = (TextView)findViewById(R.id.welcome);
+
+        /* Get a name input from the user, check that the input is valid,
+        change the input to a proper noun if it's not a proper noun, and
+        listen for the enter key as a motion to proceed to the next step.
+        Save the name in the background thread on shared preferences.
+         */
 
         setName(nameEntry);
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_facebook_login, menu);
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
     public void setName(final EditText nameEntry) {
-
-        final Button proceed = (Button)findViewById(R.id.login);
-        final TextView welcome = (TextView)findViewById(R.id.welcome);
 
         InputFilter filter = new InputFilter() {
             public CharSequence filter(CharSequence source, int start, int end,
@@ -89,8 +99,10 @@ public class Config extends ActionBarActivity {
             public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
                 if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) &&
                         keyCode == KeyEvent.KEYCODE_ENTER) {
-                    hideKeyboard(nameEntry);
-                    username = convertToProperNoun(nameEntry);
+                    InputMethodManager imm =
+                            (InputMethodManager)getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(nameEntry.getWindowToken(), 0);
+                    username = nameEntry.getText().toString().substring(0,1).toUpperCase() + nameEntry.getText().toString().substring(1);
 
                     // Save name and do on background thread!
 
@@ -129,6 +141,7 @@ public class Config extends ActionBarActivity {
             }
         });
     }
+
     private class SaveData extends AsyncTask<String, Void, Boolean> {
 
         private String name;
@@ -140,38 +153,11 @@ public class Config extends ActionBarActivity {
             u.setName(username);
             name = u.getName();
 
-            // set default values
-//            u.setLocation(c.getResources().getString(R.string.locationSetting_off));
-//            u.setQuestionLevel(c.getResources().getString(R.string.notificationSetting_low));
-//            u.setPerformancelevel(c.getResources().getString(R.string.batterySetting_low));
-//            u.setMotion(c.getResources().getString(R.string.motionSetting_off));
-
             return true;
         }
         protected void onPostExecute(Boolean result) {
             nameView.setText(getResources().getString(R.string.greeting)
                     + ", " + name + ".");
         }
-    }
-    public void init() {
-        ActionBar a = getSupportActionBar();
-        setTitle(R.string.getstarted);
-        a.setElevation(0);
-        a.setDisplayHomeAsUpEnabled(false);
-        a.setDisplayShowHomeEnabled(false);
-        a.setDisplayShowCustomEnabled(true);
-        a.setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setCustomView(R.layout.actionbar_layout);
-
-    }
-    public void hideKeyboard(EditText te) {
-        InputMethodManager imm =
-                (InputMethodManager)getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(te.getWindowToken(), 0);
-    }
-    public String convertToProperNoun(EditText te) {
-        String name = te.getText().toString().substring(0,1).toUpperCase() +
-                te.getText().toString().substring(1);
-        return name;
     }
 }

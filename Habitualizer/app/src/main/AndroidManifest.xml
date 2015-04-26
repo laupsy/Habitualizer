@@ -75,6 +75,10 @@
             android:name=".Visualizer"
             android:label="@string/title_activity_visualizer" >
         </activity>
+        <activity
+            android:name=".Database"
+            android:label="@string/title_activity_database" >
+        </activity>
     </application>
 
 </manifest>
