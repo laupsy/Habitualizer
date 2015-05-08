@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 
 public class Database extends SQLiteOpenHelper {
@@ -27,8 +28,37 @@ public class Database extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE MotionTable (Timestamp TEXT, Motion INTEGER);");
-        db.execSQL("CREATE TABLE UserTable (_id INTEGER, Name VARCAR(50), Motion INTEGER, Location INTEGER, Performance INTEGER, Questions INTEGER);");
+        db.execSQL("CREATE TABLE UserTable (_id INTEGER, Name TEXT, Motion INTEGER, Location INTEGER, Performance INTEGER, Questions INTEGER);");
+        db.execSQL("CREATE TABLE QuestionList (_id INTEGER, QuestionPhrase TEXT);");
         db.execSQL("INSERT INTO UserTable VALUES (1, '', 0, 0, 0, 0)");
+        db.execSQL("INSERT INTO QuestionList VALUES (1, 'Are you hungry?')");
+        db.execSQL("INSERT INTO QuestionList VALUES (2, 'Are you happy?')");
+    }
+
+    // QUESTIONS
+    public void addQuestion(String question, int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("INSERT INTO QuestionList VALUES(" + id + ", " + question + ")");
+        db.close();
+    }
+
+    public ArrayList<String> getQuestions() {
+        ArrayList<String> questions = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT QuestionPhrase FROM QuestionList", null);
+        if ( cursor.moveToFirst()) {
+            do {
+                questions.add(cursor.getString(0));
+            } while ( cursor.moveToNext() );
+        }
+        return questions;
+    }
+
+    public String getRandomQuestion() {
+        ArrayList<String> questions = getQuestions();
+        Random r = new Random();
+        int ndx = r.nextInt(questions.size());
+        return questions.get(ndx);
     }
 
     // USER SETTINGS

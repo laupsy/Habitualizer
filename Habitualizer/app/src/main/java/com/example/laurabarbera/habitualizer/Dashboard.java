@@ -92,6 +92,19 @@ public class Dashboard extends ActionBarActivity {
                 resetData();
             }
         });
+
+        /* Goes to question manager where you can
+        add disable or edit questions
+         */
+        Button manageQuestions = (Button)findViewById(R.id.manageQuestions);
+        manageQuestions.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                Intent i = new Intent(Dashboard.this, QuestionManager.class);
+                Dashboard.this.startActivity(i);
+                Dashboard.this.finish();
+
+            }
+        });
     }
 
     private class LoadPrefs extends AsyncTask<String, Void, Boolean> {

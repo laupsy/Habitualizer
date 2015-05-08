@@ -1,5 +1,7 @@
 package com.example.laurabarbera.habitualizer;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +11,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Handler;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -21,6 +24,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static android.util.FloatMath.sqrt;
 
@@ -44,6 +50,10 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
         c = this;
         init();
 
+        db = new Database(this);
+
+        startService(new Intent(c, BgSensor.class));
+
         // MOTION
 
         sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
@@ -53,18 +63,33 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
         acceleration_prev = SensorManager.GRAVITY_EARTH;
 
         // Check if motion is enabled
-        UserProfile u = new UserProfile(c, getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
-        if ( u.getMotionSetting().equals("On") ) { doMotion = true; }
-        else { doMotion = false; }
+        // Check if location is enabled
+        // Check question level
+        int questionLevel = db.getQuestionSetting();
+        int notifDelay = 10800000;
+        // seconds per week * 1000
+        if ( questionLevel == 0 ) notifDelay = 604800000;
+        // seconds per day * 1000
+        else if ( questionLevel == 1) notifDelay = 86400000;
+        // seconds per 3 hours * 1000
+        else notifDelay = 10800000;
 
-        // testing database
-
-        db = new Database(this);
-        db.updateMotion();
-        //float[] motion24hours = db.getMotion();
-        Log.d("hi" + "", "hello");
-
-
+        final Handler handler = new Handler();
+        Timer timer = new Timer();
+        TimerTask notifyInterval = new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    @SuppressWarnings("unchecked")
+                    public void run() {
+                        try {
+                            askQuestion();
+                        } catch(Exception e){}
+                    }
+                });
+            }
+        };
+        timer.schedule(notifyInterval, notifDelay, notifDelay);
     }
     @Override
     public void onResume() {
@@ -155,5 +180,33 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
         };
         Thread t = new Thread(r);
         t.start();
+    }
+    public void askQuestion() {
+
+        /* COPY/PASTED THIS FROM
+            http://developer.android.com/training/notify-user/build-notification.html */
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.icon)
+                        .setContentTitle("My notification")
+                        .setContentText("Hello World!");
+
+        Intent resultIntent = new Intent(this, AskQuestion.class);
+        PendingIntent resultPendingIntent =
+                PendingIntent.getActivity(
+                        this,
+                        0,
+                        resultIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+
+        mBuilder.setContentIntent(resultPendingIntent);
+        int mNotificationId = 001;
+        NotificationManager mNotifyMgr =
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        mNotifyMgr.notify(mNotificationId, mBuilder.build());
+
+        /* COPY/PASTE OVER */
     }
 }

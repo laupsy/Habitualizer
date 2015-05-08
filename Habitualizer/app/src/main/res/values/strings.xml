@@ -73,4 +73,8 @@
     <string name="save">Save</string>
     <string name="title_activity_visualizer">Visualizer</string>
     <string name="title_activity_database">Database</string>
+    <string name="title_activity_ask_question">AskQuestion</string>
+
+    <string name="manageQuestions_header">Manage Questions</string>
+    <string name="title_activity_question_manager">QuestionManager</string>
 </resources>

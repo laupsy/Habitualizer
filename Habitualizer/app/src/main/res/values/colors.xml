@@ -24,5 +24,6 @@
 
     <color name="header_background2">#526071</color>
     <color name="header_text2">#ffffff</color>
+    <color name="fullbutton_background">#818bdb</color>
 
 </resources>

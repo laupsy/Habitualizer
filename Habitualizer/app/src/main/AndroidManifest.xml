@@ -79,6 +79,14 @@
             android:name=".Database"
             android:label="@string/title_activity_database" >
         </activity>
+        <activity
+            android:name=".AskQuestion"
+            android:label="@string/title_activity_ask_question" >
+        </activity>
+        <activity
+            android:name=".QuestionManager"
+            android:label="@string/title_activity_question_manager" >
+        </activity>
     </application>
 
 </manifest>
