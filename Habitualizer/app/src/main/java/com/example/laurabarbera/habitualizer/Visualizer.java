@@ -44,8 +44,6 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
         c = this;
         init();
 
-        startService(new Intent(c, BgSensor.class));
-
         // MOTION
 
         sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
@@ -92,11 +90,26 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
             acceleration += change;
             if ( acceleration > THRESHOLD ) {
                 db.updateMotion();
-                TextView m = (TextView) findViewById(R.id.motion_daily);
+                TextView a = (TextView) findViewById(R.id.motion_daily);
+                TextView b = (TextView) findViewById(R.id.motion_hour0);
+                TextView c = (TextView) findViewById(R.id.motion_hour3);
+                TextView d = (TextView) findViewById(R.id.motion_hour6);
+                TextView e2 = (TextView) findViewById(R.id.motion_hour9);
+                TextView f = (TextView) findViewById(R.id.motion_hour12);
+                TextView g = (TextView) findViewById(R.id.motion_hour15);
+                TextView h = (TextView) findViewById(R.id.motion_hour18);
+                TextView i = (TextView) findViewById(R.id.motion_hour21);
                 //db.getMotion();
-                steps = db.getMotion()[8];
-                String s = "Steps: " + steps;
-                m.setText(s);
+                float[] steps = db.getMotion();
+                b.setText(steps[0] + " steps from midnight to 2am");
+                c.setText(steps[1] + " steps from 2am to 5am");
+                d.setText(steps[2] + " steps from 5am to 8am");
+                e2.setText(steps[3] + " steps from 8am to 11am");
+                f.setText(steps[4] + " steps from 11am to 2pm");
+                g.setText(steps[5] + " steps from 2pm to 5pm");
+                h.setText(steps[6] + " steps from 5pm to 8pm");
+                i.setText(steps[7] + " steps from 8pm to 11pm");
+                a.setText(steps[8] + " steps total");
             }
         }
     }

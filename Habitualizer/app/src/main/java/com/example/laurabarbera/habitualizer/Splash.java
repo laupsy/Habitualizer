@@ -30,7 +30,7 @@ public class Splash extends Activity {
                     goTo = new Intent(Splash.this, Config.class);
                 }
                 else {
-                    goTo = new Intent(Splash.this, Dashboard.class);
+                    goTo = new Intent(Splash.this, Visualizer.class);
                 }
                 Intent mainIntent = goTo;
                 Splash.this.startActivity(mainIntent);

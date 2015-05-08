@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -119,8 +120,18 @@ public class Database extends SQLiteOpenHelper {
         db.close();
     }
     public float[] getMotion() {
+
+        /* initialize some stuff. motionPerHour array will
+        collect total motion at hours 0, 3, 6, 9, 12, 15, 18, and 21,
+        and then total daily motion, which is why it is 9 long
+         */
+
         float totalMotion = 0;
         float motionPerHour[] = new float[9];
+        for ( int a = 0; a < 9; a++ ) { motionPerHour[a] = 0; }
+
+        // set up structs to get database timestamps and motion booleans
+
         ArrayList<Integer> motion = new ArrayList<Integer>();
         ArrayList<String> time = new ArrayList<String>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -139,20 +150,39 @@ public class Database extends SQLiteOpenHelper {
             } while ( cursor2.moveToNext() );
         }
 
-            Log.d("heyyyy", time.size() + "");
+        // Break down motion into hours
 
-//        for ( int j = 0; j < motion.size(); j++ ) {
-//            Log.d("heyyyy", motion.get(j) + "");
-//        }
+        for ( int i = 0; i < time.size(); i++ ) {
+            int day = Integer.parseInt(time.get(i).substring(8, 10), 10);
 
-        motionPerHour[0] = 0;
-        motionPerHour[1] = 0;
-        motionPerHour[2] = 0;
-        motionPerHour[3] = 0;
-        motionPerHour[4] = 0;
-        motionPerHour[5] = 0;
-        motionPerHour[6] = 0;
-        motionPerHour[7] = 0;
+            int hour = Integer.parseInt(time.get(i).substring(11, 13), 10);
+
+            if ( hour == 0 || hour == 1 || hour == 2) {
+                motionPerHour[0] += 1;
+            }
+            else if ( hour == 3 || hour == 4 || hour == 5 ) {
+                motionPerHour[1] += 1;
+            }
+            else if ( hour == 6 || hour == 7 || hour == 8 ) {
+                motionPerHour[2] += 1;
+            }
+            else if ( hour == 9 || hour == 10 || hour == 11 ) {
+                motionPerHour[3] += 1;
+            }
+            else if ( hour == 12 || hour == 13 || hour == 14 ) {
+                motionPerHour[4] += 1;
+            }
+            else if ( hour == 15 || hour == 16 || hour == 17 ) {
+                motionPerHour[5] += 1;
+            }
+            else if ( hour == 18 || hour == 19 || hour == 20 ) {
+                motionPerHour[6] += 1;
+            }
+            else if ( hour == 21 || hour == 22 || hour == 23 ) {
+                motionPerHour[7] += 1;
+            }
+        }
+
         motionPerHour[8] = totalMotion;
 
         return motionPerHour;
