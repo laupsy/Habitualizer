@@ -29,10 +29,10 @@ public class Database extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE MotionTable (Timestamp TEXT, Motion INTEGER);");
         db.execSQL("CREATE TABLE UserTable (_id INTEGER, Name TEXT, Motion INTEGER, Location INTEGER, Performance INTEGER, Questions INTEGER);");
-        db.execSQL("CREATE TABLE QuestionList (_id INTEGER, QuestionPhrase TEXT);");
+        db.execSQL("CREATE TABLE QuestionList (_id INTEGER, QuestionPhrase TEXT, YesCount INTEGER, NoCount INTEGER);");
         db.execSQL("INSERT INTO UserTable VALUES (1, '', 0, 0, 0, 0)");
-        db.execSQL("INSERT INTO QuestionList VALUES (1, 'Are you hungry?')");
-        db.execSQL("INSERT INTO QuestionList VALUES (2, 'Are you happy?')");
+        db.execSQL("INSERT INTO QuestionList VALUES (1, 'Are you hungry?', 0, 0)");
+        db.execSQL("INSERT INTO QuestionList VALUES (2, 'Are you happy?', 0, 0)");
     }
 
     // QUESTIONS
@@ -43,12 +43,14 @@ public class Database extends SQLiteOpenHelper {
     }
 
     public ArrayList<String> getQuestions() {
+        int ndx = 0;
         ArrayList<String> questions = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT QuestionPhrase FROM QuestionList", null);
         if ( cursor.moveToFirst()) {
             do {
-                questions.add(cursor.getString(0));
+                ndx++;
+                questions.add(ndx + ">>" + cursor.getString(0));
             } while ( cursor.moveToNext() );
         }
         return questions;
@@ -72,6 +74,44 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL("UPDATE UserTable SET Motion = '" + motion + "' WHERE _id = 1");
         db.close();
     }
+
+    public void answerYes(int qNum) {
+        int curCount = getAnswerYes(qNum);
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE QuestionList SET YesCount = " + (curCount + 1) + " WHERE _id = " + qNum);
+    }
+
+    public void answerNo(int qNum) {
+        int curCount = getAnswerNo(qNum);
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE QuestionList SET NoCount = " + (curCount + 1) + " WHERE _id = " + qNum);
+    }
+
+    public int getAnswerYes(int qNum) {
+        int curCount = 0;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT YesCount FROM QuestionList WHERE _id = " + qNum, null);
+        if ( cursor.moveToFirst()) {
+            do {
+                curCount = cursor.getInt(0);
+            } while ( cursor.moveToNext() );
+        }
+        return curCount;
+    }
+
+    public int getAnswerNo(int qNum) {
+        int curCount = 0;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT NoCount FROM QuestionList WHERE _id = " + qNum, null);
+        if ( cursor.moveToFirst()) {
+            do {
+                curCount = cursor.getInt(0);
+            } while ( cursor.moveToNext() );
+        }
+        return curCount;
+    }
+
+
     public void setLocationSetting(int location) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("UPDATE UserTable SET Location = '" + location + "' WHERE _id = 1");

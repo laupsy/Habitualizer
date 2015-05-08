@@ -11,4 +11,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <Button android:id="@+id/Yes"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_below="@id/question_field"
+        android:layout_marginTop="@dimen/divider"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:text="Yes"
+        android:textColor="@color/button_dark_text"
+        android:background="@drawable/button_alt" />
+
+    <Button android:id="@+id/No"
+        android:layout_width="fill_parent"
+        android:layout_below="@id/Yes"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginTop="@dimen/divider"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:text="No"
+        android:textColor="@color/button_dark_text"
+        android:background="@drawable/button_alt" />
+
 </RelativeLayout>

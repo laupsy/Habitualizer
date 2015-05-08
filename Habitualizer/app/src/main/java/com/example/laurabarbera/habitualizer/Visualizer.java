@@ -10,6 +10,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBar;
@@ -21,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -37,6 +39,7 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
     private SensorManager sensorManager;
     private Sensor sensor;
     private float steps = 0;
+    private ArrayList<String> questions;
 
     boolean doMotion;
 
@@ -89,7 +92,21 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
                 });
             }
         };
-        timer.schedule(notifyInterval, notifDelay, notifDelay);
+        timer.schedule(notifyInterval, 0, notifDelay);
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                handler.post(new Runnable(){
+                    public void run() {
+
+                    }
+                });
+            }
+        };
+        Thread t = new Thread(r);
+        t.start();
+        GetQuestions getQuestions = new GetQuestions();
+        getQuestions.execute();
     }
     @Override
     public void onResume() {
@@ -208,5 +225,56 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
         mNotifyMgr.notify(mNotificationId, mBuilder.build());
 
         /* COPY/PASTE OVER */
+    }
+
+    private class GetQuestions extends AsyncTask<String, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            Database db = new Database(c);
+            questions = db.getQuestions();
+            return true;
+        }
+
+        protected void onPostExecute(Boolean result) {
+            Database db = new Database(c);
+            int num, yes, no;
+            String question;
+            LinearLayout qm = (LinearLayout) findViewById(R.id.visualizer_view);
+            for ( int i = 0; i < questions.size(); i++ ) {
+
+                num = Integer.parseInt(questions.get(i).split(">>")[0]);
+                yes = db.getAnswerYes(num);
+                no = db.getAnswerNo(num);
+                question = questions.get(i).split(">>")[1];
+
+                /* Got how to add views programmatically from here:
+                    http://stackoverflow.com/questions/2395769/how-to-programmatically-add-views-to-views
+                 */
+                TextView t = new TextView(c);
+                View d = new View(c);
+                d.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        2
+                ));
+                d.setBackgroundColor(getResources().getColor(R.color.gray_light));
+                t.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                ));
+
+                t.setText("(" + (i+1) + ") " + question + " | Yes: " + yes + " | No: " + no);
+                t.setPadding(
+                        Math.round(getResources().getDimension(R.dimen.activity_horizontal_margin)),
+                        Math.round(getResources().getDimension(R.dimen.header_margin)),
+                        Math.round(getResources().getDimension(R.dimen.activity_horizontal_margin)),
+                        Math.round(getResources().getDimension(R.dimen.header_margin))
+                );
+                t.setTextSize(16);
+                t.setTextColor(getResources().getColor(R.color.label_text));
+                qm.addView(t);
+                qm.addView(d);
+            }
+        }
     }
 }
