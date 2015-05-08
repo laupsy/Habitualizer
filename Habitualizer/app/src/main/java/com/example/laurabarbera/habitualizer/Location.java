@@ -111,8 +111,9 @@ public class Location extends ActionBarActivity {
     private class LoadSetting extends AsyncTask<String, Void, Boolean> {
         @Override
         protected Boolean doInBackground(String... params) {
-            UserProfile u = new UserProfile(c, getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
-            curSetting = u.getLocation();
+            Database db = new Database(c);
+            if ( db.getLocationSetting() == 0 ) curSetting = c.getResources().getString(R.string.locationSetting_off);
+            else curSetting = c.getResources().getString(R.string.locationSetting_on);
             return true;
         }
         protected void onPostExecute(Boolean result) {
@@ -131,8 +132,10 @@ public class Location extends ActionBarActivity {
         }
         @Override
         protected Boolean doInBackground(String... params) {
-            UserProfile u = new UserProfile(c, getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
-            u.setLocation(n);
+            int i = 0;
+            if ( n.equals(c.getResources().getString(R.string.locationSetting_on)) ) i = 1;
+            Database db = new Database(c);
+            db.setLocationSetting(i);
             return true;
         }
         protected void onPostExecute(Boolean result) {

@@ -23,10 +23,10 @@ public class Splash extends Activity {
             @Override
             public void run() {
                 // check if this is a first time user
-                SharedPreferences shared = getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES),Activity.MODE_PRIVATE);
-                String name = shared.getString("name","");
+                Database db = new Database(c);
+                String name = db.getName();
                 Intent goTo;
-                if ( shared.getString("name","").length() < 1 ){
+                if ( name.length() < 1 ){
                     goTo = new Intent(Splash.this, Config.class);
                 }
                 else {

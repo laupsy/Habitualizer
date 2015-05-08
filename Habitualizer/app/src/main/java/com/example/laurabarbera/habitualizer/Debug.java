@@ -38,6 +38,9 @@ public class Debug extends ActionBarActivity implements SensorEventListener {
         setContentView(R.layout.activity_debug);
         init();
 
+        UserProfile u = new UserProfile(this, getSharedPreferences(this.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
+        String test = u.getMotionSetting();
+        Log.d(test, "hellothere");
 
         // MOTION
 
@@ -50,11 +53,9 @@ public class Debug extends ActionBarActivity implements SensorEventListener {
         // testing database
 
         final Database db = new Database(this);
-        db.insert(1);
-        ArrayList<Integer> ar = db.get();
-        for ( int i = 0; i < ar.size(); i++ ) {
-            Log.d("Log Num " + i, ar.get(i).toString());
-        }
+        db.updateMotion();
+        float[] motion24hours = db.getMotion();
+        Log.d(motion24hours[0] + "", "hello");
 
 
     }

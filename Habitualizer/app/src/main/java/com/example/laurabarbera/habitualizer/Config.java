@@ -150,8 +150,9 @@ public class Config extends ActionBarActivity {
         protected Boolean doInBackground(String... params) {
 
             UserProfile u = new UserProfile(c, getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), Activity.MODE_PRIVATE));
-            u.setName(username);
-            name = u.getName();
+            Database db = new Database(c);
+            db.setName(username);
+            name = db.getName();
 
             return true;
         }

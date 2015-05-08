@@ -21,6 +21,7 @@ public class Name extends ActionBarActivity {
     private final Context c = this;
     private String curName;
     private EditText in;
+    private Database db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,8 +100,8 @@ public class Name extends ActionBarActivity {
     private class LoadName extends AsyncTask<String, Void, Boolean> {
         @Override
         protected Boolean doInBackground(String... params) {
-            UserProfile u = new UserProfile(c, getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
-            curName = u.getName();
+            Database db = new Database(c);
+            curName = db.getName();
             return true;
         }
         protected void onPostExecute(Boolean result) {
@@ -116,8 +117,8 @@ public class Name extends ActionBarActivity {
         }
         @Override
         protected Boolean doInBackground(String... params) {
-            UserProfile u = new UserProfile(c, getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
-            u.setName(n);
+            db = new Database(c);
+            db.setName(n);
             return true;
         }
         protected void onPostExecute(Boolean result) {

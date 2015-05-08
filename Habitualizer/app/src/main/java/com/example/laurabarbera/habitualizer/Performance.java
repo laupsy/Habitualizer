@@ -118,8 +118,10 @@ public class Performance extends ActionBarActivity {
     private class LoadSetting extends AsyncTask<String, Void, Boolean> {
         @Override
         protected Boolean doInBackground(String... params) {
-            UserProfile u = new UserProfile(c, getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
-            curSetting = u.getBatterySetting();
+            Database db = new Database(c);
+            if ( db.getPowerSetting() == 1 ) curSetting = c.getResources().getString(R.string.batterySetting_medium);
+            else if ( db.getPowerSetting() == 2 ) curSetting = c.getResources().getString(R.string.batterySetting_high);
+            else curSetting = c.getResources().getString(R.string.batterySetting_low);
             return true;
         }
         protected void onPostExecute(Boolean result) {
@@ -138,8 +140,11 @@ public class Performance extends ActionBarActivity {
         }
         @Override
         protected Boolean doInBackground(String... params) {
-            UserProfile u = new UserProfile(c, getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
-            u.setPerformancelevel(n);
+            int i = 0;
+            if ( n.equals(c.getResources().getString(R.string.batterySetting_medium)) ) i = 1;
+            else if ( n.equals(c.getResources().getString(R.string.batterySetting_high)) ) i = 2;
+            Database db = new Database(c);
+            db.setPowerSetting(i);
             return true;
         }
         protected void onPostExecute(Boolean result) {

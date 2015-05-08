@@ -111,8 +111,9 @@ public class Motion extends ActionBarActivity {
     private class LoadSetting extends AsyncTask<String, Void, Boolean> {
         @Override
         protected Boolean doInBackground(String... params) {
-            UserProfile u = new UserProfile(c, getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
-            curSetting = u.getMotionSetting();
+            Database db = new Database(c);
+            if ( db.getMotionSetting() == 0 ) curSetting = c.getResources().getString(R.string.motionSetting_off);
+            else curSetting = c.getResources().getString(R.string.motionSetting_on);
             return true;
         }
         protected void onPostExecute(Boolean result) {
@@ -131,8 +132,10 @@ public class Motion extends ActionBarActivity {
         }
         @Override
         protected Boolean doInBackground(String... params) {
-            UserProfile u = new UserProfile(c, getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
-            u.setMotion(n);
+            int i = 0;
+            if ( n.equals(c.getResources().getString(R.string.motionSetting_on)) ) i = 1;
+            Database db = new Database(c);
+            db.setMotionSetting(i);
             return true;
         }
         protected void onPostExecute(Boolean result) {

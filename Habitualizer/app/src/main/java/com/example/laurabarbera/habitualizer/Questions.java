@@ -118,8 +118,10 @@ public class Questions extends ActionBarActivity {
     private class LoadSetting extends AsyncTask<String, Void, Boolean> {
         @Override
         protected Boolean doInBackground(String... params) {
-            UserProfile u = new UserProfile(c, getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
-            curSetting = u.getQuestionLevel();
+            Database db = new Database(c);
+            if ( db.getQuestionSetting() == 1 ) curSetting = c.getResources().getString(R.string.notificationSetting_medium);
+            else if ( db.getQuestionSetting() == 2 ) curSetting = c.getResources().getString(R.string.notificationSetting_high);
+            else curSetting = c.getResources().getString(R.string.notificationSetting_low);
             return true;
         }
         protected void onPostExecute(Boolean result) {
@@ -138,8 +140,11 @@ public class Questions extends ActionBarActivity {
         }
         @Override
         protected Boolean doInBackground(String... params) {
-            UserProfile u = new UserProfile(c, getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
-            u.setQuestionLevel(n);
+            int i = 0;
+            if ( n.equals(c.getResources().getString(R.string.notificationSetting_medium)) ) i = 1;
+            else if ( n.equals(c.getResources().getString(R.string.notificationSetting_high)) ) i = 2;
+            Database db = new Database(c);
+            db.setQuestionSetting(i);
             return true;
         }
         protected void onPostExecute(Boolean result) {

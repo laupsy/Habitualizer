@@ -97,12 +97,25 @@ public class Dashboard extends ActionBarActivity {
     private class LoadPrefs extends AsyncTask<String, Void, Boolean> {
         @Override
         protected Boolean doInBackground(String... params) {
+            Database db = new Database(c);
+
             UserProfile u = new UserProfile(c, getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
-            curName = u.getName();
-            curBatterySetting = u.getBatterySetting();
-            curLocationSetting = u.getLocation();
-            curMotionSetting = u.getMotionSetting();
-            curQuestionSetting = u.getQuestionLevel();
+            curName = db.getName();
+
+            if ( db.getPowerSetting() == 1 ) curBatterySetting = c.getResources().getString(R.string.batterySetting_medium);
+            else if ( db.getPowerSetting() == 2 ) curBatterySetting = c.getResources().getString(R.string.batterySetting_high);
+            else curBatterySetting = c.getResources().getString(R.string.batterySetting_low);
+
+            if ( db.getLocationSetting() == 1 ) curLocationSetting = c.getResources().getString(R.string.locationSetting_on);
+            else curLocationSetting = c.getResources().getString(R.string.locationSetting_off);
+
+            if ( db.getMotionSetting() == 1 ) curMotionSetting = c.getResources().getString(R.string.motionSetting_on);
+            else curMotionSetting = c.getResources().getString(R.string.motionSetting_off);
+
+            if ( db.getQuestionSetting() == 1 ) curQuestionSetting = c.getResources().getString(R.string.notificationSetting_medium);
+            else if ( db.getQuestionSetting() == 2 ) curQuestionSetting = c.getResources().getString(R.string.notificationSetting_high);
+            else curQuestionSetting = c.getResources().getString(R.string.notificationSetting_low);
+
             return true;
         }
         protected void onPostExecute(Boolean result) {
@@ -140,12 +153,12 @@ public class Dashboard extends ActionBarActivity {
         @Override
         protected Boolean doInBackground(String... params) {
 
-            UserProfile u = new UserProfile(c, getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
-            u.setName("");
-            u.setLocation("");
-            u.setQuestionLevel("");
-            u.setPerformancelevel("");
-            u.setMotion("");
+            Database db = new Database(c);
+            db.setName("");
+            db.setLocationSetting(0);
+            db.setQuestionSetting(0);
+            db.setPowerSetting(0);
+            db.setMotionSetting(0);
 
             return true;
         }

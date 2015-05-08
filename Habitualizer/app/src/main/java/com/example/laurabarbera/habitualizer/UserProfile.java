@@ -17,26 +17,29 @@ public class UserProfile {
         editor = shared.edit();
     }
     public void setName(final String n) {
+        editor.clear();
         editor.putString(c.getResources().getString(R.string.NAME_SETTING), n);
-        editor.apply();
+        editor.commit();
     }
     public void setQuestionLevel(final String questionLevel) {
+        editor.clear();
         editor.putString(c.getResources().getString(R.string.QUESTIONS_SETTING), questionLevel);
-        editor.apply();
+        editor.commit();
     }
     public void setLocation(final String location) {
+        editor.clear();
         editor.putString(c.getResources().getString(R.string.LOCATION_SETTING), location);
-        editor.apply();
+        editor.commit();
     }
     public void setMotion(final String motion) {
+        editor.clear();
         editor.putString(c.getResources().getString(R.string.MOTION_SETTING), motion);
-        editor.apply();
+        editor.commit();
     }
     public void setPerformancelevel(final String performanceLevel) {
+        editor.clear();
         editor.putString(c.getResources().getString(R.string.PERFORMANCE_SETTING), performanceLevel);
-        editor.apply();
-    }
-    public void updateMovement() {
+        editor.commit();
     }
     public String getName() {
         return shared.getString(c.getResources().getString(R.string.NAME_SETTING), "");
