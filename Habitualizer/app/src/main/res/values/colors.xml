@@ -2,15 +2,15 @@
 <resources>
 
     <color name="white">#ffffff</color>
-    <color name="ui">#68a8ad</color>
-    <color name="ui_dark">#559398</color>
+    <color name="ui">#333333</color>
+    <color name="ui_dark">#222222</color>
 
-    <color name="graph0">#462435</color>
-    <color name="graph1">#b22c45</color>
-    <color name="graph2">#743749</color>
-    <color name="graph3">#cb3a35</color>
-    <color name="graph4">#462435</color>
-    <color name="graph5">#e8592a</color>
+    <color name="graph0">#ffb64e84</color>
+    <color name="graph1">#ffa37ec3</color>
+    <color name="graph2">#ff73a4b6</color>
+    <color name="graph3">#ffd0b54c</color>
+    <color name="graph4">#ffe29a57</color>
+    <color name="graph5">#ff7392b9</color>
 
     <color name="custom_text">#383838</color>
     <color name="custom_text_light">#bab9ba</color>

@@ -14,8 +14,8 @@
     <string name="nameSetting_help">What shall we call you?</string>
 
     <string name="notificationLabel">Questions</string>
-    <string name="notificationSetting_low">Weekly</string>
-    <string name="notificationSetting_medium">Daily</string>
+    <string name="notificationSetting_low">Daily</string>
+    <string name="notificationSetting_medium">Sometimes</string>
     <string name="notificationSetting_high">Frequently</string>
     <string name="notificationSetting_help">We\'ll be asking you questions to gauge your habits. How often do you want to be asked?</string>
     <string name="reset_text">Reset All Data</string>
