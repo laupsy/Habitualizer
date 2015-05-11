@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -23,10 +24,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -38,13 +49,16 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
     private float acceleration, acceleration_cur, acceleration_prev;
     private SensorManager sensorManager;
     private Sensor sensor;
-    private float steps = 0;
+    private float[] relMotion;
     private ArrayList<String> questions;
-
-    boolean doMotion;
+    private ArrayList<float[]> yesPerHour;
 
     private Database db;
     private Context c;
+
+    private int questionLevel, notifDelay;
+
+    private LineChart motionChart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +66,8 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
         setContentView(R.layout.activity_visualizer);
         c = this;
         init();
-
         db = new Database(this);
+        notifDelay = 108000;
 
         startService(new Intent(c, BgSensor.class));
 
@@ -64,18 +78,6 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
         acceleration = 0.00f;
         acceleration_cur = SensorManager.GRAVITY_EARTH;
         acceleration_prev = SensorManager.GRAVITY_EARTH;
-
-        // Check if motion is enabled
-        // Check if location is enabled
-        // Check question level
-        int questionLevel = db.getQuestionSetting();
-        int notifDelay = 10800000;
-        // seconds per week * 1000
-        if ( questionLevel == 0 ) notifDelay = 604800000;
-        // seconds per day * 1000
-        else if ( questionLevel == 1) notifDelay = 86400000;
-        // seconds per 3 hours * 1000
-        else notifDelay = 10800000;
 
         final Handler handler = new Handler();
         Timer timer = new Timer();
@@ -92,7 +94,7 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
                 });
             }
         };
-        timer.schedule(notifyInterval, 0, notifDelay);
+        timer.schedule(notifyInterval, notifDelay, notifDelay);
         Runnable r = new Runnable() {
             @Override
             public void run() {
@@ -107,6 +109,16 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
         t.start();
         GetQuestions getQuestions = new GetQuestions();
         getQuestions.execute();
+
+        // seconds per week * 1000
+        if ( questionLevel == 0 ) notifDelay = 6048000;
+            // seconds per day * 1000
+        else if ( questionLevel == 1) notifDelay = 864000;
+            // seconds per 3 hours * 1000
+        else notifDelay = 108000;
+
+        // Set Up Graph
+
     }
     @Override
     public void onResume() {
@@ -132,26 +144,6 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
             acceleration += change;
             if ( acceleration > THRESHOLD ) {
                 db.updateMotion();
-                TextView a = (TextView) findViewById(R.id.motion_daily);
-                TextView b = (TextView) findViewById(R.id.motion_hour0);
-                TextView c = (TextView) findViewById(R.id.motion_hour3);
-                TextView d = (TextView) findViewById(R.id.motion_hour6);
-                TextView e2 = (TextView) findViewById(R.id.motion_hour9);
-                TextView f = (TextView) findViewById(R.id.motion_hour12);
-                TextView g = (TextView) findViewById(R.id.motion_hour15);
-                TextView h = (TextView) findViewById(R.id.motion_hour18);
-                TextView i = (TextView) findViewById(R.id.motion_hour21);
-                //db.getMotion();
-                float[] steps = db.getMotion();
-                b.setText(steps[0] + " steps from midnight to 2am");
-                c.setText(steps[1] + " steps from 2am to 5am");
-                d.setText(steps[2] + " steps from 5am to 8am");
-                e2.setText(steps[3] + " steps from 8am to 11am");
-                f.setText(steps[4] + " steps from 11am to 2pm");
-                g.setText(steps[5] + " steps from 2pm to 5pm");
-                h.setText(steps[6] + " steps from 5pm to 8pm");
-                i.setText(steps[7] + " steps from 8pm to 11pm");
-                a.setText(steps[8] + " steps total");
             }
         }
     }
@@ -206,8 +198,8 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.icon)
-                        .setContentTitle("My notification")
-                        .setContentText("Hello World!");
+                        .setContentTitle("Habitualizer")
+                        .setContentText("It's time to post an update.");
 
         Intent resultIntent = new Intent(this, AskQuestion.class);
         PendingIntent resultPendingIntent =
@@ -233,48 +225,127 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
         protected Boolean doInBackground(String... params) {
             Database db = new Database(c);
             questions = db.getQuestions();
+            relMotion = db.getRelativeMotion();
+            yesPerHour = new ArrayList<>();
+            questionLevel = db.getQuestionSetting();
+            for ( int i = 0; i < questions.size(); i++ ) {
+                int qId = Integer.parseInt(questions.get(i).split(">>")[0]);
+                float[] f = db.getAnswersWithTime(qId);
+                yesPerHour.add(f);
+            }
             return true;
         }
 
         protected void onPostExecute(Boolean result) {
-            Database db = new Database(c);
-            int num, yes, no;
-            String question;
-            LinearLayout qm = (LinearLayout) findViewById(R.id.visualizer_view);
-            for ( int i = 0; i < questions.size(); i++ ) {
-
-                num = Integer.parseInt(questions.get(i).split(">>")[0]);
-                yes = db.getAnswerYes(num);
-                no = db.getAnswerNo(num);
-                question = questions.get(i).split(">>")[1];
-
-                /* Got how to add views programmatically from here:
-                    http://stackoverflow.com/questions/2395769/how-to-programmatically-add-views-to-views
-                 */
-                TextView t = new TextView(c);
-                View d = new View(c);
-                d.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        2
-                ));
-                d.setBackgroundColor(getResources().getColor(R.color.gray_light));
-                t.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                ));
-
-                t.setText("(" + (i+1) + ") " + question + " | Yes: " + yes + " | No: " + no);
-                t.setPadding(
-                        Math.round(getResources().getDimension(R.dimen.activity_horizontal_margin)),
-                        Math.round(getResources().getDimension(R.dimen.header_margin)),
-                        Math.round(getResources().getDimension(R.dimen.activity_horizontal_margin)),
-                        Math.round(getResources().getDimension(R.dimen.header_margin))
-                );
-                t.setTextSize(16);
-                t.setTextColor(getResources().getColor(R.color.label_text));
-                qm.addView(t);
-                qm.addView(d);
+            TextView dbug = (TextView) findViewById(R.id.q_answers);
+            for ( int i = 0; i < yesPerHour.size(); i++ ) {
+                float max = 0;
+                float maxNdx = 0;
+                for ( int j = 0; j < 8; j++ ) {
+                    if ( yesPerHour.get(i)[j] > 0 ) {
+                        if ( yesPerHour.get(i)[j] > max ) {
+                            maxNdx = j;
+                        }
+                    }
+                }
+                String thisTime;
+                TimeZone timezone = TimeZone.getDefault();
+                int timeInt = Math.round((maxNdx+1)*3);
+                int offset = timezone.getOffset(0, Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH, Calendar.DAY_OF_WEEK, timeInt * 3600000);
+                timeInt = Math.abs(timeInt + (offset / 3600000));
+                if ( timeInt < 13 ) thisTime = timeInt + " am";
+                else thisTime = (timeInt - 12) + " pm";
+                dbug.setText(dbug.getText() + "\n" + questions.get(i).split(">>")[1] + "\n" + "Mostly at " + thisTime);
             }
+            initGraph();
         }
+    }
+
+    void initGraph() {
+
+        // Setting up graph
+
+        // MOTION
+
+        motionChart = (LineChart) findViewById(R.id.motion_chart);
+        ArrayList<Entry> vals1 = new ArrayList<>();
+        ArrayList titles = new ArrayList<>();
+        ArrayList<LineDataSet> sets = new ArrayList<>();
+        for ( int i = 0; i < 8; i++ ) {
+            Entry e = new Entry(relMotion[i], i);
+            vals1.add(e);
+            String time;
+            TimeZone timezone = TimeZone.getDefault();
+            int timeInt = (1 + i*3);
+            int offset = timezone.getOffset(0, Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH, Calendar.DAY_OF_WEEK, timeInt * 3600000);
+            timeInt = Math.abs(timeInt + (offset / 3600000));
+            if ( timeInt < 13 ) {
+                time = timeInt + " am";
+            }
+            else {
+                time = (timeInt - 12) + " pm";
+            }
+            titles.add(time);
+        }
+        LineDataSet lds = new LineDataSet(vals1, "Motion");
+        sets.add(lds);
+        LineData data = new LineData(titles, sets);
+        lds.setLineWidth(0);
+        lds.setDrawCubic(true);
+        lds.setCubicIntensity(0.3f);
+        lds.setDrawFilled(true);
+        lds.setFillColor(getResources().getColor(R.color.graph4));
+        lds.setColor(getResources().getColor(R.color.graph4));
+        lds.setFillAlpha(200);
+        lds.setDrawCircles(false);
+
+
+        // QUESTION TEST
+
+        for ( int i = 0; i < yesPerHour.size(); i++ ) {
+            int thisTotal = 0;
+            ArrayList<Entry> questionVals = new ArrayList<>();
+            ArrayList questionTitles = new ArrayList<>();
+            float[] qtest = yesPerHour.get(i);
+            for ( int j = 0; j < 8; j++ ) {
+                thisTotal++;
+                float percent = (qtest[j] / thisTotal) * 100;
+                Entry e = new Entry(percent,j);
+                questionVals.add(e);
+                questionTitles.add(questions.get(0).split(">>")[1]);
+            }
+
+            LineDataSet questionTestData = new LineDataSet(questionVals, questions.get(i).split(">>")[1]);
+            questionTestData.setLineWidth(0);
+            questionTestData.setDrawCubic(true);
+            questionTestData.setCubicIntensity(0.3f);
+            questionTestData.setDrawFilled(true);
+            questionTestData.setFillAlpha(200);
+            questionTestData.setDrawCircles(false);
+
+            int id = getResources().getIdentifier("graph"+i,"color",getPackageName());
+            questionTestData.setFillColor(getResources().getColor(id));
+            questionTestData.setColor(getResources().getColor(id));
+            sets.add(questionTestData);
+            LineData data2 = new LineData(questionTitles, sets);
+            motionChart.setData(data2);
+        }
+
+
+        motionChart.setData(data);
+        motionChart.getLineData().setDrawValues(false);
+        XAxis xAxis = motionChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        xAxis.setAvoidFirstLastClipping(true);
+        xAxis.setLabelsToSkip(0);
+        motionChart.getAxisLeft().setEnabled(false);
+        motionChart.getAxisRight().setEnabled(false);
+        motionChart.setDrawGridBackground(false);
+        //motionChart.getLegend().setEnabled(false);
+        motionChart.setBackgroundColor(getResources().getColor(R.color.dataBackground));
+        motionChart.setDescription("");
+        motionChart.setTouchEnabled(false);
+        motionChart.invalidate();
     }
 }

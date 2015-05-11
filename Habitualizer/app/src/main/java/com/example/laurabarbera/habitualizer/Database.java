@@ -29,10 +29,11 @@ public class Database extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE MotionTable (Timestamp TEXT, Motion INTEGER);");
         db.execSQL("CREATE TABLE UserTable (_id INTEGER, Name TEXT, Motion INTEGER, Location INTEGER, Performance INTEGER, Questions INTEGER);");
-        db.execSQL("CREATE TABLE QuestionList (_id INTEGER, QuestionPhrase TEXT, YesCount INTEGER, NoCount INTEGER);");
+        db.execSQL("CREATE TABLE QuestionList (_id INTEGER, QuestionPhrase TEXT);");
         db.execSQL("INSERT INTO UserTable VALUES (1, '', 0, 0, 0, 0)");
-        db.execSQL("INSERT INTO QuestionList VALUES (1, 'Are you hungry?', 0, 0)");
-        db.execSQL("INSERT INTO QuestionList VALUES (2, 'Are you happy?', 0, 0)");
+        db.execSQL("INSERT INTO QuestionList VALUES (1, 'Are you hungry?')");
+        db.execSQL("INSERT INTO QuestionList VALUES (2, 'Are you happy?')");
+        db.execSQL("CREATE TABLE Answers(_id INTEGER, Answer INTEGER, Timestamp TEXT)");
     }
 
     // QUESTIONS
@@ -41,7 +42,6 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO QuestionList VALUES(" + id + ", " + question + ")");
         db.close();
     }
-
     public ArrayList<String> getQuestions() {
         int ndx = 0;
         ArrayList<String> questions = new ArrayList<>();
@@ -53,9 +53,9 @@ public class Database extends SQLiteOpenHelper {
                 questions.add(ndx + ">>" + cursor.getString(0));
             } while ( cursor.moveToNext() );
         }
+        db.close();
         return questions;
     }
-
     public String getRandomQuestion() {
         ArrayList<String> questions = getQuestions();
         Random r = new Random();
@@ -74,44 +74,16 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL("UPDATE UserTable SET Motion = '" + motion + "' WHERE _id = 1");
         db.close();
     }
-
     public void answerYes(int qNum) {
-        int curCount = getAnswerYes(qNum);
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("UPDATE QuestionList SET YesCount = " + (curCount + 1) + " WHERE _id = " + qNum);
+        db.execSQL("INSERT INTO Answers VALUES(" + qNum + ", 1, datetime())");
+        db.close();
     }
-
     public void answerNo(int qNum) {
-        int curCount = getAnswerNo(qNum);
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("UPDATE QuestionList SET NoCount = " + (curCount + 1) + " WHERE _id = " + qNum);
+        db.execSQL("INSERT INTO Answers VALUES(" + qNum + ", 0, datetime())");
+        db.close();
     }
-
-    public int getAnswerYes(int qNum) {
-        int curCount = 0;
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT YesCount FROM QuestionList WHERE _id = " + qNum, null);
-        if ( cursor.moveToFirst()) {
-            do {
-                curCount = cursor.getInt(0);
-            } while ( cursor.moveToNext() );
-        }
-        return curCount;
-    }
-
-    public int getAnswerNo(int qNum) {
-        int curCount = 0;
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT NoCount FROM QuestionList WHERE _id = " + qNum, null);
-        if ( cursor.moveToFirst()) {
-            do {
-                curCount = cursor.getInt(0);
-            } while ( cursor.moveToNext() );
-        }
-        return curCount;
-    }
-
-
     public void setLocationSetting(int location) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("UPDATE UserTable SET Location = '" + location + "' WHERE _id = 1");
@@ -136,6 +108,7 @@ public class Database extends SQLiteOpenHelper {
                 name = cursor.getString(0);
             } while ( cursor.moveToNext() );
         }
+        db.close();
         return name;
     }
     public int getMotionSetting() {
@@ -147,6 +120,7 @@ public class Database extends SQLiteOpenHelper {
                 motion = cursor.getInt(0);
             } while ( cursor.moveToNext() );
         }
+        db.close();
         return motion;
     }
     public int getLocationSetting() {
@@ -158,6 +132,7 @@ public class Database extends SQLiteOpenHelper {
                 location = cursor.getInt(0);
             } while ( cursor.moveToNext() );
         }
+        db.close();
         return location;
     }
     public int getPowerSetting() {
@@ -169,6 +144,7 @@ public class Database extends SQLiteOpenHelper {
                 usage = cursor.getInt(0);
             } while ( cursor.moveToNext() );
         }
+        db.close();
         return usage;
     }
     public int getQuestionSetting() {
@@ -180,6 +156,7 @@ public class Database extends SQLiteOpenHelper {
                 notif = cursor.getInt(0);
             } while ( cursor.moveToNext() );
         }
+        db.close();
         return notif;
     }
 
@@ -223,8 +200,6 @@ public class Database extends SQLiteOpenHelper {
         // Break down motion into hours
 
         for ( int i = 0; i < time.size(); i++ ) {
-            int day = Integer.parseInt(time.get(i).substring(8, 10), 10);
-
             int hour = Integer.parseInt(time.get(i).substring(11, 13), 10);
 
             if ( hour == 0 || hour == 1 || hour == 2) {
@@ -255,11 +230,80 @@ public class Database extends SQLiteOpenHelper {
 
         motionPerHour[8] = totalMotion;
 
+        db.close();
         return motionPerHour;
     }
 
+    public float[] getAnswersWithTime(int id) {
+        float[] yesPerHour = new float[9];
+        ArrayList<Integer> answers = new ArrayList<>();
+        ArrayList<String> time = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor answerdata = db.rawQuery("SELECT Answer FROM Answers WHERE _id = " + id, null);
+        Cursor timedata = db.rawQuery("SELECT Timestamp FROM Answers WHERE _id = " + id, null);
+        if ( answerdata.moveToFirst() ) {
+            do {
+                answers.add(answerdata.getInt(0));
+            } while ( answerdata.moveToNext() );
+        }
+        if ( timedata.moveToFirst() ) {
+            do {
+                time.add(timedata.getString(0));
+            } while (timedata.moveToNext());
+        }
+
+        for ( int i = 0; i < time.size(); i++ ) {
+            int hour = Integer.parseInt(time.get(i).substring(11, 13), 10);
+            if ( hour == 0 || hour == 1 || hour == 2) {
+                yesPerHour[0] += 1;
+            }
+            else if ( hour == 3 || hour == 4 || hour == 5 ) {
+                yesPerHour[1] += 1;
+            }
+            else if ( hour == 6 || hour == 7 || hour == 8 ) {
+                yesPerHour[2] += 1;
+            }
+            else if ( hour == 9 || hour == 10 || hour == 11 ) {
+                yesPerHour[3] += 1;
+            }
+            else if ( hour == 12 || hour == 13 || hour == 14 ) {
+                yesPerHour[4] += 1;
+            }
+            else if ( hour == 15 || hour == 16 || hour == 17 ) {
+                yesPerHour[5] += 1;
+            }
+            else if ( hour == 18 || hour == 19 || hour == 20 ) {
+                yesPerHour[6] += 1;
+            }
+            else if ( hour == 21 || hour == 22 || hour == 23 ) {
+                yesPerHour[7] += 1;
+            }
+        }
+        return yesPerHour;
+    }
+
+    public float[] getRelativeMotion() {
+        float[] relMotion = getMotion();
+        float totalMotion = relMotion[8];
+        for ( int i = 0; i < 9; i++ ) {
+            relMotion[i] = (relMotion[i] / totalMotion) * 100;
+            if ( relMotion[i] == 0 ) relMotion[i] = 1 + (float) Math.random()*2;
+        }
+
+        return relMotion;
+    }
 
     public void onUpgrade(SQLiteDatabase s, int a, int b) {
 
+    }
+
+    public float[] getRelativeYes(int id) {
+        float[] relYes = getAnswersWithTime(id);
+        float totalYes = relYes[8];
+        for ( int i = 0; i < 9; i++ ) {
+            relYes[i] = (relYes[i] / totalYes) * 100;
+            if ( relYes[i] == 0 ) relYes[i] = 1 + (float) Math.random()*2;
+        }
+        return relYes;
     }
 }

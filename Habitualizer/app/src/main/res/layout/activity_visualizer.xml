@@ -1,64 +1,42 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.example.laurabarbera.habitualizer.Visualizer">
-    <ScrollView
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context="com.example.laurabarbera.habitualizer.Visualizer" >
+    <RelativeLayout
+        android:id="@+id/visualizer_view"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-        <LinearLayout
-            android:id="@+id/visualizer_view"
-            android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <TextView android:id="@+id/visualizer_header"
+            android:text="Visualizer"
+            android:paddingTop="@dimen/header_margin"
+            android:paddingBottom="@dimen/header_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:background="@color/header_background"
+            android:textColor="@color/header_text"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-
-    <TextView android:id="@+id/motion_hour0"
-        android:text=""
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView android:id="@+id/motion_hour3"
-        android:text=""
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView android:id="@+id/motion_hour6"
-        android:text=""
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView android:id="@+id/motion_hour9"
-        android:text=""
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView android:id="@+id/motion_hour12"
-        android:text=""
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView android:id="@+id/motion_hour15"
-        android:text=""
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView android:id="@+id/motion_hour18"
-        android:text=""
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView android:id="@+id/motion_hour21"
-        android:text=""
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView android:id="@+id/motion_daily"
-        android:text=""
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-
-        </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+            android:textSize="16dp"
+            android:layout_height="wrap_content" />
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/motion_chart"
+            android:layout_width="fill_parent"
+            android:layout_below="@id/visualizer_header"
+            android:layout_margin="0dp"
+            android:padding="0dp"
+            android:layout_height="250dp" />
+        <TextView android:id="@+id/q_answers"
+            android:text=""
+            android:layout_below="@id/motion_chart"
+            android:paddingTop="@dimen/header_margin"
+            android:paddingBottom="@dimen/header_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:background="@color/header_background"
+            android:textColor="@color/header_text"
+            android:layout_width="fill_parent"
+            android:textSize="16dp"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+</ScrollView>

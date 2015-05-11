@@ -2,12 +2,20 @@
 <resources>
 
     <color name="white">#ffffff</color>
-    <color name="ui">#29b783</color>
-    <color name="ui_dark">#0b8973</color>
+    <color name="ui">#68a8ad</color>
+    <color name="ui_dark">#559398</color>
+
+    <color name="graph0">#462435</color>
+    <color name="graph1">#b22c45</color>
+    <color name="graph2">#743749</color>
+    <color name="graph3">#cb3a35</color>
+    <color name="graph4">#462435</color>
+    <color name="graph5">#e8592a</color>
+
     <color name="custom_text">#383838</color>
     <color name="custom_text_light">#bab9ba</color>
     <color name="custom_text_title">#ffffff</color>
-    <color name="header_background">#4d4645</color>
+    <color name="header_background">#f17d80</color>
     <color name="header_text">#ffffff</color>
 
     <color name="label_text">#777777</color>
@@ -22,8 +30,11 @@
     <color name="selected">#eeeeee</color>
     <color name="unselected">#ffffff</color>
 
-    <color name="header_background2">#526071</color>
+    <color name="header_background2">#3a126d</color>
     <color name="header_text2">#ffffff</color>
     <color name="fullbutton_background">#818bdb</color>
+
+    <color name="dataBackground">#eeeeee</color>
+    <color name="data">#fafafa</color>
 
 </resources>
