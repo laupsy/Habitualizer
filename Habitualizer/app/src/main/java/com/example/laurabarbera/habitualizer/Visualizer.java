@@ -241,21 +241,42 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
             for ( int i = 0; i < yesPerHour.size(); i++ ) {
                 float max = 0;
                 float maxNdx = 0;
+                float total = 0;
                 for ( int j = 0; j < 8; j++ ) {
+                    total += yesPerHour.get(i)[j];
                     if ( yesPerHour.get(i)[j] > 0 ) {
                         if ( yesPerHour.get(i)[j] > max ) {
                             maxNdx = j;
                         }
                     }
                 }
-                String thisTime;
+                String time;
                 TimeZone timezone = TimeZone.getDefault();
-                int timeInt = Math.round((maxNdx+1)*3);
-                int offset = timezone.getOffset(0, Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH, Calendar.DAY_OF_WEEK, timeInt * 3600000);
-                timeInt = Math.abs(timeInt + (offset / 3600000));
-                if ( timeInt < 13 ) thisTime = timeInt + " am";
-                else thisTime = (timeInt - 12) + " pm";
-                dbug.setText(dbug.getText() + "\n" + questions.get(i).split(">>")[1] + "\n" + "Mostly at " + thisTime);
+                int timeInt = Math.round((maxNdx + 1) * 3);
+                int offset = (timezone.getOffset(0, Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH, Calendar.DAY_OF_WEEK, timeInt * 3600000) / 3600000) + 1;
+                if ( (timeInt + offset) < 0 ) {
+                    timeInt += 24;
+                }
+                int localTime = timeInt + offset;
+                if ( localTime < 13 ) {
+                    time = localTime + " am";
+                }
+                else {
+                    time = (localTime - 12) + " pm";
+                }
+                String questionText = questions.get(i).split(">>")[1];
+                if ( questionText.split(" ")[0].equals("Did") || questionText.split(" ")[0].equals("Have") ) {
+                    float howOften = (max / total) * 100;
+                    if ( howOften < 50 ) {
+                        dbug.setText(dbug.getText() + "\n" + questionText + "\n" + "You do this most of the time.");
+                    }
+                    else {
+                        dbug.setText(dbug.getText() + "\n" + questionText + "\n" + "You don't do this often.");
+                    }
+                }
+                else {
+                    dbug.setText(dbug.getText() + "\n" + questionText + "\n" + "Mostly at " + time);
+                }
             }
             initGraph();
         }
@@ -277,15 +298,19 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
             String time;
             TimeZone timezone = TimeZone.getDefault();
             int timeInt = (1 + i*3);
-            int offset = timezone.getOffset(0, Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH, Calendar.DAY_OF_WEEK, timeInt * 3600000);
-            timeInt = Math.abs(timeInt + (offset / 3600000));
-            if ( timeInt < 13 ) {
-                time = timeInt + " am";
+            int offset = (timezone.getOffset(0, Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH, Calendar.DAY_OF_WEEK, timeInt * 3600000) / 3600000) + 1;
+            Log.d("TIHS IS TH EOFFSET", timeInt + "");
+            if ( (timeInt + offset) < 0 ) {
+                timeInt += 24;
+            }
+            int localTime = timeInt + offset;
+            if ( localTime < 13 ) {
+                time = localTime + " am";
             }
             else {
-                time = (timeInt - 12) + " pm";
+                time = (localTime - 12) + " pm";
             }
-            titles.add(time);
+            titles.add(time + "");
         }
         LineDataSet lds = new LineDataSet(vals1, "Motion");
         sets.add(lds);
@@ -337,7 +362,7 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
         XAxis xAxis = motionChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
-        xAxis.setAvoidFirstLastClipping(true);
+        //xAxis.setAvoidFirstLastClipping(true);
         xAxis.setLabelsToSkip(0);
         motionChart.getAxisLeft().setEnabled(false);
         motionChart.getAxisRight().setEnabled(false);
@@ -346,6 +371,8 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
         motionChart.setBackgroundColor(getResources().getColor(R.color.dataBackground));
         motionChart.setDescription("");
         motionChart.setTouchEnabled(false);
+        //motionChart.setViewPortOffsets(0f, 0f, 0f, 0f);
+        motionChart.setViewPortOffsets(0f,0f,0f,0f);
         motionChart.invalidate();
     }
 }

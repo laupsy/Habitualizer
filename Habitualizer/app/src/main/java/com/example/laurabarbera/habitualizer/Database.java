@@ -39,7 +39,7 @@ public class Database extends SQLiteOpenHelper {
     // QUESTIONS
     public void addQuestion(String question, int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("INSERT INTO QuestionList VALUES(" + id + ", " + question + ")");
+        db.execSQL("INSERT INTO QuestionList VALUES(" + id + ", '" + question + "')");
         db.close();
     }
     public ArrayList<String> getQuestions() {
@@ -56,6 +56,19 @@ public class Database extends SQLiteOpenHelper {
         db.close();
         return questions;
     }
+    public int getLastQuestionId() {
+        int id = 0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT _id FROM QuestionList", null);
+        if ( cursor.moveToFirst()) {
+            do {
+                id = cursor.getInt(0);
+            } while ( cursor.moveToNext() );
+        }
+        db.close();
+        return id;
+    }
+
     public String getRandomQuestion() {
         ArrayList<String> questions = getQuestions();
         Random r = new Random();

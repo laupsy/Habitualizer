@@ -25,6 +25,33 @@
             android:textSize="16dp"
             android:layout_height="wrap_content" />
 
+        <RelativeLayout
+            android:id="@+id/create_new"
+            android:visibility="gone"
+            android:layout_marginTop="50dp"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            <TextView
+                android:id="@+id/create_new_help"
+                android:text="Hint: Start your question with 'Did', 'Are', or 'Have' For example, 'Did you eat breakfast today?' or 'Have you eaten breakfast today' are analyzeable questions."
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/header_margin"
+                android:layout_alignParentLeft="true"
+                android:textSize="11dp"
+                android:textColor="@color/custom_text_light"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+                <EditText
+                android:id="@+id/create_new_input"
+                android:textColor="@color/custom_text"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_width="fill_parent"
+                android:layout_below="@id/create_new_help"
+                android:layout_height="50dp" />
+        </RelativeLayout>
+
         <Button android:id="@+id/add"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/button_height"
