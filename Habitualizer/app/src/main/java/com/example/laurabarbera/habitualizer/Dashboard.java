@@ -67,6 +67,11 @@ public class Dashboard extends ActionBarActivity {
                                 Intent visualizer = new Intent(Dashboard.this, Visualizer.class);
                                 Dashboard.this.startActivity(visualizer);
                                 Dashboard.this.finish();
+
+                                /* got from
+                                http://stackoverflow.com/questions/10243557/how-to-slide-animation-between-two-activity-in-android*/
+
+                                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
                             }
                         });
                     }
@@ -102,6 +107,11 @@ public class Dashboard extends ActionBarActivity {
                 Intent i = new Intent(Dashboard.this, QuestionManager.class);
                 Dashboard.this.startActivity(i);
                 Dashboard.this.finish();
+
+                /* got from
+                http://stackoverflow.com/questions/10243557/how-to-slide-animation-between-two-activity-in-android*/
+
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
 
             }
         });
@@ -172,6 +182,9 @@ public class Dashboard extends ActionBarActivity {
             db.setQuestionSetting(0);
             db.setPowerSetting(0);
             db.setMotionSetting(0);
+            for ( int i = 0; i < db.getLastQuestionId(); i++ ) {
+                db.removeQuestion(i);
+            }
 
             return true;
         }

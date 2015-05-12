@@ -123,6 +123,11 @@ public class Config extends ActionBarActivity {
                                             nextStep.putExtra("IS_SETUP",true);
                                             Config.this.startActivity(nextStep);
                                             Config.this.finish();
+
+                                /* got from
+                                http://stackoverflow.com/questions/10243557/how-to-slide-animation-between-two-activity-in-android*/
+
+                                            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                                         }
                                     });
                                 }

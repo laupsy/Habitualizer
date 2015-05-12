@@ -165,8 +165,8 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
                         a.setDisplayHomeAsUpEnabled(false);
                         a.setDisplayShowHomeEnabled(false);
                         a.setDisplayShowCustomEnabled(true);
-                        a.setDisplayShowTitleEnabled(false);
                         getSupportActionBar().setCustomView(R.layout.actionbar_layout);
+                        getSupportActionBar().setTitle("Your Activity");
                         ImageView v = (ImageView) findViewById(R.id.visualizer);
                         v.setOnClickListener(new View.OnClickListener() {
                             public void onClick(View v) {
@@ -182,6 +182,11 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
                                 Intent back = new Intent(Visualizer.this, Dashboard.class);
                                 Visualizer.this.startActivity(back);
                                 Visualizer.this.finish();
+
+                                /* got from
+                                http://stackoverflow.com/questions/10243557/how-to-slide-animation-between-two-activity-in-android*/
+
+                                overridePendingTransition(R.anim.slide_in_rtl, R.anim.slide_out_rtl);
                             }
                         });
                     }
@@ -198,9 +203,11 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.icon)
+                        .setSmallIcon(R.drawable.miniicon)
                         .setContentTitle("Habitualizer")
-                        .setContentText("It's time to post an update.");
+                        .setContentText("It's time to post an update.")
+                        .setVibrate(new long[] { 0, 1000 } )
+                        .setLights(Color.MAGENTA, 3000, 3000);
 
         Intent resultIntent = new Intent(this, AskQuestion.class);
         PendingIntent resultPendingIntent =
@@ -248,26 +255,12 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
                     if ( yesPerHour.get(i)[j] > 0 ) {
                         if ( yesPerHour.get(i)[j] > max ) {
                             maxNdx = j;
+                            max = yesPerHour.get(i)[j];
                         }
                     }
                 }
-                String time;
-                TimeZone timezone = TimeZone.getDefault();
-                int timeInt = Math.round((maxNdx + 1) * 3);
-                int offset = (timezone.getOffset(0, Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH, Calendar.DAY_OF_WEEK, timeInt * 3600000) / 3600000) + 1;
-                if ( (timeInt + offset) < 0 ) {
-                    timeInt += 24;
-                }
-                int localTime = timeInt + offset;
-                if ( localTime < 13 ) {
-                    time = localTime + " am";
-                    if ( localTime == 0 ) {
-                        time = "12 am";
-                    }
-                }
-                else {
-                    time = (localTime - 12) + " pm";
-                }
+
+                String time = utcToLocal(Math.round(maxNdx));
                 String questionText = questions.get(i).split(">>")[1];
                 String questionWord = questionText.split(" ")[0];
                 String questionAction = "";
@@ -278,14 +271,15 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
                 for ( int j = 2; j < question.length; j++ ) {
                     questionAction += (" " + question[j]);
                 }
-                questionAction = questionAction.substring(0, questionAction.length() - 1);
+                if ( questionAction.length() > 0 ) questionAction = questionAction.substring(0, questionAction.length() - 1);
                 if ( questionWord.equals("Did") || questionText.split(" ")[0].equals("Have") ) {
                     float howOften = (max / total) * 100;
                     if ( howOften > 75 ) {
-                        addNew = "You" + questionAction + " constantly.";
+                        addNew = "You" + questionAction + " very consistently.";
                     }
                     else if ( howOften > 50 && howOften < 75 ) {
-                        addNew = "You" + questionAction + " frequently.";
+                        addNew = "You" + questionAction
+                                + " frequently.";
                     }
                     else if ( howOften > 25 && howOften < 50 ) {
                         addNew = "You don't" + questionAction + " do this often.";
@@ -295,19 +289,25 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
                     }
                 }
                 else {
-                    addNew = "Usually, you" + questionAction + " at " + time + ".";
+                    if ( max == 0 ) {
+                        addNew = "You" + questionAction + " almost never.";
+                    } else {
+                        addNew = "Usually, you" + questionAction + " at " + time + ".";
+                    }
                 }
-                int colorid = getResources().getIdentifier("graph"+i,"color",getPackageName());
-                Log.d("color ", colorid + "");
+
                 int id = getResources().getIdentifier("answer"+i,"id",getPackageName());
                 int id2 = getResources().getIdentifier("sep"+i,"id",getPackageName());
+                int id3 = getResources().getIdentifier("buff"+i,"id",getPackageName());
                 TextView tv = (TextView) findViewById(id);
                 tv.setText(addNew);
                 tv.setPadding(0, 100, 0, 100);
-                tv.setTextColor(colorid);
-                tv.setTextSize(21);
+                tv.setTextColor(getResources().getColor(R.color.custom_text));
+                tv.setTextSize(19);
                 tv.setVisibility(View.VISIBLE);
                 View v = findViewById(id2);
+                View v2 = findViewById(id3);
+                v2.setVisibility(View.VISIBLE);
                 v.setVisibility(View.VISIBLE);
             }
             initGraph();
@@ -324,7 +324,6 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
         ArrayList<Entry> vals1 = new ArrayList<>();
         ArrayList titles = new ArrayList<>();
         ArrayList<LineDataSet> sets = new ArrayList<>();
-        String maxNdxStr = "";
         int maxNdx = 0;
         float max = 0;
         for ( int i = 0; i < 8; i++ ) {
@@ -335,41 +334,13 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
             if ( relMotion[i] >= 90 ) relMotion[i] -= 10;
             Entry e = new Entry(relMotion[i], i);
             vals1.add(e);
-            String time;
-            TimeZone timezone = TimeZone.getDefault();
-            int timeInt = (1 + i*3);
-            int offset = (timezone.getOffset(0, Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH, Calendar.DAY_OF_WEEK, timeInt * 3600000) / 3600000) + 1;
 
-            if ( (timeInt + offset) < 0 ) {
-                timeInt += 24;
-            }
-            int localTime = timeInt + offset;
-            if ( localTime < 13 ) {
-                time = localTime + " am";
-                if ( localTime == 0 ) {
-                    time = "12 am";
-                }
-            }
-            else {
-                time = (localTime - 12) + " pm";
-            }
-
+            String time = utcToLocal(i);
             titles.add(time + "");
-
-            if ( (maxNdx + offset) < 0 ) {
-                maxNdx += 24;
-            }
-            maxNdx = Math.round(maxNdx) + offset;
-            if ( maxNdx < 13 ) {
-                maxNdxStr = maxNdx + " am";
-                if ( maxNdx == 0 ) {
-                    maxNdxStr = "12 am";
-                }
-            }
-            else {
-                maxNdxStr = (maxNdx - 12) + " pm";
-            }
         }
+
+        String maxNdxStr = utcToLocal(maxNdx);
+
         TextView motionAnalysis = (TextView) findViewById(R.id.motion_analysis);
         motionAnalysis.setText("You are most active around " + maxNdxStr + ".");
         motionAnalysis.setPadding(0, 100, 0, 100);
@@ -387,7 +358,7 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
         lds.setFillAlpha(150);
         lds.setDrawCircles(false);
 
-        // QUESTION TEST
+        // QUESTION GRAPHING
 
         for ( int i = 0; i < yesPerHour.size(); i++ ) {
             String question = questions.get(i).split(">>")[1];
@@ -404,7 +375,6 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
                     Entry e = new Entry(percent,j);
                     questionVals.add(e);
                     questionTitles.add(question);
-                    Log.d("hello", percent + " " + questions.get(i));
                 }
 
                 LineDataSet questionTestData = new LineDataSet(questionVals, questions.get(i).split(">>")[1]);
@@ -427,14 +397,14 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
         YAxis yAxis = motionChart.getAxisLeft();
         yAxis.setStartAtZero(true);
         yAxis.setAxisMaxValue(110);
-        motionChart.setData(data);
-        motionChart.getLineData().setDrawValues(false);
         XAxis xAxis = motionChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
         xAxis.setAvoidFirstLastClipping(true);
         xAxis.setLabelsToSkip(0);
         xAxis.setTextColor(getResources().getColor(R.color.custom_text_light));
+        motionChart.setData(data);
+        motionChart.getLineData().setDrawValues(false);
         motionChart.getAxisLeft().setEnabled(false);
         motionChart.getAxisRight().setEnabled(false);
         motionChart.setDrawGridBackground(false);
@@ -442,12 +412,31 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
         motionChart.setDescription("");
         motionChart.setTouchEnabled(false);
         Legend legend = motionChart.getLegend();
-        legend.setTextColor(getResources().getColor(R.color.custom_text_light));
-        legend.setForm(Legend.LegendForm.CIRCLE);
-        legend.setFormSize(8f);
-        legend.setFormToTextSpace(2f);
-        legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
-        legend.setXEntrySpace(10f);
+        legend.setEnabled(false);
+//        legend.setTextColor(getResources().getColor(R.color.custom_text_light));
+//        legend.setForm(Legend.LegendForm.CIRCLE);
+//        legend.setFormSize(8f);
+//        legend.setFormToTextSpace(2f);
+//        legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
+//        legend.setXEntrySpace(10f);
         motionChart.invalidate();
+    }
+    String utcToLocal(int index) {
+        String time;
+        TimeZone timezone = TimeZone.getDefault();
+        int timeInt = Math.round((index + 1) * 3);
+        int offset = (timezone.getOffset(0, Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH, Calendar.DAY_OF_WEEK, timeInt * 3600000) / 3600000) + 1;
+        if ( (timeInt + offset) < 0 ) timeInt += 24;
+        int localTime = timeInt + offset;
+        if ( localTime < 13 ) {
+            time = localTime + " am";
+            if ( localTime == 0 ) {
+                time = "12 am";
+            }
+        }
+        else {
+            time = (localTime - 12) + " pm";
+        }
+        return time;
     }
 }

@@ -1,15 +1,14 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.laurabarbera.habitualizer.QuestionManager">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/background"
-        android:orientation="vertical"
         android:id="@+id/qmanager_layout"
         tools:context="com.example.laurabarbera.habitualizer.QuestionManager">
 
@@ -19,21 +18,42 @@
             android:paddingBottom="@dimen/header_margin"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
-            android:background="@color/header_background2"
-            android:textColor="@color/header_text2"
+            android:background="@color/header_background"
+            android:textColor="@color/header_text"
             android:layout_width="match_parent"
             android:textSize="16dp"
+            android:layout_height="wrap_content" />
+
+        <ImageView android:id="@+id/createnew_close"
+            android:layout_width="45dp"
+            android:layout_height="65dp"
+            android:visibility="gone"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/close" />
+        <TextView
+            android:id="@+id/q_help"
+            android:text="Tap a question to remove it."
+            android:paddingTop="@dimen/header_margin"
+            android:paddingBottom="@dimen/header_margin"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/header_margin"
+            android:layout_alignParentLeft="true"
+            android:textSize="11dp"
+            android:layout_below="@id/question_manager_header"
+            android:textColor="@color/custom_text_light"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <RelativeLayout
             android:id="@+id/create_new"
             android:visibility="gone"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="100dp"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/create_new_help"
-                android:text="Hint: Start your question with 'Did', 'Are', or 'Have' For example, 'Did you eat breakfast today?' or 'Have you eaten breakfast today' are analyzeable questions."
+                android:text="Hint: Start your question with 'Did you', or 'Are you'. For example, 'Did you eat breakfast today?' or 'Are you eating breakfast' are analyzeable questions."
                 android:paddingStart="@dimen/activity_horizontal_margin"
                 android:paddingEnd="@dimen/activity_horizontal_margin"
                 android:layout_marginBottom="@dimen/header_margin"
@@ -47,10 +67,20 @@
                 android:textColor="@color/custom_text"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="50dp"
                 android:layout_width="fill_parent"
+                    android:inputType="textCapSentences"
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ?'"
                 android:layout_below="@id/create_new_help"
                 android:layout_height="50dp" />
         </RelativeLayout>
+
+        <View android:id="@+id/separator"
+            android:background="@color/gray_light"
+            android:layout_height="1dp"
+            android:layout_below="@id/q_help"
+            android:layout_marginTop="@dimen/header_margin"
+            android:layout_width="match_parent" />
 
         <Button android:id="@+id/add"
             android:layout_width="fill_parent"
@@ -59,15 +89,200 @@
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/header_margin"
             android:text="Create New Question"
+            android:layout_below="@id/separator"
             android:textColor="@color/button_light_text"
             android:background="@drawable/button" />
 
-        <View android:id="@+id/separator"
+        <TextView android:id="@+id/q_0"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/header_margin"
+            android:textSize="@dimen/q_size"
+            android:visibility="gone"
+            android:textColor="@color/label_text"
+            android:layout_below="@id/add" />
+
+        <View android:id="@+id/sep_0"
             android:background="@color/gray_light"
             android:layout_height="1dp"
+            android:visibility="gone"
+            android:layout_below="@id/q_0"
             android:layout_marginTop="@dimen/header_margin"
             android:layout_width="match_parent" />
 
-    </LinearLayout>
+        <TextView android:id="@+id/q_1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/header_margin"
+            android:textSize="@dimen/q_size"
+            android:visibility="gone"
+            android:textColor="@color/label_text"
+            android:layout_below="@id/sep_0" />
 
-</RelativeLayout>
+        <View android:id="@+id/sep_1"
+            android:background="@color/gray_light"
+            android:layout_height="1dp"
+            android:visibility="gone"
+            android:layout_below="@id/q_1"
+            android:layout_marginTop="@dimen/header_margin"
+            android:layout_width="match_parent" />
+
+        <TextView android:id="@+id/q_2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/header_margin"
+            android:textSize="@dimen/q_size"
+            android:visibility="gone"
+            android:textColor="@color/label_text"
+            android:layout_below="@id/sep_1" />
+
+        <View android:id="@+id/sep_2"
+            android:background="@color/gray_light"
+            android:layout_height="1dp"
+            android:visibility="gone"
+            android:layout_below="@id/q_2"
+            android:layout_marginTop="@dimen/header_margin"
+            android:layout_width="match_parent" />
+
+        <TextView android:id="@+id/q_3"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/header_margin"
+            android:textSize="@dimen/q_size"
+            android:visibility="gone"
+            android:textColor="@color/label_text"
+            android:layout_below="@id/sep_2" />
+
+        <View android:id="@+id/sep_3"
+            android:background="@color/gray_light"
+            android:layout_height="1dp"
+            android:visibility="gone"
+            android:layout_below="@id/q_3"
+            android:layout_marginTop="@dimen/header_margin"
+            android:layout_width="match_parent" />
+
+        <TextView android:id="@+id/q_4"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/header_margin"
+            android:textSize="@dimen/q_size"
+            android:visibility="gone"
+            android:textColor="@color/label_text"
+            android:layout_below="@id/sep_3" />
+
+        <View android:id="@+id/sep_4"
+            android:background="@color/gray_light"
+            android:layout_height="1dp"
+            android:visibility="gone"
+            android:layout_below="@id/q_4"
+            android:layout_marginTop="@dimen/header_margin"
+            android:layout_width="match_parent" />
+
+        <TextView android:id="@+id/q_5"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/header_margin"
+            android:textSize="@dimen/q_size"
+            android:visibility="gone"
+            android:textColor="@color/label_text"
+            android:layout_below="@id/sep_4" />
+
+        <View android:id="@+id/sep_5"
+            android:background="@color/gray_light"
+            android:layout_height="1dp"
+            android:visibility="gone"
+            android:layout_below="@id/q_5"
+            android:layout_marginTop="@dimen/header_margin"
+            android:layout_width="match_parent" />
+
+        <TextView android:id="@+id/q_6"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/header_margin"
+            android:textSize="@dimen/q_size"
+            android:visibility="gone"
+            android:textColor="@color/label_text"
+            android:layout_below="@id/sep_5" />
+
+        <View android:id="@+id/sep_6"
+            android:background="@color/gray_light"
+            android:layout_height="1dp"
+            android:visibility="gone"
+            android:layout_below="@id/q_6"
+            android:layout_marginTop="@dimen/header_margin"
+            android:layout_width="match_parent" />
+
+        <TextView android:id="@+id/q_7"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/header_margin"
+            android:textSize="@dimen/q_size"
+            android:visibility="gone"
+            android:textColor="@color/label_text"
+            android:layout_below="@id/sep_6" />
+
+        <View android:id="@+id/sep_7"
+            android:background="@color/gray_light"
+            android:layout_height="1dp"
+            android:visibility="gone"
+            android:layout_below="@id/q_7"
+            android:layout_marginTop="@dimen/header_margin"
+            android:layout_width="match_parent" />
+
+        <TextView android:id="@+id/q_8"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/header_margin"
+            android:textSize="@dimen/q_size"
+            android:visibility="gone"
+            android:textColor="@color/label_text"
+            android:layout_below="@id/sep_7" />
+
+        <View android:id="@+id/sep_8"
+            android:background="@color/gray_light"
+            android:layout_height="1dp"
+            android:visibility="gone"
+            android:layout_below="@id/q_8"
+            android:layout_marginTop="@dimen/header_margin"
+            android:layout_width="match_parent" />
+
+        <TextView android:id="@+id/q_9"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/header_margin"
+            android:textSize="@dimen/q_size"
+            android:visibility="gone"
+            android:textColor="@color/label_text"
+            android:layout_below="@id/sep_8" />
+
+        <View android:id="@+id/sep_9"
+            android:background="@color/gray_light"
+            android:layout_height="1dp"
+            android:visibility="gone"
+            android:layout_below="@id/q_9"
+            android:layout_marginTop="@dimen/header_margin"
+            android:layout_width="match_parent" />
+
+    </RelativeLayout>
+
+</ScrollView>

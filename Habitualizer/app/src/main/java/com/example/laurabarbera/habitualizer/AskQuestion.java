@@ -1,5 +1,6 @@
 package com.example.laurabarbera.habitualizer;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -97,9 +98,11 @@ public class AskQuestion extends ActionBarActivity {
     }
 
     private class GetQuestion extends AsyncTask<String, Void, Boolean> {
+        private String uname;
         @Override
         protected Boolean doInBackground(String... params) {
             Database db = new Database(c);
+            uname = db.getName();
             String q[] = db.getRandomQuestion().split(">>");
             num = Integer.parseInt(q[0]);
             question = q[1];
@@ -107,6 +110,8 @@ public class AskQuestion extends ActionBarActivity {
         }
 
         protected void onPostExecute(Boolean result) {
+            TextView tv = (TextView) findViewById(R.id.ask_name);
+            tv.setText(uname + ",");
             questionField = (TextView) findViewById(R.id.question_field);
             questionField.setText(question);
         }
@@ -124,6 +129,10 @@ public class AskQuestion extends ActionBarActivity {
             Intent i = new Intent(AskQuestion.this, Visualizer.class);
             AskQuestion.this.startActivity(i);
             AskQuestion.this.finish();
+            int mNotificationId = 001;
+            NotificationManager mNotifyMgr =
+                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            mNotifyMgr.cancel(mNotificationId);
         }
     }
 
@@ -139,6 +148,10 @@ public class AskQuestion extends ActionBarActivity {
             Intent i = new Intent(AskQuestion.this, Visualizer.class);
             AskQuestion.this.startActivity(i);
             AskQuestion.this.finish();
+            int mNotificationId = 001;
+            NotificationManager mNotifyMgr =
+                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            mNotifyMgr.cancel(mNotificationId);
         }
     }
 

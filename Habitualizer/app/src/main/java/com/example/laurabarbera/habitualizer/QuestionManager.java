@@ -14,7 +14,9 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -34,19 +37,51 @@ public class QuestionManager extends ActionBarActivity {
     private ArrayList<String> questions;
     private RelativeLayout createNew;
     private EditText createNewInput;
-    private LinearLayout questionList;
+    private RelativeLayout questionList;
+    private Button add;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_manager);
         c = this;
-        Button add = (Button)findViewById(R.id.add);
+        add = (Button)findViewById(R.id.add);
         createNew = (RelativeLayout) findViewById(R.id.create_new);
         createNewInput = (EditText) findViewById(R.id.create_new_input);
-        questionList = (LinearLayout) findViewById(R.id.qmanager_layout);
+        questionList = (RelativeLayout) findViewById(R.id.qmanager_layout);
 
         Button createNewButton = (Button) findViewById(R.id.add);
+
+        TextView h = (TextView) findViewById(R.id.question_manager_header);
+        h.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                /* got hide keyboard from
+                http://stackoverflow.com/questions/1109022/close-hide-the-android-soft-keyboard */
+                InputMethodManager imm = (InputMethodManager)getSystemService(
+                        Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(createNewInput.getWindowToken(), 0);
+                TextView qhelp = (TextView) findViewById(R.id.q_help);
+                qhelp.setVisibility(View.VISIBLE);
+                EditText et = (EditText) findViewById(R.id.create_new_input);
+                et.setText("");
+                TextView header = (TextView) findViewById(R.id.question_manager_header);
+                header.setText(getResources().getString(R.string.manageQuestions_header));
+                createNew.setVisibility(View.GONE);
+                ImageView close = (ImageView) findViewById(R.id.createnew_close);
+                close.setVisibility(View.GONE);
+                add.setVisibility(View.VISIBLE);
+                try {
+                    for ( int i = 0; i < questions.size(); i++ ) {
+                        int textviewid = getResources().getIdentifier("q_"+i,"id",getPackageName());
+                        TextView tv = (TextView) findViewById(textviewid);
+                        int viewid = getResources().getIdentifier("sep_"+i,"id",getPackageName());
+                        View vv = findViewById(viewid);
+                        vv.setVisibility(View.VISIBLE);
+                        tv.setVisibility(View.VISIBLE);
+                    }
+                } catch(Exception e){}
+            }
+        });
 
         createNewButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -56,6 +91,23 @@ public class QuestionManager extends ActionBarActivity {
                 createNewInput.requestFocus();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(createNewInput, InputMethodManager.SHOW_IMPLICIT);
+                TextView header = (TextView) findViewById(R.id.question_manager_header);
+                TextView qhelp = (TextView) findViewById(R.id.q_help);
+                qhelp.setVisibility(View.GONE);
+                add.setVisibility(View.GONE);
+                ImageView close = (ImageView) findViewById(R.id.createnew_close);
+                close.setVisibility(View.VISIBLE);
+                header.setText("Create New Question");
+                try {
+                    for ( int i = 0; i < questions.size(); i++ ) {
+                        int textviewid = getResources().getIdentifier("q_"+i,"id",getPackageName());
+                        int viewid = getResources().getIdentifier("sep_"+i,"id",getPackageName());
+                        TextView tv = (TextView) findViewById(textviewid);
+                        View vv = findViewById(viewid);
+                        tv.setVisibility(View.GONE);
+                        vv.setVisibility(View.GONE);
+                    }
+                } catch(Exception e){}
             }
         });
 
@@ -79,6 +131,11 @@ public class QuestionManager extends ActionBarActivity {
                                 Intent visualizer = new Intent(QuestionManager.this, Visualizer.class);
                                 QuestionManager.this.startActivity(visualizer);
                                 QuestionManager.this.finish();
+
+                                /* got from
+                                http://stackoverflow.com/questions/10243557/how-to-slide-animation-between-two-activity-in-android*/
+
+                                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                             }
                         });
                         ImageView icon = (ImageView) findViewById(R.id.home_icon);
@@ -88,6 +145,11 @@ public class QuestionManager extends ActionBarActivity {
                                 Intent back = new Intent(QuestionManager.this, Dashboard.class);
                                 QuestionManager.this.startActivity(back);
                                 QuestionManager.this.finish();
+
+                                /* got from
+                                http://stackoverflow.com/questions/10243557/how-to-slide-animation-between-two-activity-in-android*/
+
+                                overridePendingTransition(R.anim.slide_in_rtl, R.anim.slide_out_rtl);
                             }
                         });
                     }
@@ -106,41 +168,58 @@ public class QuestionManager extends ActionBarActivity {
 
     private class GetQuestions extends AsyncTask<String, Void, Boolean> {
 
+        private Database db;
+
         @Override
         protected Boolean doInBackground(String... params) {
-            Database db = new Database(c);
+            db = new Database(c);
             questions = db.getQuestions();
             return true;
         }
 
         protected void onPostExecute(Boolean result) {
             for ( int i = 0; i < questions.size(); i++ ) {
-                /* Got how to add views programmatically from here:
-                    http://stackoverflow.com/questions/2395769/how-to-programmatically-add-views-to-views
-                 */
-                TextView t = new TextView(c);
-                View d = new View(c);
-                d.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        2
-                ));
-                d.setBackgroundColor(getResources().getColor(R.color.gray_light));
-                t.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                ));
+                int textviewid = getResources().getIdentifier("q_"+i,"id",getPackageName());
+                int viewid = getResources().getIdentifier("sep_"+i,"id",getPackageName());
+                final TextView t = (TextView) findViewById(textviewid);
+                final View d = findViewById(viewid);
+                d.setVisibility(View.VISIBLE);
+                t.setVisibility(View.VISIBLE);
+                t.setText(questions.get(i).split(">>")[1]);
 
-                t.setText("(" + (i + 1) + ") " + questions.get(i).split(">>")[1]);
-                t.setPadding(
-                        Math.round(getResources().getDimension(R.dimen.activity_horizontal_margin)),
-                        Math.round(getResources().getDimension(R.dimen.header_margin)),
-                        Math.round(getResources().getDimension(R.dimen.activity_horizontal_margin)),
-                        Math.round(getResources().getDimension(R.dimen.header_margin))
-                );
-                t.setTextSize(16);
-                t.setTextColor(getResources().getColor(R.color.label_text));
-                questionList.addView(t);
-                questionList.addView(d);
+                /* got how to implement an onTouchListener from
+                http://stackoverflow.com/questions/11779082/listener-for-pressing-and-releasing-a-button */
+                final int id = i+1;
+                t.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(final View v, MotionEvent event) {
+                        db.removeQuestion(id);
+                        switch (event.getAction()) {
+                            case MotionEvent.ACTION_DOWN:
+                                v.animate().translationX(100);
+                                return true;
+                            case MotionEvent.ACTION_UP:
+                                Handler handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        v.animate().translationX(-1000);
+                                    }
+                                }, 250);
+                                Handler handler2 = new Handler();
+                                d.animate().alpha(0f);
+                                handler2.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        t.setVisibility(View.GONE);
+                                        d.setVisibility(View.GONE);
+                                    }
+                                }, 500);
+                                return true;
+                        }
+                        return false;
+                    }
+                });
             }
         }
     }
@@ -151,7 +230,10 @@ public class QuestionManager extends ActionBarActivity {
             public CharSequence filter(CharSequence source, int start, int end,
                                        Spanned dest, int dstart, int dend) {
                 String checkMe = dest.toString() + source.toString();
-                Pattern pattern = Pattern.compile("(\\S+)");
+                /* got the regular expression from
+                http://stackoverflow.com/questions/15805555/java-regex-to-validate-full-name-allow-only-spaces-and-letters
+                 */
+                Pattern pattern = Pattern.compile("(^[\\\\p{L} .'-]+$)");
                 Matcher matcher = pattern.matcher(checkMe);
                 boolean valid = matcher.matches();
                 if ( !valid ) {
@@ -171,30 +253,36 @@ public class QuestionManager extends ActionBarActivity {
             public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
                 if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) &&
                         keyCode == KeyEvent.KEYCODE_ENTER) {
-                    InputMethodManager imm =
-                            (InputMethodManager)getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(questionEntry.getWindowToken(), 0);
-                    String question = questionEntry.getText().toString().substring(0,1).toUpperCase() + questionEntry.getText().toString().substring(1);
+                    String question = "";
+                    try {
+                        question = questionEntry.getText().toString().substring(0,1).toUpperCase() + questionEntry.getText().toString().substring(1);
+                    } catch(Exception e){}
+                    if (question.length() < 3) {
+                        Toast.makeText(c, "Invalid question!", Toast.LENGTH_LONG).show();
+                    } else {
 
-                    // Save name and do on background thread!
+                        InputMethodManager imm =
+                                (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(questionEntry.getWindowToken(), 0);
+                        final Handler handler = new Handler();
+                        Runnable r = new Runnable() {
+                            @Override
+                            public void run() {
+                                handler.post(new Runnable() {
+                                    public void run() {
+                                        createNew.setVisibility(View.GONE);
+                                    }
+                                });
+                            }
+                        };
 
-                    final Handler handler = new Handler();
-                    Runnable r = new Runnable() {
-                        @Override
-                        public void run() {
-                            handler.post(new Runnable() {
-                                public void run() {
-                                    createNew.setVisibility(View.GONE);
-                                }
-                            });
-                        }
-                    };
+                        Thread t = new Thread(r);
+                        t.start();
 
-                    Thread t = new Thread(r);
-                    t.start();
+                        SaveQuestion save = new SaveQuestion(question);
+                        save.execute();
 
-                    SaveQuestion save = new SaveQuestion(question);
-                    save.execute();
+                    }
 
                 }
                 return false;
@@ -205,6 +293,8 @@ public class QuestionManager extends ActionBarActivity {
 
         private String question;
         private int id;
+        private boolean worked;
+        private Database db;
 
         public SaveQuestion(String question) {
             this.question = question;
@@ -213,36 +303,22 @@ public class QuestionManager extends ActionBarActivity {
         @Override
         protected Boolean doInBackground(String... params) {
 
-            Database db = new Database(c);
+            db = new Database(c);
             id = db.getLastQuestionId() + 1;
-            db.addQuestion(question, id);
+            Log.d("THIS IS AN ", id + "");
+            worked = db.addQuestion(question, id);
             return true;
         }
         protected void onPostExecute(Boolean result) {
 
-            TextView t = new TextView(c);
-            View d = new View(c);
-            d.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    2
-            ));
-            d.setBackgroundColor(getResources().getColor(R.color.gray_light));
-            t.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            ));
+            if ( worked ) {
 
-            t.setText("(" + id + ") " + question);
-            t.setPadding(
-                    Math.round(getResources().getDimension(R.dimen.activity_horizontal_margin)),
-                    Math.round(getResources().getDimension(R.dimen.header_margin)),
-                    Math.round(getResources().getDimension(R.dimen.activity_horizontal_margin)),
-                    Math.round(getResources().getDimension(R.dimen.header_margin))
-            );
-            t.setTextSize(16);
-            t.setTextColor(getResources().getColor(R.color.label_text));
-            questionList.addView(t);
-            questionList.addView(d);
+                Intent i = new Intent(QuestionManager.this, QuestionManager.class);
+                QuestionManager.this.startActivity(i);
+                QuestionManager.this.finish();
+
+                overridePendingTransition(R.anim.abc_fade_out, R.anim.abc_fade_in);
+            }
         }
     }
 }

@@ -9,7 +9,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
         <TextView android:id="@+id/visualizer_header"
-            android:text="Visualizer"
+            android:text="Your Activity"
             android:paddingTop="@dimen/header_margin"
             android:paddingBottom="@dimen/header_margin"
             android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -26,7 +26,7 @@
             android:layout_marginLeft="-11dp"
             android:layout_marginRight="-11dp"
             android:padding="0dp"
-            android:layout_height="250dp" />
+            android:layout_height="200dp" />
         <View android:id="@+id/buff"
             android:layout_below="@id/motion_chart"
             android:background="@color/gray_light"
@@ -185,6 +185,75 @@
                 android:layout_below="@id/sep8"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
+            <View android:id="@+id/sep9"
+                android:layout_below="@id/answer9"
+                android:background="@color/gray_light"
+                android:layout_height="1dp"
+                android:visibility="gone"
+                android:layout_width="match_parent" />
+
+
+
+            <View android:id="@+id/buff0"
+                android:background="@color/graph0"
+                android:layout_above="@id/answer1"
+                android:visibility="gone"
+                android:layout_width="@dimen/buffer_width"
+                android:layout_height="@dimen/buffer_height" />
+            <View android:id="@+id/buff1"
+                android:background="@color/graph1"
+                android:layout_below="@id/buff0"
+                android:layout_width="@dimen/buffer_width"
+                android:visibility="gone"
+                android:layout_height="@dimen/buffer_height" />
+            <View android:id="@+id/buff2"
+                android:background="@color/graph2"
+                android:layout_below="@id/buff1"
+                android:visibility="gone"
+                android:layout_width="@dimen/buffer_width"
+                android:layout_height="@dimen/buffer_height" />
+            <View android:id="@+id/buff3"
+                android:background="@color/graph3"
+                android:layout_below="@id/buff2"
+                android:layout_width="@dimen/buffer_width"
+                android:visibility="gone"
+                android:layout_height="@dimen/buffer_height" />
+            <View android:id="@+id/buff4"
+                android:background="@color/graph4"
+                android:layout_below="@id/buff3"
+                android:layout_width="@dimen/buffer_width"
+                android:visibility="gone"
+                android:layout_height="@dimen/buffer_height" />
+            <View android:id="@+id/buff5"
+                android:background="@color/graph5"
+                android:layout_below="@id/buff4"
+                android:layout_width="@dimen/buffer_width"
+                android:visibility="gone"
+                android:layout_height="@dimen/buffer_height" />
+            <View android:id="@+id/buff6"
+                android:background="@color/graph0"
+                android:layout_below="@id/buff5"
+                android:layout_width="@dimen/buffer_width"
+                android:visibility="gone"
+                android:layout_height="@dimen/buffer_height" />
+            <View android:id="@+id/buff7"
+                android:background="@color/graph1"
+                android:layout_below="@id/buff6"
+                android:layout_width="@dimen/buffer_width"
+                android:visibility="gone"
+                android:layout_height="@dimen/buffer_height" />
+            <View android:id="@+id/buff8"
+                android:background="@color/graph2"
+                android:layout_below="@id/buff7"
+                android:layout_width="@dimen/buffer_width"
+                android:visibility="gone"
+                android:layout_height="@dimen/buffer_height" />
+            <View android:id="@+id/buff9"
+                android:visibility="gone"
+                android:background="@color/graph3"
+                android:layout_below="@id/buff8"
+                android:layout_width="@dimen/buffer_width"
+                android:layout_height="@dimen/buffer_height" />
         </RelativeLayout>
     </RelativeLayout>
 </ScrollView>

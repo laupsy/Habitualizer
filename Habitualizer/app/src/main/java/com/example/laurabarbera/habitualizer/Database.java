@@ -37,9 +37,23 @@ public class Database extends SQLiteOpenHelper {
     }
 
     // QUESTIONS
-    public void addQuestion(String question, int id) {
+    public boolean addQuestion(String question, int id) {
+        if ( getLastQuestionId() <= 10 ) {
+            SQLiteDatabase db = this.getWritableDatabase();
+            db.execSQL("INSERT INTO QuestionList VALUES(" + id + ", '" + question + "')");
+            answerNo(id);
+            db.close();
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    public void removeQuestion(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("INSERT INTO QuestionList VALUES(" + id + ", '" + question + "')");
+        //db.execSQL("DELETE FROM QuestionList WHERE _id = '" + (id+1) + "'");
+        db.delete("QuestionList", "_id = '" + id + "'", null);
+//        db.delete("Answers", "_id = '" + id + "'", null);
         db.close();
     }
     public ArrayList<String> getQuestions() {
@@ -266,30 +280,32 @@ public class Database extends SQLiteOpenHelper {
         }
 
         for ( int i = 0; i < time.size(); i++ ) {
-            int hour = Integer.parseInt(time.get(i).substring(11, 13), 10);
-            if ( hour == 0 || hour == 1 || hour == 2) {
-                yesPerHour[0] += 1;
-            }
-            else if ( hour == 3 || hour == 4 || hour == 5 ) {
-                yesPerHour[1] += 1;
-            }
-            else if ( hour == 6 || hour == 7 || hour == 8 ) {
-                yesPerHour[2] += 1;
-            }
-            else if ( hour == 9 || hour == 10 || hour == 11 ) {
-                yesPerHour[3] += 1;
-            }
-            else if ( hour == 12 || hour == 13 || hour == 14 ) {
-                yesPerHour[4] += 1;
-            }
-            else if ( hour == 15 || hour == 16 || hour == 17 ) {
-                yesPerHour[5] += 1;
-            }
-            else if ( hour == 18 || hour == 19 || hour == 20 ) {
-                yesPerHour[6] += 1;
-            }
-            else if ( hour == 21 || hour == 22 || hour == 23 ) {
-                yesPerHour[7] += 1;
+            if ( answers.get(i) == 1 ) {
+                int hour = Integer.parseInt(time.get(i).substring(11, 13), 10);
+                if ( hour == 0 || hour == 1 || hour == 2) {
+                    yesPerHour[0] += 1;
+                }
+                else if ( hour == 3 || hour == 4 || hour == 5 ) {
+                    yesPerHour[1] += 1;
+                }
+                else if ( hour == 6 || hour == 7 || hour == 8 ) {
+                    yesPerHour[2] += 1;
+                }
+                else if ( hour == 9 || hour == 10 || hour == 11 ) {
+                    yesPerHour[3] += 1;
+                }
+                else if ( hour == 12 || hour == 13 || hour == 14 ) {
+                    yesPerHour[4] += 1;
+                }
+                else if ( hour == 15 || hour == 16 || hour == 17 ) {
+                    yesPerHour[5] += 1;
+                }
+                else if ( hour == 18 || hour == 19 || hour == 20 ) {
+                    yesPerHour[6] += 1;
+                }
+                else if ( hour == 21 || hour == 22 || hour == 23 ) {
+                    yesPerHour[7] += 1;
+                }
             }
         }
         return yesPerHour;

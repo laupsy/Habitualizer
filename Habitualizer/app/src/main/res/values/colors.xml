@@ -2,20 +2,24 @@
 <resources>
 
     <color name="white">#ffffff</color>
-    <color name="ui">#333333</color>
-    <color name="ui_dark">#222222</color>
+    <color name="ui">#ff7d457f</color>
+    <color name="ui_dark">#ff633765</color>
 
-    <color name="graph0">#ffb64e84</color>
-    <color name="graph1">#ffa37ec3</color>
-    <color name="graph2">#ff73a4b6</color>
-    <color name="graph3">#ffd0b54c</color>
-    <color name="graph4">#ffe29a57</color>
-    <color name="graph5">#ff7392b9</color>
+    <color name="graph0">#ff42c2a6</color>
+    <color name="graph1">#ffd97f90</color>
+    <color name="graph2">#c02942</color>
+    <color name="graph3">#d95b43</color>
+    <color name="graph4">#ecd078</color>
+    <color name="graph5">#c8c8a9</color>
+    <color name="graph6">#f9cdad</color>
+    <color name="graph7">#fc9d9a</color>
+    <color name="graph8">#fe4365</color>
+    <color name="graph9">#83af9b</color>
 
     <color name="custom_text">#383838</color>
     <color name="custom_text_light">#bab9ba</color>
     <color name="custom_text_title">#ffffff</color>
-    <color name="header_background">#f17d80</color>
+    <color name="header_background">#ff484149</color>
     <color name="header_text">#ffffff</color>
 
     <color name="label_text">#777777</color>
@@ -30,9 +34,9 @@
     <color name="selected">#eeeeee</color>
     <color name="unselected">#ffffff</color>
 
-    <color name="header_background2">#3a126d</color>
+    <color name="header_background2">#21A3A3</color>
     <color name="header_text2">#ffffff</color>
-    <color name="fullbutton_background">#818bdb</color>
+    <color name="fullbutton_background">#e8a0b8</color>
 
     <color name="dataBackground">#eeeeee</color>
     <color name="data">#fafafa</color>

@@ -144,6 +144,10 @@ public class Location extends ActionBarActivity {
             if ( is_setup ) goTo.putExtra("IS_SETUP",true);
             Location.this.startActivity(goTo);
             Location.this.finish();
+            /* got from
+            http://stackoverflow.com/questions/10243557/how-to-slide-animation-between-two-activity-in-android*/
+
+            overridePendingTransition(R.anim.slide_in_rtl, R.anim.slide_out_rtl);
         }
     }
 

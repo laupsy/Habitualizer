@@ -21,4 +21,10 @@
     <dimen name="setting_margin_top">100dp</dimen>
     <dimen name="setting_button_save_margin_top">160dp</dimen>
     <dimen name="setting_button_cancel_margin_top">210dp</dimen>
+
+    <dimen name="buffer_height">69dp</dimen>
+    <dimen name="buffer_width">5dp</dimen>
+    <dimen name="menu_height">500dp</dimen>
+
+    <dimen name="q_size">14sp</dimen>
 </resources>

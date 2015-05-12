@@ -19,7 +19,7 @@
             android:paddingBottom="@dimen/header_margin"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
-            android:background="@color/header_background2"
+            android:background="@color/header_background"
             android:textColor="@color/header_text2"
             android:layout_width="match_parent"
             android:textSize="16dp"
