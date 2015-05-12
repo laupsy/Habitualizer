@@ -130,54 +130,11 @@
             android:layout_height="1dp"
             android:layout_width="match_parent" />
 
-        <!-- Location Settings -->
-
-        <TextView android:tag="@string/LOCATION_SETTING"
-            android:id="@+id/locationLabel"
-            android:layout_below="@id/separator2"
-            android:text="@string/locationLabel"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/header_margin"
-            android:layout_marginBottom="@dimen/header_margin"
-            android:layout_alignParentLeft="true"
-            android:textColor="@color/label_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView android:tag="@string/LOCATION_SETTING"
-            android:id="@+id/locationSetting"
-            android:layout_below="@id/separator2"
-            android:text="@string/locationSetting_on"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/header_margin"
-            android:layout_marginBottom="@dimen/header_margin"
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView android:tag="@string/LOCATION_SETTING"
-            android:id="@+id/locationHelp"
-            android:layout_below="@id/locationSetting"
-            android:text="@string/locationSetting_help"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin_align_left"
-            android:layout_marginBottom="@dimen/header_margin"
-            android:layout_alignParentLeft="true"
-            android:textSize="11dp"
-            android:textColor="@color/custom_text_light"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <View android:id="@+id/separator3"
-            android:layout_below="@id/locationHelp"
-            android:background="@color/gray_light"
-            android:layout_height="1dp"
-            android:layout_width="match_parent" />
-
         <!-- Motion Settings -->
 
         <TextView android:tag="@string/MOTION_SETTING"
             android:id="@+id/motionLabel"
-            android:layout_below="@id/separator3"
+            android:layout_below="@id/separator2"
             android:text="@string/motionLabel"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
@@ -189,7 +146,7 @@
             android:layout_height="wrap_content" />
         <TextView android:tag="@string/MOTION_SETTING"
             android:id="@+id/motionSetting"
-            android:layout_below="@id/separator3"
+            android:layout_below="@id/separator2"
             android:text="@string/motionSetting_on"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
@@ -210,51 +167,8 @@
             android:textColor="@color/custom_text_light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-        <View android:id="@+id/separator4"
+        <View android:id="@+id/separator3"
             android:layout_below="@id/motionHelp"
-            android:background="@color/gray_light"
-            android:layout_height="1dp"
-            android:layout_width="match_parent" />
-
-        <!-- Battery Settings -->
-
-        <TextView android:tag="@string/PERFORMANCE_SETTING"
-            android:id="@+id/batteryLabel"
-            android:layout_below="@id/separator4"
-            android:text="@string/batteryLabel"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/header_margin"
-            android:layout_marginBottom="@dimen/header_margin"
-            android:layout_alignParentLeft="true"
-            android:textColor="@color/label_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView android:tag="@string/PERFORMANCE_SETTING"
-            android:id="@+id/batterySetting"
-            android:layout_below="@id/separator4"
-            android:text="@string/batterySetting_high"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/header_margin"
-            android:layout_marginBottom="@dimen/header_margin"
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView android:tag="@string/PERFORMANCE_SETTING"
-            android:id="@+id/batteryHelp"
-            android:layout_below="@id/batterySetting"
-            android:text="@string/batterySetting_help"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin_align_left"
-            android:layout_marginBottom="@dimen/header_margin"
-            android:layout_alignParentLeft="true"
-            android:textSize="11dp"
-            android:textColor="@color/custom_text_light"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <View android:id="@+id/separator5"
-            android:layout_below="@id/batteryHelp"
             android:background="@color/gray_light"
             android:layout_height="1dp"
             android:layout_width="match_parent" />
@@ -264,7 +178,7 @@
             android:layout_height="@dimen/button_height"
             android:text="@string/reset_text"
             android:layout_margin="@dimen/activity_horizontal_margin"
-            android:layout_below="@id/separator5"
+            android:layout_below="@id/separator3"
             android:textColor="@color/button_dark_text"
             android:background="@drawable/button_alt" />
 

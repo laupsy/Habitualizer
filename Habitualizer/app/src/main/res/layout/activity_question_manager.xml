@@ -93,6 +93,13 @@
             android:textColor="@color/button_light_text"
             android:background="@drawable/button" />
 
+        <View android:id="@+id/separator2"
+            android:background="@color/gray_light"
+            android:layout_height="1dp"
+            android:layout_below="@id/add"
+            android:layout_marginTop="@dimen/header_margin"
+            android:layout_width="match_parent" />
+
         <TextView android:id="@+id/q_0"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -102,7 +109,7 @@
             android:textSize="@dimen/q_size"
             android:visibility="gone"
             android:textColor="@color/label_text"
-            android:layout_below="@id/add" />
+            android:layout_below="@id/separator2" />
 
         <View android:id="@+id/sep_0"
             android:background="@color/gray_light"

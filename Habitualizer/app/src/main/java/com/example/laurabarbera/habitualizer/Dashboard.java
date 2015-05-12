@@ -33,9 +33,7 @@ public class Dashboard extends ActionBarActivity {
 
     private String curName,
             curQuestionSetting,
-            curLocationSetting,
-            curMotionSetting,
-            curBatterySetting;
+            curMotionSetting;
 
     private final int RESET_DISPLAY_LENGTH = 500;
 
@@ -92,11 +90,12 @@ public class Dashboard extends ActionBarActivity {
          */
 
         Button reset = (Button)findViewById(R.id.reset);
-        reset.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                resetData();
-            }
-        });
+        reset.setVisibility(View.GONE);
+//        reset.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                resetData();
+//            }
+//        });
 
         /* Goes to question manager where you can
         add disable or edit questions
@@ -125,13 +124,6 @@ public class Dashboard extends ActionBarActivity {
             UserProfile u = new UserProfile(c, getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
             curName = db.getName();
 
-            if ( db.getPowerSetting() == 1 ) curBatterySetting = c.getResources().getString(R.string.batterySetting_medium);
-            else if ( db.getPowerSetting() == 2 ) curBatterySetting = c.getResources().getString(R.string.batterySetting_high);
-            else curBatterySetting = c.getResources().getString(R.string.batterySetting_low);
-
-            if ( db.getLocationSetting() == 1 ) curLocationSetting = c.getResources().getString(R.string.locationSetting_on);
-            else curLocationSetting = c.getResources().getString(R.string.locationSetting_off);
-
             if ( db.getMotionSetting() == 1 ) curMotionSetting = c.getResources().getString(R.string.motionSetting_on);
             else curMotionSetting = c.getResources().getString(R.string.motionSetting_off);
 
@@ -144,15 +136,11 @@ public class Dashboard extends ActionBarActivity {
         protected void onPostExecute(Boolean result) {
             TextView name = (TextView)findViewById(R.id.confirmName);
             TextView questionSetting = (TextView)findViewById(R.id.notificationSetting);
-            TextView locationSetting = (TextView)findViewById(R.id.locationSetting);
             TextView motionSetting = (TextView)findViewById(R.id.motionSetting);
-            TextView batterySetting = (TextView)findViewById(R.id.batterySetting);
 
             name.setText(curName);
             questionSetting.setText(curQuestionSetting);
-            locationSetting.setText(curLocationSetting);
             motionSetting.setText(curMotionSetting);
-            batterySetting.setText(curBatterySetting);
 
             // Debug mode
             Button debug = (Button) findViewById(R.id.debug_button);
@@ -178,9 +166,7 @@ public class Dashboard extends ActionBarActivity {
 
             Database db = new Database(c);
             db.setName("");
-            db.setLocationSetting(0);
             db.setQuestionSetting(0);
-            db.setPowerSetting(0);
             db.setMotionSetting(0);
             for ( int i = 0; i < db.getLastQuestionId(); i++ ) {
                 db.removeQuestion(i);

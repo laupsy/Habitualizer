@@ -11,6 +11,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
@@ -51,6 +52,7 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
     private SensorManager sensorManager;
     private Sensor sensor;
     private float[] relMotion;
+    private double[] distancePerHour;
     private ArrayList<String> questions;
     private ArrayList<float[]> yesPerHour;
 
@@ -90,6 +92,7 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
                     public void run() {
                         try {
                             askQuestion();
+                            trackLocation();
                         } catch(Exception e){}
                     }
                 });
@@ -116,7 +119,7 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
             // seconds 6 hours * 1000
         else if ( questionLevel == 1) notifDelay = 216000;
             // seconds per 3 hours * 1000
-        else notifDelay = 108000;
+        else notifDelay = 10800;
 
         // Set Up Graph
 
@@ -235,6 +238,7 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
             questions = db.getQuestions();
             relMotion = db.getRelativeMotion();
             yesPerHour = new ArrayList<>();
+            distancePerHour = db.getDistancePerHour();
             questionLevel = db.getQuestionSetting();
             for ( int i = 0; i < questions.size(); i++ ) {
                 int qId = Integer.parseInt(questions.get(i).split(">>")[0]);
@@ -266,7 +270,7 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
                 String questionAction = "";
                 String[] question = questionText.split(" ");
                 if ( questionWord.equals("Are")) {
-                    questionAction = " are";
+                    questionAction = " are most";
                 }
                 for ( int j = 2; j < question.length; j++ ) {
                     questionAction += (" " + question[j]);
@@ -311,6 +315,7 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
                 v.setVisibility(View.VISIBLE);
             }
             initGraph();
+            trackLocation();
         }
     }
 
@@ -346,6 +351,7 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
         motionAnalysis.setPadding(0, 100, 0, 100);
         motionAnalysis.setTextColor(getResources().getColor(R.color.graph0));
         motionAnalysis.setTextSize(21);
+
         LineDataSet lds = new LineDataSet(vals1, "Motion");
         sets.add(lds);
         LineData data = new LineData(titles, sets);
@@ -394,6 +400,47 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
             }
         }
 
+        // DISTANCE GRAPHING
+
+        double totalDist = 0;
+        double maxDist = 0;
+        int maxDistHr = 0;
+        for ( int i = 0; i < 8; i++ ) {
+            if ( distancePerHour[i] > maxDist ) {
+                totalDist += distancePerHour[i];
+                maxDist = distancePerHour[i];
+                maxDistHr = i;
+            }
+        }
+
+        TextView distanceAnalysis = (TextView) findViewById(R.id.dist_analysis);
+        if ( maxDist < 1 ) distanceAnalysis.setText("You haven't left home!");
+        else distanceAnalysis.setText("You travel farthest at " + utcToLocal(maxDistHr) + ".");
+        distanceAnalysis.setPadding(0, 100, 0, 100);
+        distanceAnalysis.setTextColor(getResources().getColor(R.color.graph7));
+        distanceAnalysis.setTextSize(21);
+
+        ArrayList<Entry> distances = new ArrayList<>();
+        ArrayList txt = new ArrayList<>();
+        for ( int i = 0; i < 8; i++ ) {
+            Entry e = new Entry((float)(distancePerHour[i]/totalDist)*100,i);
+            distances.add(e);
+            txt.add("");
+        }
+
+        LineDataSet distanceData = new LineDataSet(distances, "");
+        distanceData.setLineWidth(0);
+        distanceData.setDrawCubic(true);
+        distanceData.setCubicIntensity(0.3f);
+        distanceData.setDrawFilled(true);
+        distanceData.setFillAlpha(150);
+        distanceData.setDrawCircles(false);
+        distanceData.setFillColor(getResources().getColor(R.color.graph7));
+        distanceData.setColor(getResources().getColor(R.color.graph7));
+        sets.add(distanceData);
+        LineData data4 = new LineData(txt, sets);
+        motionChart.setData(data4);
+
         YAxis yAxis = motionChart.getAxisLeft();
         yAxis.setStartAtZero(true);
         yAxis.setAxisMaxValue(110);
@@ -413,18 +460,12 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
         motionChart.setTouchEnabled(false);
         Legend legend = motionChart.getLegend();
         legend.setEnabled(false);
-//        legend.setTextColor(getResources().getColor(R.color.custom_text_light));
-//        legend.setForm(Legend.LegendForm.CIRCLE);
-//        legend.setFormSize(8f);
-//        legend.setFormToTextSpace(2f);
-//        legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
-//        legend.setXEntrySpace(10f);
         motionChart.invalidate();
     }
     String utcToLocal(int index) {
         String time;
         TimeZone timezone = TimeZone.getDefault();
-        int timeInt = Math.round((index + 1) * 3);
+        int timeInt = Math.round((index + 1) * 3 - 3);
         int offset = (timezone.getOffset(0, Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH, Calendar.DAY_OF_WEEK, timeInt * 3600000) / 3600000) + 1;
         if ( (timeInt + offset) < 0 ) timeInt += 24;
         int localTime = timeInt + offset;
@@ -438,5 +479,46 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
             time = (localTime - 12) + " pm";
         }
         return time;
+    }
+    void trackLocation() {
+        LocationManager l = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        android.location.Location loc = l.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        double longi = loc.getLongitude();
+        double lati = loc.getLatitude();
+
+        final Handler handler = new Handler();
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                handler.post(new Runnable(){
+                    public void run() {
+
+                    }
+                });
+            }
+        };
+        Thread t = new Thread(r);
+        t.start();
+        TrackLocation trackLocation = new TrackLocation(longi, lati);
+        trackLocation.execute();
+    }
+    private class TrackLocation extends AsyncTask<String, Void, Boolean> {
+        private double longi, lati;
+
+        public TrackLocation(double longi, double lati) {
+            this.longi = longi;
+            this.lati = lati;
+        }
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            Database db = new Database(c);
+            db.recordDistance(longi, lati);
+            Log.d("yes?", "y");
+            return true;
+        }
+
+        protected void onPostExecute(Boolean result) {
+        }
     }
 }

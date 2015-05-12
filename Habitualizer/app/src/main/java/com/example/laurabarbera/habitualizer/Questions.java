@@ -128,7 +128,6 @@ public class Questions extends ActionBarActivity {
             if ( !is_setup ) {
                 TextView head = (TextView) findViewById(R.id.question_setting_header);
                 head.setText(head.getText() + ": " + curSetting);
-                select(curSetting);
             }
         }
     }
@@ -153,6 +152,14 @@ public class Questions extends ActionBarActivity {
             if ( is_setup ) goTo.putExtra("IS_SETUP",true);
             Questions.this.startActivity(goTo);
             Questions.this.finish();
+            if ( is_setup ) {
+
+                 /* got from
+                 http://stackoverflow.com/questions/10243557/how-to-slide-animation-between-two-activity-in-android*/
+
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+
+            }
         }
     }
 
@@ -174,34 +181,32 @@ public class Questions extends ActionBarActivity {
             high.setBackgroundColor(c.getResources().getColor(R.color.selected));
         }
 
-        if ( !match.equals(curSetting)) {
-            if ( is_setup ) {
-                update.setBackgroundResource(R.drawable.button_start);
-                update.setText(R.string.button_next);
-            }
-            else {
-                update.setBackgroundResource(R.drawable.button);
-                update.setText(R.string.save);
-            }
-            update.setTextColor(getResources().getColor(R.color.button_light_text));
-            update.setOnClickListener(new View.OnClickListener(){
-                public void onClick(View v) {
-                    final Handler handler = new Handler();
-                    Runnable r = new Runnable() {
-                        @Override
-                        public void run() {
-                            handler.post(new Runnable(){
-                                public void run(){
-                                }
-                            });
-                        }
-                    };
-                    Thread t = new Thread(r);
-                    t.start();
-                    SetSetting setSetting = new SetSetting(newSetting);
-                    setSetting.execute();
-                }
-            });
+        if ( is_setup ) {
+            update.setBackgroundResource(R.drawable.button_start);
+            update.setText(R.string.button_next);
         }
+        else {
+            update.setBackgroundResource(R.drawable.button);
+            update.setText(R.string.save);
+        }
+        update.setTextColor(getResources().getColor(R.color.button_light_text));
+        update.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                final Handler handler = new Handler();
+                Runnable r = new Runnable() {
+                    @Override
+                    public void run() {
+                        handler.post(new Runnable(){
+                            public void run(){
+                            }
+                        });
+                    }
+                };
+                Thread t = new Thread(r);
+                t.start();
+                SetSetting setSetting = new SetSetting(newSetting);
+                setSetting.execute();
+            }
+        });
     }
 }

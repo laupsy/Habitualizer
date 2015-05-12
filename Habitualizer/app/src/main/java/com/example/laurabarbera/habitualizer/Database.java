@@ -30,6 +30,7 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE MotionTable (Timestamp TEXT, Motion INTEGER);");
         db.execSQL("CREATE TABLE UserTable (_id INTEGER, Name TEXT, Motion INTEGER, Location INTEGER, Performance INTEGER, Questions INTEGER);");
         db.execSQL("CREATE TABLE QuestionList (_id INTEGER, QuestionPhrase TEXT);");
+        db.execSQL("CREATE TABLE Distance (Timestamp TEXT, Longitude INTEGER, Latitude INTEGER);");
         db.execSQL("INSERT INTO UserTable VALUES (1, '', 0, 0, 0, 0)");
         db.execSQL("INSERT INTO QuestionList VALUES (1, 'Are you hungry?')");
         db.execSQL("INSERT INTO QuestionList VALUES (2, 'Are you happy?')");
@@ -49,12 +50,139 @@ public class Database extends SQLiteOpenHelper {
             return false;
         }
     }
+    public void recordDistance(double longi, double lati) {
+        Log.d("blah", longi + " " + lati);
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("INSERT INTO Distance VALUES (datetime(), " + longi + ", " + lati + ")");
+        db.close();
+    }
+    public double[] getEstHome() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        double[] estHome = new double[2];
+        Cursor longi = db.rawQuery("SELECT Longitude FROM Distance", null);
+        Cursor lati = db.rawQuery("SELECT Latitude FROM Distance", null);
+        double curLong = 0;
+        double curLat = 0;
+        int countLong = 0;
+        int countLat = 0;
+        ArrayList<Integer> totalLongs = new ArrayList<>();
+        ArrayList<Integer> totalLats = new ArrayList<>();
+        ArrayList<Double> mapToLat = new ArrayList<>();
+        ArrayList<Double> mapToLong = new ArrayList<>();
+        if ( longi.moveToFirst() ) {
+            do {
+                double l = longi.getDouble(0);
+                if ( curLong != l ) {
+                    curLong = l;
+                    totalLongs.add(countLong);
+                    mapToLong.add(curLong);
+                    countLong = 0;
+                }
+                else {
+                    countLong++;
+                }
+            } while ( longi.moveToNext() );
+        }
+        if ( lati.moveToFirst() ) {
+            do {
+                double l = lati.getDouble(0);
+                if ( curLat != l ) {
+                    curLat = l;
+                    totalLats.add(countLat);
+                    mapToLat.add(curLat);
+                    countLat = 0;
+                }
+                else {
+                    countLat++;
+                }
+
+            } while ( lati.moveToNext() );
+        }
+        double maxLong = 0;
+        double maxLat = 0;
+        int maxLongNdx = 0;
+        int maxLatNdx = 0;
+        for ( int i = 0; i < totalLongs.size(); i++ ) {
+            if ( maxLong < totalLongs.get(i) ) {
+                maxLong = totalLongs.get(i);
+                maxLongNdx = i;
+            }
+        }
+        for ( int i = 0; i < totalLats.size(); i++ ) {
+            if ( maxLat < totalLats.get(i) ) {
+                maxLat = totalLats.get(i);
+                maxLatNdx = i;
+            }
+        }
+        estHome[0] = mapToLat.get(maxLatNdx);
+        estHome[1] = mapToLong.get(maxLongNdx);
+        Log.d("home is ", estHome[0] +" "+ estHome[1]);
+        return estHome;
+    }
     public void removeQuestion(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         //db.execSQL("DELETE FROM QuestionList WHERE _id = '" + (id+1) + "'");
         db.delete("QuestionList", "_id = '" + id + "'", null);
-//        db.delete("Answers", "_id = '" + id + "'", null);
+        db.delete("Answers", "_id = '" + id + "'", null);
         db.close();
+    }
+    public double[] getDistancePerHour() {
+        double[] dph = new double[8];
+        double[] estHome = getEstHome();
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<String> time = new ArrayList<>();
+        ArrayList<Double> lati = new ArrayList<>();
+        ArrayList<Double> longi = new ArrayList<>();
+        Cursor timedata = db.rawQuery("SELECT Timestamp FROM Distance", null);
+        Cursor latidata = db.rawQuery("SELECT Latitude FROM Distance", null);
+        Cursor longidata = db.rawQuery("SELECT Longitude FROM Distance", null);
+        if ( timedata.moveToFirst() ) {
+            do {
+                time.add(timedata.getString(0));
+            } while ( timedata.moveToNext() );
+        }
+        if ( latidata.moveToFirst() ) {
+            do {
+                lati.add(latidata.getDouble(0));
+            } while ( latidata.moveToNext() );
+        }
+        if ( longidata.moveToFirst() ) {
+            do {
+                longi.add(longidata.getDouble(0));
+            } while ( longidata.moveToNext() );
+        }
+
+
+        for ( int i = 0; i < time.size(); i++ ) {
+            int hour = Integer.parseInt(time.get(i).substring(11, 13), 10);
+            double distance = Math.sqrt( (estHome[0] - lati.get(i))*(estHome[0] - lati.get(i)) + (estHome[1] - longi.get(i)) * (estHome[1] - longi.get(i)) );
+            if ( hour == 0 || hour == 1 || hour == 2) {
+                dph[0] = distance;
+            }
+            else if ( hour == 3 || hour == 4 || hour == 5 ) {
+                dph[1] = distance;
+            }
+            else if ( hour == 6 || hour == 7 || hour == 8 ) {
+                dph[2] = distance;
+            }
+            else if ( hour == 9 || hour == 10 || hour == 11 ) {
+                dph[3] = distance;
+            }
+            else if ( hour == 12 || hour == 13 || hour == 14 ) {
+                dph[4] = distance;
+            }
+            else if ( hour == 15 || hour == 16 || hour == 17 ) {
+                dph[5] = distance;
+            }
+            else if ( hour == 18 || hour == 19 || hour == 20 ) {
+                dph[6] = distance;
+            }
+            else if ( hour == 21 || hour == 22 || hour == 23 ) {
+                dph[7] = distance;
+            }
+        }
+
+        return dph;
     }
     public ArrayList<String> getQuestions() {
         int ndx = 0;
