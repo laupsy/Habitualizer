@@ -3,7 +3,6 @@ package com.example.laurabarbera.habitualizer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -54,7 +53,7 @@ public class Config extends ActionBarActivity {
         a.setDisplayShowCustomEnabled(true);
         a.setDisplayShowTitleEnabled(false);
         getSupportActionBar().setCustomView(R.layout.actionbar_layout);
-        c = this;
+        c = getApplicationContext();
 
         /* Identify the views that must be worked with in this activity.
          */
@@ -100,9 +99,9 @@ public class Config extends ActionBarActivity {
                 if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) &&
                         keyCode == KeyEvent.KEYCODE_ENTER) {
                     InputMethodManager imm =
-                            (InputMethodManager)getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(nameEntry.getWindowToken(), 0);
-                    username = nameEntry.getText().toString().substring(0,1).toUpperCase() + nameEntry.getText().toString().substring(1);
+                    username = nameEntry.getText().toString().substring(0, 1).toUpperCase() + nameEntry.getText().toString().substring(1);
 
                     // Save name and do on background thread!
 
@@ -114,22 +113,39 @@ public class Config extends ActionBarActivity {
                                 public void run() {
                                     nameEntry.setVisibility(View.GONE);
                                     welcome.setVisibility(View.GONE);
-                                    proceed.setBackgroundResource(R.drawable.button_start);
-                                    proceed.setText(R.string.button_next);
-                                    proceed.setTextColor(getResources().getColor(R.color.button_light_text));
-                                    proceed.setOnClickListener(new View.OnClickListener() {
-                                        public void onClick(View v) {
+                                    proceed.setVisibility(View.GONE);
+                                    Handler anim = new Handler();
+
+                                    // slide the name
+                                    anim.postDelayed( new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            nameView.animate().translationX(200);
+                                        }
+                                    }, 250);
+                                    anim.postDelayed( new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            nameView.animate().translationX(-1000);
+                                        }
+                                    }, 500);
+
+                                    // slide to next page
+
+                                    Handler anim2 = new Handler();
+                                    anim2.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
                                             Intent nextStep = new Intent(Config.this, Questions.class);
-                                            nextStep.putExtra("IS_SETUP",true);
+                                            nextStep.putExtra("IS_SETUP", true);
                                             Config.this.startActivity(nextStep);
                                             Config.this.finish();
-
-                                /* got from
-                                http://stackoverflow.com/questions/10243557/how-to-slide-animation-between-two-activity-in-android*/
+                                            /* got from
+                                            http://stackoverflow.com/questions/10243557/how-to-slide-animation-between-two-activity-in-android*/
 
                                             overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                                         }
-                                    });
+                                    }, 500);
                                 }
                             });
                         }
@@ -153,12 +169,9 @@ public class Config extends ActionBarActivity {
 
         @Override
         protected Boolean doInBackground(String... params) {
-
-            UserProfile u = new UserProfile(c, getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), Activity.MODE_PRIVATE));
             Database db = new Database(c);
             db.setName(username);
             name = db.getName();
-
             return true;
         }
         protected void onPostExecute(Boolean result) {

@@ -5,16 +5,16 @@
     <color name="ui">#ff7d457f</color>
     <color name="ui_dark">#ff633765</color>
 
-    <color name="graph0">#ff42c2a6</color>
-    <color name="graph1">#ffd97f90</color>
-    <color name="graph2">#c02942</color>
-    <color name="graph3">#d95b43</color>
-    <color name="graph4">#ecd078</color>
-    <color name="graph5">#c8c8a9</color>
-    <color name="graph6">#f9cdad</color>
-    <color name="graph7">#fc9d9a</color>
-    <color name="graph8">#fe4365</color>
-    <color name="graph9">#83af9b</color>
+    <color name="graph0">#ffce656b</color>
+    <color name="graph1">#ffcea54e</color>
+    <color name="graph2">#ff86ce4e</color>
+    <color name="graph3">#ff62cec6</color>
+    <color name="graph4">#ff4ea6d5</color>
+    <color name="graph5">#ffa17e74</color>
+    <color name="graph6">#ffd8d3d0</color>
+    <color name="graph7">#ffc1a8e8</color>
+    <color name="graph8">#ffeea1cf</color>
+    <color name="graph9">#ffe8ed5b</color>
 
     <color name="custom_text">#383838</color>
     <color name="custom_text_light">#bab9ba</color>

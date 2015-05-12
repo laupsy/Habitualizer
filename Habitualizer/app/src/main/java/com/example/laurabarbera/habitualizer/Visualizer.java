@@ -115,11 +115,11 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
         getQuestions.execute();
 
         // seconds per day * 1000
-        if ( questionLevel == 0 ) notifDelay = 864000;
+        if ( questionLevel == 0 ) notifDelay = 86400000;
             // seconds 6 hours * 1000
-        else if ( questionLevel == 1) notifDelay = 216000;
+        else if ( questionLevel == 1) notifDelay = 21600000;
             // seconds per 3 hours * 1000
-        else notifDelay = 10800;
+        else notifDelay = 10800000;
 
         // Set Up Graph
 
@@ -265,18 +265,27 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
                 }
 
                 String time = utcToLocal(Math.round(maxNdx));
-                String questionText = questions.get(i).split(">>")[1];
+                String questionText = questions.get(i).split(">>")[1].substring(0, questions.get(i).split(">>")[1].length()-1);
                 String questionWord = questionText.split(" ")[0];
                 String questionAction = "";
                 String[] question = questionText.split(" ");
+                for ( int j = 2; j < question.length; j++ ) { questionAction += (" " + question[j]); }
+
                 if ( questionWord.equals("Are")) {
-                    questionAction = " are most";
+                    for ( int j = 2; j < question.length; j++ ) {
+                        //questionAction += (" " + question[j]);
+                    }
+                    if ( max > 0 ) {
+                        addNew = "You're usually" + questionAction + " at " + time + ".";
+                    }
+                    else {
+                        addNew = "You haven't been" + questionAction + " yet!";
+                    }
                 }
-                for ( int j = 2; j < question.length; j++ ) {
-                    questionAction += (" " + question[j]);
-                }
-                if ( questionAction.length() > 0 ) questionAction = questionAction.substring(0, questionAction.length() - 1);
-                if ( questionWord.equals("Did") || questionText.split(" ")[0].equals("Have") ) {
+                else if ( questionWord.equals("Did") ) {
+                    for ( int j = 2; j < question.length; j++ ) {
+                        questionAction += (" " + question[j]);
+                    }
                     float howOften = (max / total) * 100;
                     if ( howOften > 75 ) {
                         addNew = "You" + questionAction + " very consistently.";
@@ -292,13 +301,6 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
                         addNew = "You didn't" + questionAction + ".";
                     }
                 }
-                else {
-                    if ( max == 0 ) {
-                        addNew = "You" + questionAction + " almost never.";
-                    } else {
-                        addNew = "Usually, you" + questionAction + " at " + time + ".";
-                    }
-                }
 
                 int id = getResources().getIdentifier("answer"+i,"id",getPackageName());
                 int id2 = getResources().getIdentifier("sep"+i,"id",getPackageName());
@@ -306,8 +308,8 @@ public class Visualizer extends ActionBarActivity implements SensorEventListener
                 TextView tv = (TextView) findViewById(id);
                 tv.setText(addNew);
                 tv.setPadding(0, 100, 0, 100);
-                tv.setTextColor(getResources().getColor(R.color.custom_text));
-                tv.setTextSize(19);
+                tv.setTextColor(getResources().getColor(R.color.gray));
+                tv.setTextSize(16);
                 tv.setVisibility(View.VISIBLE);
                 View v = findViewById(id2);
                 View v2 = findViewById(id3);

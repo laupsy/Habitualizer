@@ -36,26 +36,7 @@ public class Debug extends ActionBarActivity implements SensorEventListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_debug);
-        init();
-
-        UserProfile u = new UserProfile(this, getSharedPreferences(this.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
-        String test = u.getMotionSetting();
-        Log.d(test, "hellothere");
-
-        // MOTION
-
-        sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
-        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        acceleration = 0.00f;
-        acceleration_cur = SensorManager.GRAVITY_EARTH;
-        acceleration_prev = SensorManager.GRAVITY_EARTH;
-
-        // testing database
-
-        final Database db = new Database(this);
-        db.updateMotion();
-        float[] motion24hours = db.getMotion();
-        Log.d(motion24hours[0] + "", "hello");
+        //init();
 
 
     }

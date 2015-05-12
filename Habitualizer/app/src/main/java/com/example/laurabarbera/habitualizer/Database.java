@@ -59,64 +59,68 @@ public class Database extends SQLiteOpenHelper {
     public double[] getEstHome() {
         SQLiteDatabase db = this.getReadableDatabase();
         double[] estHome = new double[2];
-        Cursor longi = db.rawQuery("SELECT Longitude FROM Distance", null);
-        Cursor lati = db.rawQuery("SELECT Latitude FROM Distance", null);
-        double curLong = 0;
-        double curLat = 0;
-        int countLong = 0;
-        int countLat = 0;
-        ArrayList<Integer> totalLongs = new ArrayList<>();
-        ArrayList<Integer> totalLats = new ArrayList<>();
-        ArrayList<Double> mapToLat = new ArrayList<>();
-        ArrayList<Double> mapToLong = new ArrayList<>();
-        if ( longi.moveToFirst() ) {
-            do {
-                double l = longi.getDouble(0);
-                if ( curLong != l ) {
-                    curLong = l;
-                    totalLongs.add(countLong);
-                    mapToLong.add(curLong);
-                    countLong = 0;
-                }
-                else {
-                    countLong++;
-                }
-            } while ( longi.moveToNext() );
-        }
-        if ( lati.moveToFirst() ) {
-            do {
-                double l = lati.getDouble(0);
-                if ( curLat != l ) {
-                    curLat = l;
-                    totalLats.add(countLat);
-                    mapToLat.add(curLat);
-                    countLat = 0;
-                }
-                else {
-                    countLat++;
-                }
+        estHome[0] = 0;
+        estHome[1] = 0;
+        try {
+            Cursor longi = db.rawQuery("SELECT Longitude FROM Distance", null);
+            Cursor lati = db.rawQuery("SELECT Latitude FROM Distance", null);
+            double curLong = 0;
+            double curLat = 0;
+            int countLong = 0;
+            int countLat = 0;
+            ArrayList<Integer> totalLongs = new ArrayList<>();
+            ArrayList<Integer> totalLats = new ArrayList<>();
+            ArrayList<Double> mapToLat = new ArrayList<>();
+            ArrayList<Double> mapToLong = new ArrayList<>();
+            if ( longi.moveToFirst() ) {
+                do {
+                    double l = longi.getDouble(0);
+                    if ( curLong != l ) {
+                        curLong = l;
+                        totalLongs.add(countLong);
+                        mapToLong.add(curLong);
+                        countLong = 0;
+                    }
+                    else {
+                        countLong++;
+                    }
+                } while ( longi.moveToNext() );
+            }
+            if ( lati.moveToFirst() ) {
+                do {
+                    double l = lati.getDouble(0);
+                    if ( curLat != l ) {
+                        curLat = l;
+                        totalLats.add(countLat);
+                        mapToLat.add(curLat);
+                        countLat = 0;
+                    }
+                    else {
+                        countLat++;
+                    }
 
-            } while ( lati.moveToNext() );
-        }
-        double maxLong = 0;
-        double maxLat = 0;
-        int maxLongNdx = 0;
-        int maxLatNdx = 0;
-        for ( int i = 0; i < totalLongs.size(); i++ ) {
-            if ( maxLong < totalLongs.get(i) ) {
-                maxLong = totalLongs.get(i);
-                maxLongNdx = i;
+                } while ( lati.moveToNext() );
             }
-        }
-        for ( int i = 0; i < totalLats.size(); i++ ) {
-            if ( maxLat < totalLats.get(i) ) {
-                maxLat = totalLats.get(i);
-                maxLatNdx = i;
+            double maxLong = 0;
+            double maxLat = 0;
+            int maxLongNdx = 0;
+            int maxLatNdx = 0;
+            for ( int i = 0; i < totalLongs.size(); i++ ) {
+                if ( maxLong < totalLongs.get(i) ) {
+                    maxLong = totalLongs.get(i);
+                    maxLongNdx = i;
+                }
             }
-        }
-        estHome[0] = mapToLat.get(maxLatNdx);
-        estHome[1] = mapToLong.get(maxLongNdx);
-        Log.d("home is ", estHome[0] +" "+ estHome[1]);
+            for ( int i = 0; i < totalLats.size(); i++ ) {
+                if ( maxLat < totalLats.get(i) ) {
+                    maxLat = totalLats.get(i);
+                    maxLatNdx = i;
+                }
+            }
+            estHome[0] = mapToLat.get(maxLatNdx);
+            estHome[1] = mapToLong.get(maxLongNdx);
+            Log.d("home is ", estHome[0] +" "+ estHome[1]);
+        } catch(Exception e){Log.d("EstHome Error: ", "No distance established yet."); }
         return estHome;
     }
     public void removeQuestion(int id) {

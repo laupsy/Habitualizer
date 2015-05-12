@@ -121,7 +121,6 @@ public class Dashboard extends ActionBarActivity {
         protected Boolean doInBackground(String... params) {
             Database db = new Database(c);
 
-            UserProfile u = new UserProfile(c, getSharedPreferences(c.getString(R.string.SHARED_PREFERENCES), MODE_PRIVATE));
             curName = db.getName();
 
             if ( db.getMotionSetting() == 1 ) curMotionSetting = c.getResources().getString(R.string.motionSetting_on);
